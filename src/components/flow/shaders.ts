@@ -133,12 +133,15 @@ void main() {
     if (i >= uBodyCount) break;
     vec4 body = uBodies[i];
     vec2 d = vec2((z.x - body.x) / max(body.z, 0.001), (z.y - body.y) / max(body.w, 0.001));
-    float r2 = dot(d, d);
-    float k  = 0.55;                       // doublet strength, in body radii
-    psi   += -k * d.y / max(r2, 0.02);
-    phi   +=  k * d.x / max(r2, 0.02);
-    speed +=  k * 0.5 / max(r2, 0.06);
-    bodyMask = max(bodyMask, 1.0 - smoothstep(0.86, 1.06, sqrt(r2)));
+    // Same soft core as the cursor: without it a panel's doublet overpowers the
+    // freestream near its centre and pinches off a closed eddy — a bullseye
+    // behind every card.
+    float r2 = dot(d, d) + 0.85;
+    float k  = 0.42;
+    psi   += -k * d.y / r2;
+    phi   +=  k * d.x / r2;
+    speed +=  k * 0.34 / r2;
+    bodyMask = max(bodyMask, 1.0 - smoothstep(0.80, 1.12, length(d)));
   }
 
   // ---- the cursor as a body in the flow ----
@@ -166,39 +169,63 @@ void main() {
     speed += abs(uPointerSpin) * 0.28 / max(sqrt(r2), 0.7);
   }
 
-  // ---- streamlines ----
-  float density = mix(3.0, 4.4, uQuality);
+  // ---- filaments ----
+  // Rendered like a smoke-flow photograph rather than a contour plot: far fewer
+  // lines, each a sharp core inside a soft halo, over mostly empty ground. The
+  // eye needs somewhere to rest, and detail concentrated near the body reads as
+  // depth rather than as pattern.
+  float density = mix(1.5, 2.1, uQuality);
   float s       = psi * density;
   float band    = abs(fract(s) - 0.5);
   float aa      = max(fwidth(s), 0.0008);
-  float lineW   = max(aa * 1.6, 0.045);
-  float line    = 1.0 - smoothstep(0.0, lineW, band);
 
-  float dash = fract(phi * 1.1 - uTime * 0.40);
-  dash = smoothstep(0.02, 0.40, dash) * (1.0 - smoothstep(0.55, 0.95, dash));
+  float coreW = max(aa * 1.3, 0.020);
+  float haloW = max(aa * 5.0, 0.115);
+  float core  = 1.0 - smoothstep(0.0, coreW, band);
+  float halo  = 1.0 - smoothstep(0.0, haloW, band);
 
-  float focus  = smoothstep(9.0, 1.0, length(zw));
-  float streak = line * mix(0.28, 1.0, dash) * mix(0.42, 1.0, max(focus, bodyMask));
+  float dash = fract(phi * 1.0 - uTime * 0.34);
+  dash = smoothstep(0.04, 0.36, dash) * (1.0 - smoothstep(0.52, 0.94, dash));
+
+  // Presence falls away from the things that matter: the wing, the cursor and
+  // the panel edges. Everywhere else settles to near-silence.
+  float nearWing   = smoothstep(6.5, 1.2, length(zw));
+  float nearCursor = smoothstep(4.2, 0.6, length(z - uPointer));
+  float nearBody   = smoothstep(0.0, 0.55, bodyMask) * (1.0 - bodyMask);
+  float presence   = clamp(max(max(nearWing, nearCursor), nearBody) + 0.10, 0.0, 1.0);
+
+  float streak = (core * 0.95 + halo * 0.22) * mix(0.30, 1.0, dash) * presence;
 
   // ---- colour ----
   float t   = clamp((speed - 0.25) / 2.1, 0.0, 1.0);
   vec3 ramp = velocityRamp(t);
 
   vec3 ground = mix(vec3(0.957, 0.969, 0.988), vec3(0.024, 0.039, 0.071), uTheme);
-  float wash  = mix(0.06, 0.10, uTheme);
-  vec3 col    = mix(ground, ramp, wash + 0.09 * t);
-  col = mix(col, ramp * mix(0.9, 1.25, uTheme), streak * mix(0.75, 0.95, uTheme));
+
+  // The ground stays the ground. A wash of ramp colour across the whole
+  // viewport is what made this muddy — colour is now carried almost entirely by
+  // the filaments, and the ramp only asserts itself where the flow is fast.
+  float hot = smoothstep(0.45, 0.95, t);
+  vec3 filament = mix(
+    mix(vec3(0.42, 0.62, 0.80), vec3(0.60, 0.82, 0.98), uTheme),
+    ramp * mix(1.0, 1.3, uTheme),
+    hot
+  );
+
+  vec3 col = mix(ground, ground * mix(1.06, 1.18, uTheme), 0.35 * presence);
+  col = mix(col, filament, clamp(streak, 0.0, 1.0) * mix(0.80, 0.95, uTheme));
 
   vec3 body = mix(vec3(0.988, 0.992, 1.0), vec3(0.008, 0.016, 0.035), uTheme);
   col = mix(col, body, inside);
   float rim = 1.0 - smoothstep(0.0, 0.045, abs(rr - a));
   col = mix(col, ramp * mix(1.0, 1.5, uTheme), rim * 0.9);
 
-  // Content sits over this, so the field is quietened directly beneath a panel.
-  col = mix(col, ground, bodyMask * 0.55);
+  // Nothing is drawn under a panel. The whole effect lives at the edges, where
+  // the flow parts — which is also the only place a viewer can see it.
+  col = mix(col, ground, smoothstep(0.55, 0.95, bodyMask));
 
-  float vig = smoothstep(1.9, 0.15, length(uv * vec2(0.8, 1.0)));
-  col = mix(ground, col, 0.35 + 0.65 * vig);
+  float vig = smoothstep(2.1, 0.35, length(uv * vec2(0.78, 1.0)));
+  col = mix(ground, col, 0.30 + 0.70 * vig);
 
   fragColor = vec4(col, 1.0);
 }`;
