@@ -62,7 +62,7 @@ export function Hero({ profile }: { profile: Profile }) {
             </motion.p>
 
             <motion.div variants={revealVariants} className="mt-9 flex flex-wrap gap-3">
-              <PrimaryLink href="#work">See the work</PrimaryLink>
+              <PrimaryLink href="#about">See the work</PrimaryLink>
               {profile.links.map((link) => (
                 <SecondaryLink key={link.href} href={link.href}>
                   {link.label}

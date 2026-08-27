@@ -286,3 +286,47 @@ body {
     linear-gradient(135deg, var(--color-vel-0), var(--color-vel-1));
   opacity: 0.55;
 }
+
+/* ============================================================
+   Ambient field
+   Gives glass panels something to work against below the hero.
+   ============================================================ */
+
+.ambient-field {
+  position: fixed;
+  inset: -20vh -10vw;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(32% 26% at 14% 22%, var(--color-vel-2) 0%, transparent 72%),
+    radial-gradient(28% 24% at 82% 38%, var(--color-vel-3) 0%, transparent 74%),
+    radial-gradient(26% 22% at 38% 72%, var(--color-vel-6) 0%, transparent 76%),
+    radial-gradient(30% 26% at 90% 88%, var(--color-vel-1) 0%, transparent 74%);
+  opacity: 0.34;
+  filter: blur(46px);
+}
+
+:root[data-theme='light'] .ambient-field {
+  opacity: 0.28;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) .ambient-field {
+    opacity: 0.28;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ambient-field {
+    animation: ambient-drift 64s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes ambient-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-3%, 2%, 0) scale(1.08);
+  }
+}
