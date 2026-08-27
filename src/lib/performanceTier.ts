@@ -6,9 +6,27 @@ interface NavigatorWithHints extends Navigator {
   getBattery?: () => Promise<{ charging: boolean; level: number }>;
 }
 
+function isTier(value: string | null): value is PerformanceTier {
+  return value === 'full' || value === 'reduced' || value === 'static';
+}
+
+/**
+ * `?tier=full|reduced|static` forces a tier. This exists so the fallbacks can
+ * actually be exercised — including from an automated browser, which typically
+ * reports too few cores and would otherwise only ever see the static tier.
+ */
+export function tierFromQuery(): PerformanceTier | null {
+  if (typeof window === 'undefined') return null;
+  const requested = new URLSearchParams(window.location.search).get('tier');
+  return isTier(requested) ? requested : null;
+}
+
 /** Cheap, synchronous capability read. Battery is checked separately, async. */
 export function detectTier(): PerformanceTier {
   if (typeof window === 'undefined') return 'static';
+
+  const forced = tierFromQuery();
+  if (forced) return forced;
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'static';
 

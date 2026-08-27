@@ -345,3 +345,15 @@ body {
   font-size: var(--text-base);
   line-height: 1.6;
 }
+
+/* Page-wide flow layer: fixed, so its cost is bounded by the viewport rather
+   than the document. */
+.flow-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}

@@ -24,6 +24,12 @@ export interface GlassPanelProps {
   variant?: GlassVariant;
   radius?: GlassRadius;
   className?: string;
+  /**
+   * Marks the panel as a bluff body in the flow layer: streamlines part around
+   * it and close behind. Use on substantial surfaces, not on chips and pills —
+   * a dozen tiny bodies read as noise rather than as flow.
+   */
+  flowBody?: boolean;
 }
 
 /**
@@ -36,13 +42,18 @@ export function GlassPanel({
   variant = 'default',
   radius = 'lg',
   className = '',
+  flowBody = false,
 }: GlassPanelProps) {
   const classes = ['glass', 'u-squircle', VARIANT_CLASS[variant], className]
     .filter(Boolean)
     .join(' ');
 
   return (
-    <Tag className={classes} style={{ borderRadius: RADIUS_VAR[radius] }}>
+    <Tag
+      className={classes}
+      style={{ borderRadius: RADIUS_VAR[radius] }}
+      {...(flowBody ? { 'data-flow-body': '' } : {})}
+    >
       {children}
     </Tag>
   );
