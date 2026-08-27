@@ -194,3 +194,54 @@ export const caseStudyCollection = z.array(caseStudySchema);
 
 export type CaseStudy = z.infer<typeof caseStudySchema>;
 export type CaseStudyBlock = z.infer<typeof caseStudyBlock>;
+
+/* ============================================================
+   Projects
+   Curation lives here; GitHub supplies the facts. The two are
+   kept apart so a repo rename or a lost star never silently
+   rewrites the copy you wrote about it.
+   ============================================================ */
+
+export const projectSchema = publishable.extend({
+  /** Repository name under the configured GitHub user. */
+  repo: z.string().min(1),
+  /** Overrides the repo name. Repos are named for machines, not for readers. */
+  title: z.string().min(1).optional(),
+  /** Overrides the GitHub description, which is usually one line or empty. */
+  summary: z.string().min(1).optional(),
+  /** Curated, not GitHub topics: what you want shown, in the order you want. */
+  tags: z.array(z.string().min(1)).default([]),
+  /** Optional link to a case study slug that goes deeper than the repo. */
+  caseStudySlug: z.string().optional(),
+  featured: z.boolean().default(false),
+});
+
+export const projectCollection = z.array(projectSchema);
+
+export const githubRepoSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  language: z.string().nullable(),
+  stars: z.number().int(),
+  forks: z.number().int(),
+  topics: z.array(z.string()),
+  homepage: z.string().nullable(),
+  url: z.string().url(),
+  pushedAt: z.string(),
+});
+
+export const githubCacheSchema = z.object({
+  user: z.string(),
+  fetchedAt: z.string(),
+  repos: z.array(githubRepoSchema),
+});
+
+export type Project = z.infer<typeof projectSchema>;
+export type GithubRepo = z.infer<typeof githubRepoSchema>;
+
+/** A curated project joined to its GitHub facts, ready to render. */
+export interface ResolvedProject extends Project {
+  repoData: GithubRepo | undefined;
+  displayTitle: string;
+  displaySummary: string;
+}

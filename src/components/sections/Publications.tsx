@@ -12,7 +12,7 @@ export function Publications({ items }: { items: Publication[] }) {
     >
       <div className="flex flex-col gap-4">
         {items.map((paper) => (
-          <GlassPanel key={paper.id} as="article" className="p-6 sm:p-8">
+          <GlassPanel key={paper.id} as="article" flowBody className="p-6 sm:p-8">
             <div className="flex flex-wrap items-center gap-3">
               {paper.selfIndex === 0 ? (
                 <span

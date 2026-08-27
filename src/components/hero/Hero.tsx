@@ -1,26 +1,26 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { FlowField } from './FlowField';
 import { GlassPanel } from '@/components/glass/GlassPanel';
 import { revealVariants, spring, staggerVariants } from '@/lib/motion';
 import type { Profile } from '@/content/schema';
 
+/**
+ * The hero no longer owns a flow field — the field spans the page and lives in
+ * the layout, so the wing rises out of frame as the reader descends rather than
+ * being clipped at the end of a section.
+ */
 export function Hero({ profile }: { profile: Profile }) {
   return (
-    <section className="relative min-h-[100svh] w-full overflow-hidden">
-      <div className="absolute inset-0 -z-10">
-        <FlowField />
-      </div>
-
-      <div className="relative mx-auto flex min-h-[100svh] max-w-6xl items-center px-6 py-24">
+    <section className="relative flex min-h-[100svh] w-full items-center">
+      <div className="mx-auto w-full max-w-6xl px-6 py-28 sm:py-24">
         <motion.div
           className="w-full max-w-2xl"
           variants={staggerVariants(0.08, 0.1)}
           initial="hidden"
           animate="visible"
         >
-          <GlassPanel variant="strong" radius="xl" className="p-8 sm:p-12">
+          <GlassPanel variant="strong" radius="xl" flowBody className="p-7 sm:p-10 md:p-12">
             <motion.p
               variants={revealVariants}
               className="u-label inline-flex items-center gap-2.5"
@@ -61,8 +61,8 @@ export function Hero({ profile }: { profile: Profile }) {
               {profile.summaryShort}
             </motion.p>
 
-            <motion.div variants={revealVariants} className="mt-9 flex flex-wrap gap-3">
-              <PrimaryLink href="#about">See the work</PrimaryLink>
+            <motion.div variants={revealVariants} className="mt-8 flex flex-wrap gap-3">
+              <PrimaryLink href="#work">See the work</PrimaryLink>
               {profile.links.map((link) => (
                 <SecondaryLink key={link.href} href={link.href}>
                   {link.label}
@@ -72,8 +72,6 @@ export function Hero({ profile }: { profile: Profile }) {
           </GlassPanel>
         </motion.div>
       </div>
-
-      <ScrollCue />
     </section>
   );
 }
@@ -85,7 +83,7 @@ function PrimaryLink({ href, children }: { href: string; children: React.ReactNo
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.97 }}
       transition={spring.snappy}
-      className="inline-flex items-center px-6 py-3 text-sm font-semibold"
+      className="inline-flex min-h-11 items-center px-6 py-3 text-sm font-semibold"
       style={{
         borderRadius: 'var(--radius-pill)',
         background: 'var(--accent)',
@@ -106,27 +104,10 @@ function SecondaryLink({ href, children }: { href: string; children: React.React
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.97 }}
       transition={spring.snappy}
-      className="glass inline-flex items-center px-6 py-3 text-sm font-medium"
+      className="glass inline-flex min-h-11 items-center px-6 py-3 text-sm font-medium"
       style={{ borderRadius: 'var(--radius-pill)' }}
     >
       {children}
     </motion.a>
-  );
-}
-
-function ScrollCue() {
-  return (
-    <motion.div
-      aria-hidden="true"
-      className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: [0, 1, 1, 0], y: [0, 6, 10, 14] }}
-      transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
-    >
-      <span
-        className="block h-8 w-[1px]"
-        style={{ background: 'linear-gradient(var(--accent), transparent)' }}
-      />
-    </motion.div>
   );
 }

@@ -14,7 +14,7 @@ export function CaseStudies({ studies }: { studies: CaseStudy[] }) {
       <div className="grid gap-5 lg:grid-cols-3">
         {studies.map((study) => (
           <Link key={study.id} href={`/work/${study.slug}`} className="block">
-            <GlassPanel as="article" className="flex h-full flex-col p-7">
+            <GlassPanel as="article" flowBody className="flex h-full flex-col p-7">
               <p className="u-label" style={{ color: 'var(--accent)' }}>
                 {study.domain}
               </p>

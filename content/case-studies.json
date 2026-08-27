@@ -1,0 +1,567 @@
+[
+  {
+    "id": "crm-vfp-incidence-limit",
+    "slug": "transonic-incidence-limit",
+    "order": 0,
+    "published": true,
+    "status": "published",
+    "year": 2026,
+    "title": "Where a low-fidelity transonic method stops being trustworthy",
+    "subtitle": "NASA Common Research Model wing-body · M∞ 0.80-0.85 · Re 5-30×10⁶",
+    "thesis": "For a fixed numerical treatment the solver's limit is a shock strength, not an angle of attack — and once you know that, you can move it.",
+    "domain": "Transonic aerodynamics · viscous-inviscid coupling",
+    "tools": [
+      "VFP",
+      "FlowVFP",
+      "Python",
+      "NASA NTF data"
+    ],
+    "cover": "/case-studies/crm/C08-failure-boundary-a.png",
+    "credit": "VFP is licensed to Cranfield University. The analysis, campaign and conclusions presented here are the author's own; the solver itself is not distributed.",
+    "blocks": [
+      {
+        "type": "prose",
+        "paragraphs": [
+          "Conceptual aircraft design runs on low-fidelity aerodynamics. A full-potential method coupled to an integral boundary layer returns a transonic wing solution in seconds where RANS takes hours, which is what makes it usable inside a design loop at all. The price is that it holds only while its assumptions hold — and the assumptions fail long before the solver announces it.",
+          "On the NASA Common Research Model wing-body, incidence sweeps simply stopped. Somewhere between 3.4° and 3.8°, depending on Mach and Reynolds number, the solver quit. The obvious question is whether that is the method reaching a physical limit or the numerics failing early. They demand opposite responses: the first means believe the answer and stop, the second means fix the setup and continue.",
+          "This study answers that question for the CRM, and then does something more useful than answering it. It removes most of the limit."
+        ]
+      },
+      {
+        "type": "keyNumbers",
+        "items": [
+          {
+            "value": "±0.03",
+            "label": "Spread in pre-shock Mach at failure",
+            "note": "across four operating conditions"
+          },
+          {
+            "value": "0.4°",
+            "label": "Spread in incidence at failure",
+            "note": "same four conditions"
+          },
+          {
+            "value": "+71%",
+            "label": "Incidence range recovered",
+            "note": "3.4° → 5.8°"
+          },
+          {
+            "value": "587",
+            "label": "Solver runs in the campaign"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Diagnosis",
+        "text": "The limit is a shock strength wearing an angle of attack's clothing"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "The CRM cruises at M∞ = 0.85, and at that freestream Mach number most of the upper surface is supersonic. The critical pressure coefficient — the value of Cp at which local flow first reaches sonic conditions — is only −0.302 at M∞ = 0.85 and −0.435 at M∞ = 0.80. Those are shallow thresholds, exceeded over most of the chord at even modest incidence. The flow is supercritical throughout the useful range, so the supersonic region has to be terminated by a shock.",
+          "A shock imposes an essentially discontinuous adverse pressure gradient on the boundary layer beneath it. Whether the layer survives that interaction depends principally on the shock's strength, which for a normal shock is set entirely by the Mach number immediately ahead of it. The static pressure ratio rises steeply: 1.25 at M₁ = 1.1, 1.51 at 1.2, 1.81 at 1.3. The empirical result that matters here is Pearcey's — a turbulent boundary layer separates at the foot of the shock once M₁ reaches roughly 1.3."
+        ]
+      },
+      {
+        "type": "equation",
+        "tex": "\\frac{p_2}{p_1} = \\frac{2\\gamma M_1^{2} - (\\gamma-1)}{\\gamma+1}",
+        "caption": "Static pressure ratio across a normal shock. The steepness of this relation in M₁ is why shock strength, rather than incidence, turns out to be the governing quantity.",
+        "mathml": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><mfrac><msub><mi>p</mi><mn>2</mn></msub><msub><mi>p</mi><mn>1</mn></msub></mfrac><mo>=</mo><mfrac><mrow><mn>2</mn><mi>&#947;</mi><msubsup><mi>M</mi><mn>1</mn><mn>2</mn></msubsup><mo>&#8722;</mo><mo stretchy=\"false\">(</mo><mi>&#947;</mi><mo>&#8722;</mo><mn>1</mn><mo stretchy=\"false\">)</mo></mrow><mrow><mi>&#947;</mi><mo>+</mo><mn>1</mn></mrow></mfrac></math>"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "So the test is straightforward. Take the four archived operating conditions, all run with identical numerics, and ask what the solver has in common at the last incidence it manages. If the answer is an angle, the limit is about incidence. If it is a shock strength, the limit is about the physics of the interaction."
+        ]
+      },
+      {
+        "type": "chart",
+        "chart": "failureBoundary",
+        "caption": "The failure boundary expressed two ways. As an incidence it scatters across 0.4°; as the peak pre-shock Mach number reached at the last converged incidence it collapses to within 0.061 — and lands on the empirical separation threshold."
+      },
+      {
+        "type": "callout",
+        "tone": "finding",
+        "title": "The failure boundary collapses onto shock strength",
+        "body": "Incidence at failure varies from 3.4° to 3.8°. Peak pre-shock Mach number at failure varies only from 1.310 to 1.371, with three of the four conditions agreeing to within 0.011 — and that band sits on the M₁ ≈ 1.3 separation threshold established from wind tunnel measurement decades earlier. For a fixed numerical treatment, this is a shock-strength boundary, not an incidence boundary."
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "The supporting evidence lines up. A discrete shock first forms at α = 2.4° and marches forward to roughly 55% chord by α = 3.4°, by which point 57% of the chord is supersonic. Beneath it the boundary layer is in trouble: the shape factor exceeds 2 at 14 of 20 spanwise stations aft of the shock, and skin friction collapses to 7×10⁻⁵. Independently, the NASA NTF measurements place the separation in the same half-degree — the measured lift slope breaks down and the pitching moment bottoms out at α = 3.39°.",
+          "The solver, in other words, is not failing early. It is stopping at roughly the point where the flow genuinely leaves the class of flows an integral boundary-layer method can describe."
+        ]
+      },
+      {
+        "type": "figure",
+        "src": "/case-studies/crm/C05-shock-development-a.png",
+        "alt": "Three panels showing shock chordwise location, pre-shock Mach number and pressure rise across the shock, each against incidence, with percentile bands.",
+        "caption": "Shock development with incidence at M = 0.85, Re = 19.8×10⁶. Symbols are medians over 0.2 < η < 0.95; bands span the 15th to 85th percentile."
+      },
+      {
+        "type": "figure",
+        "src": "/case-studies/crm/C07-separation-indicators-a.png",
+        "alt": "Two panels showing peak boundary-layer shape factor and minimum skin friction downstream of the shock against incidence.",
+        "caption": "Separation indicators aft of the shock. Shape factor crosses 2 and skin friction collapses toward zero in the same incidence range where the solver stops."
+      },
+      {
+        "type": "heading",
+        "eyebrow": "The turn",
+        "text": "That threshold is not a property of the flow alone"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "This is where the study stops being a post-mortem. The italicised qualifier above — for a fixed numerical treatment — is load-bearing. The boundary layer responds to the shock the solver has captured, and a full-potential solver does not capture the real shock. It captures a discrete approximation to it, and how sharp that approximation is depends on the difference scheme.",
+          "A campaign of 223 further runs swept the flow-file parameters. Most did nothing. Two moved the limit, and they act by entirely different mechanisms — which is the part that makes the result trustworthy rather than a lucky setting."
+        ]
+      },
+      {
+        "type": "table",
+        "caption": "Highest converged incidence over the IOPT1(8) × EPS grid at M∞ = 0.85, Re = 19.8×10⁶. Baseline is IOPT1(8) = 1 with EPS = 0.70.",
+        "columns": [
+          "IOPT1(8)",
+          "EPS 0.70",
+          "0.80",
+          "0.90",
+          "0.95",
+          "1.00"
+        ],
+        "rows": [
+          [
+            "1 (blended)",
+            "3.4°",
+            "4.0°",
+            "4.6°",
+            "5.0°",
+            "5.2°"
+          ],
+          [
+            "0 (non-conservative)",
+            "5.0°",
+            "5.6°",
+            "5.6°",
+            "5.8°",
+            "5.6°"
+          ]
+        ],
+        "highlightRow": 1
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "EPS turns out not to change the answer at all — only whether the relaxation can find it. Across the whole EPS range at fixed scheme, the converged lift coefficient moves by at most 0.00036, or 0.072%, over the eighteen incidences every chain reaches. Over that same range the attainable incidence moves from 3.4° to 5.2°. The failure modes corroborate it: at low EPS the runs die silently without a force summary, the signature of a relaxation that never converged; at high EPS they die instead in the boundary-layer routines. Raising EPS removes the convergence-failure path and exposes the real one underneath.",
+          "The difference scheme does change the answer. Between the two schemes the converged lift differs by up to 0.058, or 8.9%, at α = 5.0° — two orders of magnitude more than the EPS sensitivity — and the change is localised at the shock. The non-conservative scheme produces a pressure gradient at the shock foot 30-45% shallower: 6.20 against 9.02 at α = 3.4°, 10.15 against 13.06 at α = 5.0°. The pre-shock Mach number is almost unchanged between them, 1.403 against 1.412 at α = 5.0°. It is the same supersonic region, terminated by a shock spread over more of the chord.",
+          "And the boundary layer feels exactly that. Up to α ≈ 4.4° the two schemes give an identical shape-factor history. Beyond it they part company: with the blended scheme the peak shape factor aft of the shock runs away to 2.82 at 4.6° and 4.78 at 5.0°, far outside the range where a two-parameter integral profile family means anything, while with the non-conservative scheme it stays between 2.3 and 2.6 all the way to 5.8°."
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "finding",
+        "title": "The solver does not fail because the incidence is high",
+        "body": "It fails because the shock it has captured drives the boundary-layer method outside its representable range. Across the ten branches tested, the shock gradient at a fixed incidence of 3.4° correlates with how far each setting subsequently marches, at −0.77."
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Why it works",
+        "text": "An isentropic equation cannot make an entropy jump"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "Preferring a non-conservative scheme needs justifying, because conservative differencing is normally the more defensible choice. The reason here is specific to the full-potential formulation. The potential equation assumes isentropic, irrotational flow, and therefore cannot represent the entropy rise a real shock produces. A conservative discretisation enforces mass conservation across the discontinuity inside that isentropic framework, and the captured shock comes out stronger than the real one — increasingly so as the shock strengthens. Non-conservative differencing introduces a truncation error that acts, in effect, in place of the missing entropy loss.",
+          "That account makes a falsifiable prediction: at high incidence the blended scheme should over-predict the measured pressure rise across the shock, and the non-conservative scheme should not."
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "finding",
+        "title": "The prediction holds",
+        "body": "Below α ≈ 4° the two schemes are indistinguishable against the NTF surface pressures, and the tap spacing of 0.05-0.30 chord is too coarse to separate them anyway. Above 4° they diverge. At the two highest measured incidences, 5.07° and 5.08°, the blended scheme over-predicts the pressure rise by +0.099 and +0.096 — about 27% — while the non-conservative scheme sits within −0.017 and −0.021."
+      },
+      {
+        "type": "figure",
+        "src": "/case-studies/crm/C13-lift-error-by-scheme.png",
+        "alt": "Absolute lift error against incidence for both difference schemes, with the separated range shaded.",
+        "caption": "Absolute lift error against NTF Test 215 Run 159 for both schemes at EPS = 0.95. They are equivalent while the flow is attached and diverge once it separates — which is the signature of a real physical mechanism rather than a tuned constant."
+      },
+      {
+        "type": "table",
+        "caption": "Mean absolute lift error against NTF Test 215 Run 159, separated into attached and separated ranges. The cost of the selected setting is visible in the middle column and is stated rather than buried.",
+        "columns": [
+          "Setting",
+          "α max",
+          "|ΔC_L| for α ≤ 3.0°",
+          "|ΔC_L| for α ≥ 4.0°"
+        ],
+        "rows": [
+          [
+            "IOPT1(8)=1, EPS=0.70 (baseline)",
+            "3.4°",
+            "0.0172",
+            "—"
+          ],
+          [
+            "IOPT1(8)=1, EPS=0.95",
+            "5.0°",
+            "0.0173",
+            "0.0585"
+          ],
+          [
+            "IOPT1(8)=0, EPS=0.70",
+            "5.0°",
+            "0.0187",
+            "0.0254"
+          ],
+          [
+            "IOPT1(8)=0, EPS=0.95 (selected)",
+            "5.8°",
+            "0.0188",
+            "0.0289"
+          ]
+        ],
+        "highlightRow": 3
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "The selected setting marches 71% further and halves the lift error where the flow is separated. It is also very slightly worse in the attached range — 0.0188 against 0.0172, a difference of 0.0016 in C_L. That is a real cost and it belongs in the summary, not a footnote. It is worth paying because the attached range was never where the method was in doubt.",
+          "The range gain and the accuracy gain have the same cause. That is what separates this from a numerical expedient: a setting that bought extra incidence while degrading the answer would be a way of not knowing, dressed as a fix."
+        ]
+      },
+      {
+        "type": "figure",
+        "src": "/case-studies/crm/C12-lift-baseline-vs-selected.png",
+        "alt": "Lift curve for baseline and selected settings plotted against NASA NTF experimental data, with the separated range shaded.",
+        "caption": "Lift curve for the baseline and selected settings against NASA NTF Test 215 Run 159. The selected setting both marches further and tracks the measurement more closely once the flow separates."
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Practice",
+        "text": "Four ways to stop, and only one of them says so"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "Across 587 runs the solver stopped in four distinguishable ways, and the vendor documentation describes only the first.",
+          "A divergence abort raises an explicit error — and was never once observed in this campaign. A Fortran runtime crash from the boundary-layer routines is what actually dominates, once EPS is high enough for the relaxation to converge. Silent non-convergence completes the iteration cap and writes no force summary at all. Immediate rejection terminates in about eleven seconds having written only banner lines.",
+          "The distinction between the second and third is not cosmetic — it is the evidence that EPS and the difference scheme act on different failure paths. It also has a blunt operational consequence: any automated sweep has to detect all four, because only one announces itself, and it needs a wall-clock cap, because a fifth mode was observed on a separate configuration where the run simply never terminated."
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "caution",
+        "title": "The same solver, the opposite conclusion",
+        "body": "A companion study on the SAAB 340 reached the reverse finding: there the method stopped with the boundary layer still attached, at roughly 68% of expected maximum lift, and moving the viscous coupling switch recovered range at no cost in fidelity. Same solver, opposite diagnosis. What separates them is where the limiting adverse-gradient feature sits relative to the coupling switch — a leading-edge suction peak forward of it in the subcritical case, a shock aft of it here. Neither result generalises without that context, which is exactly why 'my solver crashed at 3.4°' is never a finding on its own."
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Transfer",
+        "text": "What this means if you use one of these methods"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "The specific parameter names belong to one solver. The structure of the argument does not, and applies to any coupled full-potential or transonic small-disturbance method with an integral boundary layer — MSES, VGK, TSFOIL and their relatives.",
+          "First: when a low-fidelity transonic method stops, check the pre-shock Mach number before checking the incidence. If it sits near 1.3 the flow has probably left the representable class, and no amount of solver configuration will honestly extend the sweep.",
+          "Second: that threshold is not fixed. It depends on how sharply your discretisation captures the shock, and a scheme that spreads the shock over more chord will march further. Whether it should is a separate question — which brings the third point.",
+          "Third: any setting that extends range must be validated against measurement in the extended range, not merely observed to converge. Convergence is not correctness. The reason this result is usable is that the extra 2.4° of incidence is also more accurate, and that was demonstrated rather than assumed."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rae2822-transonic-rans",
+    "slug": "rae2822-transonic-rans",
+    "order": 1,
+    "published": true,
+    "status": "published",
+    "year": 2026,
+    "title": "What a grid convergence study is actually telling you",
+    "subtitle": "RAE 2822 supercritical section · OpenFOAM rhoSimpleFoam · M∞ 0.729, α 2.31°, Re 6.49×10⁶",
+    "thesis": "The mesh refinement study did not converge, and saying so is the result — a 23% uncertainty band honestly reported is worth more than a tidy number that is wrong.",
+    "domain": "RANS CFD · verification and validation",
+    "tools": [
+      "OpenFOAM v2412",
+      "snappyHexMesh",
+      "Python",
+      "ParaView"
+    ],
+    "blocks": [
+      {
+        "type": "prose",
+        "paragraphs": [
+          "The RAE 2822 at M∞ = 0.729 and α = 2.31° is one of the most heavily documented transonic test cases in existence, which makes it a poor place to claim novelty and an excellent place to be rigorous. The aim here was a grid-independent baseline, parametric sweeps in incidence and Mach number, and a turbulence-model comparison — the ordinary verification work that has to sit underneath any result anyone else is going to rely on.",
+          "The interesting outcome was not the baseline. It was that the grid study refused to behave, and following that honestly says more about the case than a clean number would have."
+        ]
+      },
+      {
+        "type": "keyNumbers",
+        "items": [
+          {
+            "value": "4",
+            "label": "Mesh levels",
+            "note": "24k → 2.22M cells"
+          },
+          {
+            "value": "23%",
+            "label": "Grid convergence index on C_L",
+            "note": "finest pair"
+          },
+          {
+            "value": "~8%",
+            "label": "Spread in C_L across turbulence models"
+          },
+          {
+            "value": "108",
+            "label": "Average y⁺ on the finest mesh",
+            "note": "wall functions, not a resolved layer"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Verification",
+        "text": "Four meshes, and no asymptotic range"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "Four refinement levels were built with snappyHexMesh, from 24,103 cells to 2,218,368, with mesh quality checked at each level — maximum non-orthogonality stayed between 56° and 61°, average non-orthogonality improved steadily from 9.4° to 5.1°, and no level failed OpenFOAM's own checks. On that evidence the meshes are sound. The forces they produce are not well behaved."
+        ]
+      },
+      {
+        "type": "chart",
+        "chart": "gridConvergence",
+        "caption": "Lift coefficient against representative cell size across four refinement levels. A converging series should approach a limit monotonically; this one overshoots at the second level and comes back down."
+      },
+      {
+        "type": "callout",
+        "tone": "caution",
+        "title": "The grid study does not support a tight uncertainty bound",
+        "body": "Richardson extrapolation on the finest three levels returns an apparent order of 1.81 for lift and a grid convergence index of 23%. The asymptotic ratio — which should sit near 1 if the series is in the asymptotic range — comes out at 0.127. Drag is worse: non-monotonic across the series, apparent order 0.70, GCI 42%. These are not discretisation-error estimates. They are a statement that the solution is not yet grid converged at 2.2M cells."
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "There is a plausible physical reason, and it matters because it changes what should be done about it. Extended convergence monitoring at the baseline condition showed the flow sitting close to shock buffet — the forces do not settle to a fixed point so much as hover. If part of what the refinement study is measuring is genuine unsteadiness rather than discretisation error, then no amount of further refinement will produce a clean Richardson fit, because the quantity being extrapolated does not have a steady value to converge to.",
+          "The second contributor is more mundane. Average y⁺ on the finest mesh is 108, with a maximum of 383. That is squarely wall-function territory, not a resolved viscous sublayer. For a case whose defining feature is a shock interacting with a boundary layer, near-wall treatment is not a detail — and refining the far field while leaving the first cell in the log layer will not fix the forces."
+        ]
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Sensitivity",
+        "text": "Turbulence model choice is a result, not a formality"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "Three RANS closures were run on the identical finest mesh at identical conditions: k-ω SST, k-ε and Spalart-Allmaras. All three agree qualitatively about where the shock sits and how it behaves. They disagree about lift by about 8%.",
+          "That spread is larger than most of the effects a parametric study of this kind is used to detect. It means any downstream use of these numbers has to name the closure it came from, and it means a lift value quoted without one is not a measurement of the aerofoil — it is a measurement of the aerofoil and the model together. None of the three reached the residual target within the 2000-iteration budget, which bounds how hard the comparison can be pushed."
+        ]
+      },
+      {
+        "type": "table",
+        "caption": "Forces at M∞ = 0.729, α = 2.31° on the 2.22M-cell mesh. Same geometry, same mesh, same conditions.",
+        "columns": [
+          "Turbulence model",
+          "C_L",
+          "C_D",
+          "C_M"
+        ],
+        "rows": [
+          [
+            "k-ω SST",
+            "0.683",
+            "0.0195",
+            "-0.103"
+          ],
+          [
+            "k-ε",
+            "0.647",
+            "0.0193",
+            "-0.094"
+          ],
+          [
+            "Spalart-Allmaras",
+            "0.629",
+            "0.0186",
+            "-0.090"
+          ]
+        ],
+        "highlightRow": 0
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Sweeps",
+        "text": "Where steady RANS answers, and where it only appears to"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "The incidence sweep from −2° to 6° and the Mach sweep from 0.50 to 0.80 both behave as a supercritical section should: lift rising roughly linearly, drag climbing sharply as the shock strengthens past the design Mach number. Drag at α = 6° reaches 0.087, more than four times the baseline value, and the Mach sweep shows drag divergence setting in between M = 0.75 and M = 0.80.",
+          "Two of those points are not really steady. At α = 6° and at M = 0.80 the solution exhibits shock-buffet unsteadiness, and a steady RANS solver asked for a point value under those conditions will return one regardless. The number it returns is an artefact of stopping, not a property of the flow. Both conditions are flagged rather than quoted.",
+          "A time-accurate solve with rhoCentralFoam was run from an impulsive freestream to capture shock formation directly. It produced a physically credible development and a drag trajectory consistent with the steady result, then diverged at t ≈ 32 ms with the Courant number reaching about 3.0. Drag had effectively settled; lift and moment had not. It is reported as a qualitative result on a coarser mesh, which is what it is."
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "finding",
+        "title": "What this study supports",
+        "body": "A well-resolved qualitative picture of transonic shock behaviour on the RAE 2822, a demonstrated drag-divergence trend, and a quantified sensitivity to turbulence closure. What it does not support is a tight quantitative uncertainty bound on lift or drag, or point values at the two buffet conditions. Both statements are useful; only one of them is comfortable."
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Next",
+        "text": "What would actually fix it"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "Refinement targeted at the near-wall region to bring y⁺ toward 1, rather than uniform refinement of the whole domain — the current series spends most of its cells where they change the answer least. Grid independence re-established at each sweep condition rather than inherited from the baseline. And URANS or scale-resolving treatment for the two buffet points, since no steady method will produce a defensible value there.",
+          "Until those are done, this is a verification study that reports an honest 23% rather than a tidy 2%. That is the less impressive-looking result and the more useful one, and it is the same lesson as the transonic solver study: a method is worth exactly as much as your knowledge of where it stops working."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "neural-bemt",
+    "slug": "neural-bemt",
+    "order": 2,
+    "published": true,
+    "status": "published",
+    "year": 2026,
+    "title": "One solver for propellers and turbines",
+    "subtitle": "Neural-BEMT · a clean-room blade element-momentum implementation in Python",
+    "thesis": "Rotor codes usually fork into a propeller branch and a turbine branch; the physics does not, and a sign convention is a poor reason to maintain two solvers.",
+    "domain": "Rotor aerodynamics · solver architecture",
+    "tools": [
+      "Python 3.13",
+      "NumPy",
+      "SciPy",
+      "YAML"
+    ],
+    "blocks": [
+      {
+        "type": "prose",
+        "paragraphs": [
+          "Blade element-momentum theory is the workhorse of rotor design. It is fast enough to sit inside an optimisation loop, accurate enough to rank designs, and old enough that most working implementations have accumulated decades of special cases. The usual result is two codes — one for propellers, one for wind turbines — that solve the same equations with different signs and diverge slowly from each other.",
+          "Neural-BEMT is a clean-room implementation that treats that split as an accident rather than a requirement. One codebase covers both machines through a single parameter, because the underlying momentum balance does not care which direction the energy is flowing.",
+          "The 'Neural' in the name is a statement of intent rather than a claim: the architecture is built so that empirical closures can later be replaced by learned ones, but the current version is pure physics and says so."
+        ]
+      },
+      {
+        "type": "keyNumbers",
+        "items": [
+          {
+            "value": "~3%",
+            "label": "C_T against UIUC measurement",
+            "note": "APC 10×4.7 propeller"
+          },
+          {
+            "value": "~8%",
+            "label": "C_P against NREL FAST",
+            "note": "NREL 5-MW reference turbine"
+          },
+          {
+            "value": "1",
+            "label": "Codebase for both machine types"
+          },
+          {
+            "value": "κ-form",
+            "label": "Iteration",
+            "note": "no singularity at φ = 0"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Method",
+        "text": "Choosing an iteration that cannot divide by zero"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "The classical BEMT iteration solves for axial and tangential induction factors directly, and has a well-known problem: as the inflow angle φ approaches zero the update becomes singular. Implementations typically paper over this with clamping, which works until it silently does not, usually near the blade tip where the answer matters.",
+          "Neural-BEMT iterates in κ-form instead, a reformulation that removes the singularity rather than guarding against it. The difference shows up as robustness rather than accuracy — the solver converges across operating conditions where a direct formulation needs babysitting, which is what makes it usable inside a sweep or an optimiser without supervision."
+        ]
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "Around that core sit the empirical corrections any usable BEMT needs, each independently composable rather than hard-wired: Prandtl tip and hub loss factors; high-induction corrections after Buhl and Glauert, selected automatically from whichever loss configuration is active; and three-dimensional stall delay via Du-Selig and Snel. Aerofoil polars are interpolated with PCHIP — shape-preserving monotone cubic — specifically to avoid the Runge oscillations that ordinary cubic splines introduce near stall, where a spurious wiggle in C_L becomes a spurious feature in the result.",
+          "Atmosphere is a full troposphere ISA model with Sutherland viscosity, so Reynolds and Mach numbers are computed per blade element rather than assumed constant along the span."
+        ]
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Architecture",
+        "text": "A registry, not a switch statement"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "The loss factors are the part worth arguing about. Rather than a conditional chain selecting among built-in corrections, they are a pluggable registry in the style OpenFOAM uses for its models: a new correction is a LossFactor subclass, registered, and available to the solver without touching solver code.",
+          "This costs a little indirection and buys the thing that matters for a research tool — you can test a new closure against an established baseline without forking the solver. It is also what makes the roadmap credible rather than aspirational. A learned correction factor is, from the solver's point of view, just another registered LossFactor."
+        ]
+      },
+      {
+        "type": "table",
+        "caption": "Extension points already exposed in the API.",
+        "columns": [
+          "Concern",
+          "Mechanism"
+        ],
+        "rows": [
+          [
+            "Aerofoil polars",
+            "Swappable AirfoilPolar.query() — a table, a fit, or a surrogate"
+          ],
+          [
+            "Loss corrections",
+            "LossFactor.compute() via a registry"
+          ],
+          [
+            "3D and high-induction models",
+            "SolverConfig flags"
+          ],
+          [
+            "Geometry",
+            "YAML + CSV, or the scripted Python API"
+          ]
+        ]
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Validation",
+        "text": "Two benchmarks, and an honest account of the gap"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "The APC 10×4.7 propeller is validated against the UIUC propeller database. Thrust and power coefficients land within roughly 3-5% across the useful advance-ratio range: at J = 0.5, C_T of 0.092 against a measured 0.095 and C_P of 0.057 against 0.059, with efficiency matching at 0.81. At J = 0.6 the thrust agreement holds and efficiency comes out at 0.76 against a measured 0.80.",
+          "The NREL 5-MW reference turbine is compared against NREL's own FAST simulations, and the power coefficient sits about 8% low across tip-speed ratios — 0.44 against 0.48 at TSR 7, 0.37 against 0.40 at TSR 9. That deviation is consistent in sign and magnitude, which points at a systematic cause rather than a solver error."
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "caution",
+        "title": "The turbine gap is a polar substitution, and it should stay labelled as one",
+        "body": "The NREL 5-MW blade uses proprietary DU-series aerofoils. The validation here substitutes NACA sections, which is the only option without the original polars — and an 8% consistent under-prediction of C_P is about what a substituted polar set would produce. That makes it a plausible explanation rather than a demonstrated one. Closing it properly means obtaining the DU polars and re-running, not adjusting a correction until the number improves."
+      },
+      {
+        "type": "heading",
+        "eyebrow": "Roadmap",
+        "text": "Where the learned parts go"
+      },
+      {
+        "type": "prose",
+        "paragraphs": [
+          "The staging is deliberate: neural polar surrogates trained on CFD or XFOIL data first, since that replaces a lookup with a function and changes nothing structural. Then physics-informed networks enforcing the BEMT residual as a loss term. Then a reinforcement-learning blade optimiser using the solver as a differentiable environment. Finally, learned corrections replacing the empirical 3D and high-induction models — last, because that is where a learned component can most easily hide a physical error behind a good fit.",
+          "The order matters more than the list. Each step is verifiable against the version below it, which means a regression has somewhere to be caught. A machine-learning rotor code that cannot reproduce its own physics baseline is not a faster solver; it is an unfalsifiable one."
+        ]
+      }
+    ]
+  }
+]

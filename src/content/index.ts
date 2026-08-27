@@ -55,9 +55,7 @@ export const publications: Publication[] = visible(
 export const roles: Experience[] = experience.filter((item) => item.kind !== 'education');
 export const education: Experience[] = experience.filter((item) => item.kind === 'education');
 
-import crmStudy from '../../content/case-studies/crm-vfp-incidence-limit.json';
-import rae2822Study from '../../content/case-studies/rae2822-transonic-rans.json';
-import neuralBemtStudy from '../../content/case-studies/neural-bemt.json';
+import caseStudiesJson from '../../content/case-studies.json';
 import { caseStudyCollection, type CaseStudy } from './schema';
 
 /**
@@ -65,11 +63,7 @@ import { caseStudyCollection, type CaseStudy } from './schema';
  * written across several sessions without appearing live.
  */
 const allCaseStudies: CaseStudy[] = visible(
-  parseOrThrow(
-    caseStudyCollection,
-    [crmStudy, rae2822Study, neuralBemtStudy],
-    'content/case-studies',
-  ),
+  parseOrThrow(caseStudyCollection, caseStudiesJson, 'content/case-studies.json'),
 );
 
 export const caseStudies: CaseStudy[] = allCaseStudies.filter(
@@ -79,3 +73,46 @@ export const caseStudies: CaseStudy[] = allCaseStudies.filter(
 export function caseStudyBySlug(slug: string): CaseStudy | undefined {
   return caseStudies.find((study) => study.slug === slug);
 }
+
+import projectsJson from '../../content/projects.json';
+import githubCacheJson from '../../content/github-cache.json';
+import {
+  githubCacheSchema,
+  projectCollection,
+  type GithubRepo,
+  type Project,
+  type ResolvedProject,
+} from './schema';
+
+/**
+ * Projects join curated copy to GitHub facts.
+ *
+ * The GitHub side is a committed cache rather than a build-time fetch, so a
+ * build never depends on the network or on an unauthenticated rate limit, and a
+ * GitHub outage cannot empty the section. `pnpm sync:github` refreshes it.
+ */
+const githubCache = parseOrThrow(githubCacheSchema, githubCacheJson, 'content/github-cache.json');
+
+const repoIndex = new Map<string, GithubRepo>(
+  githubCache.repos.map((repo) => [repo.name.toLowerCase(), repo]),
+);
+
+const curatedProjects: Project[] = visible(
+  parseOrThrow(projectCollection, projectsJson, 'content/projects.json'),
+);
+
+export const projects: ResolvedProject[] = curatedProjects.map((project) => {
+  const repoData = repoIndex.get(project.repo.toLowerCase());
+  return {
+    ...project,
+    repoData,
+    displayTitle: project.title ?? project.repo,
+    displaySummary: project.summary ?? repoData?.description ?? '',
+  };
+});
+
+export const githubUser = githubCache.user;
+export const githubFetchedAt = githubCache.fetchedAt;
+
+/** Every repo GitHub knows about, for the admin's curation list. */
+export const allRepos: GithubRepo[] = githubCache.repos;

@@ -27,7 +27,7 @@ export function Skills({ groups }: { groups: SkillGroup[] }) {
     >
       <div className="grid gap-4 sm:grid-cols-2">
         {groups.map((group) => (
-          <GlassPanel key={group.id} as="article" className="p-6 sm:p-8">
+          <GlassPanel key={group.id} as="article" flowBody className="p-6 sm:p-8">
             <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 600 }}>{group.title}</h3>
             <ul className="mt-5 flex flex-col gap-3.5">
               {group.items.map((item) => (

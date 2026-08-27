@@ -1,0 +1,54 @@
+[
+  {
+    "id": "neural-bemt",
+    "repo": "Neural-BEMT",
+    "order": 0,
+    "published": true,
+    "featured": true,
+    "title": "Neural-BEMT",
+    "summary": "A clean-room blade element-momentum solver that handles propellers and wind turbines in one codebase, with kappa-form iteration and a pluggable loss-factor registry.",
+    "tags": ["Python", "Rotor aerodynamics", "Validated"],
+    "caseStudySlug": "neural-bemt"
+  },
+  {
+    "id": "flowvfp",
+    "repo": "FlowVFP",
+    "order": 1,
+    "published": true,
+    "featured": true,
+    "title": "FlowVFP",
+    "summary": "A modern front end for a viscous full-potential transonic solver, built to make a legacy research code usable inside a conceptual design loop.",
+    "tags": ["Transonic", "Solver tooling", "MSc research"],
+    "caseStudySlug": "transonic-incidence-limit"
+  },
+  {
+    "id": "ba-cno",
+    "repo": "BA-CNO",
+    "order": 2,
+    "published": true,
+    "featured": false,
+    "title": "Boundary-Aware Conservative Neural Operator",
+    "summary": "A neural operator on induced point graphs that respects boundary conditions and conservation, aimed at learning PDE solutions without discarding the physics.",
+    "tags": ["Neural operators", "PDEs", "PyTorch"]
+  },
+  {
+    "id": "euler-2d",
+    "repo": "euler-2D",
+    "order": 3,
+    "published": true,
+    "featured": false,
+    "title": "2D Euler solver",
+    "summary": "A finite-volume solver for the two-dimensional Euler equations in C++, written to understand shock capturing from the discretisation up rather than from a manual.",
+    "tags": ["C++", "Finite volume", "Shock capturing"]
+  },
+  {
+    "id": "py-plotres",
+    "repo": "py-PlotRes",
+    "order": 4,
+    "published": true,
+    "featured": false,
+    "title": "py-PlotRes",
+    "summary": "An interactive dashboard for turning solver residual and force histories into publication-quality plots without rewriting a matplotlib script every time.",
+    "tags": ["Python", "Post-processing", "Tooling"]
+  }
+]

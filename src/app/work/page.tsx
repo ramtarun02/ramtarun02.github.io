@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { GlassPanel } from '@/components/glass/GlassPanel';
-import { AmbientField } from '@/components/AmbientField';
+import { FlowLayer } from '@/components/flow/FlowLayer';
 import { SiteHeader } from '@/components/nav/SiteHeader';
 import { SiteFooter } from '@/components/nav/SiteFooter';
 import { caseStudies, profile } from '@/content';
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function WorkIndexPage() {
   return (
     <>
-      <AmbientField />
+      <FlowLayer />
       <SiteHeader name={profile.name} />
       <main className="mx-auto max-w-6xl px-6 pt-32 pb-24 sm:pt-40">
         <p className="u-label" style={{ color: 'var(--accent)' }}>
@@ -42,7 +42,7 @@ export default function WorkIndexPage() {
         <div className="mt-16 flex flex-col gap-5">
           {caseStudies.map((study) => (
             <Link key={study.id} href={`/work/${study.slug}`} className="group block">
-              <GlassPanel as="article" radius="xl" className="p-7 sm:p-10">
+              <GlassPanel as="article" radius="xl" flowBody className="p-7 sm:p-10">
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="u-label" style={{ color: 'var(--accent)' }}>
                     {study.domain}

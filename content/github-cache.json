@@ -1,0 +1,119 @@
+{
+  "user": "ramtarun02",
+  "fetchedAt": "2026-08-27T22:13:38Z",
+  "repos": [
+    {
+      "name": "Kinetic",
+      "description": "Vibe Coding - #1",
+      "language": "Swift",
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "homepage": null,
+      "url": "https://github.com/ramtarun02/Kinetic",
+      "pushedAt": "2026-08-15T22:49:26Z"
+    },
+    {
+      "name": "About",
+      "description": "Personal Summary",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "topics": [
+        "config",
+        "github-config"
+      ],
+      "homepage": "https://github.com/ramtarun02",
+      "url": "https://github.com/ramtarun02/About",
+      "pushedAt": "2026-03-10T16:09:27Z"
+    },
+    {
+      "name": "FlowVFP",
+      "description": "",
+      "language": "JavaScript",
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "homepage": null,
+      "url": "https://github.com/ramtarun02/FlowVFP",
+      "pushedAt": "2026-05-01T12:45:12Z"
+    },
+    {
+      "name": "BA-CNO",
+      "description": "Boundary-Aware Conservative Neural Operator on Induced Point Graphs for Transient Airfoil Flow Prediction",
+      "language": "Jupyter Notebook",
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "homepage": null,
+      "url": "https://github.com/ramtarun02/BA-CNO",
+      "pushedAt": "2026-04-07T19:15:29Z"
+    },
+    {
+      "name": "web-portfolio",
+      "description": "Repository to manage my personal portfolio. ",
+      "language": "TypeScript",
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "homepage": null,
+      "url": "https://github.com/ramtarun02/web-portfolio",
+      "pushedAt": "2026-04-07T09:53:27Z"
+    },
+    {
+      "name": "euler-1D",
+      "description": "1-D Euler Equation implementation",
+      "language": "Jupyter Notebook",
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "homepage": null,
+      "url": "https://github.com/ramtarun02/euler-1D",
+      "pushedAt": "2026-04-01T18:35:40Z"
+    },
+    {
+      "name": "euler-2D",
+      "description": "",
+      "language": "C++",
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "homepage": null,
+      "url": "https://github.com/ramtarun02/euler-2D",
+      "pushedAt": "2026-04-01T18:30:28Z"
+    },
+    {
+      "name": "py-PlotRes",
+      "description": "An interactive, easy to use dashboard for generating high quality plots for research articles, thesis. ",
+      "language": "Python",
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "homepage": null,
+      "url": "https://github.com/ramtarun02/py-PlotRes",
+      "pushedAt": "2026-03-10T16:39:21Z"
+    },
+    {
+      "name": "Neural-BEMT",
+      "description": "",
+      "language": "Python",
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "homepage": null,
+      "url": "https://github.com/ramtarun02/Neural-BEMT",
+      "pushedAt": "2026-02-27T18:35:43Z"
+    },
+    {
+      "name": "Friction-Factor-Estimation-PINN",
+      "description": "",
+      "language": "Jupyter Notebook",
+      "stars": 0,
+      "forks": 0,
+      "topics": [],
+      "homepage": null,
+      "url": "https://github.com/ramtarun02/Friction-Factor-Estimation-PINN",
+      "pushedAt": "2023-08-13T18:16:38Z"
+    }
+  ]
+}

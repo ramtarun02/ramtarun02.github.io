@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { AmbientField } from '@/components/AmbientField';
+import { FlowLayer } from '@/components/flow/FlowLayer';
 import { SiteHeader } from '@/components/nav/SiteHeader';
 import { SiteFooter } from '@/components/nav/SiteFooter';
 import { Blocks } from '@/components/case-study/Blocks';
@@ -33,7 +33,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
 
   return (
     <>
-      <AmbientField />
+      <FlowLayer />
       <SiteHeader name={profile.name} />
       <main className="mx-auto max-w-3xl px-6 pt-32 pb-24 sm:pt-40">
         <Link href="/work" className="u-label" style={{ color: 'var(--accent)' }}>

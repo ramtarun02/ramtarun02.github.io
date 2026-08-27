@@ -52,7 +52,7 @@ export function Experience({
 function ExperienceCard({ item, compact = false }: { item: ExperienceItem; compact?: boolean }) {
   const current = item.end === undefined;
   return (
-    <GlassPanel as="article" className="p-6 sm:p-8">
+    <GlassPanel as="article" flowBody className="p-6 sm:p-8">
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 600 }}>{item.role}</h3>
         <span

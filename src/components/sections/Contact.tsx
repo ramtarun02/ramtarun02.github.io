@@ -10,7 +10,7 @@ export function Contact({ profile }: { profile: Profile }) {
       title="Working on something transonic?"
       lede="I am open to collaboration on academic or industrial work in CFD and solver development — particularly anything involving conceptual design tooling, or the limits of low-fidelity methods."
     >
-      <GlassPanel variant="strong" radius="xl" className="p-8 sm:p-10">
+      <GlassPanel variant="strong" radius="xl" flowBody className="p-8 sm:p-10">
         <div className="flex flex-wrap gap-3">
           {profile.links.map((link) => (
             <a
