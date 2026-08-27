@@ -1,0 +1,27 @@
+[
+  {
+    "id": "aiaa-2024-1488",
+    "order": 0,
+    "published": true,
+    "title": "Effect of Blade Shape on Aerodynamic and Aeroacoustic Characteristics of Vertical Axis Wind Turbines using Mid-fidelity and High-fidelity Methods",
+    "authors": ["Tarun Ramprakash Thambidurai Arasi", "Shubham Shubham", "Anton Ianakiev"],
+    "selfIndex": 0,
+    "venue": "AIAA SciTech Forum",
+    "year": 2024,
+    "doi": "10.2514/6.2024-1488",
+    "href": "https://doi.org/10.2514/6.2024-1488",
+    "abstract": "Straight, troposkein and helical blade configurations compared for Darrieus vertical-axis wind turbines using lifting-line free vortex wake and lattice Boltzmann / very large eddy simulation. Straight blades produce roughly 11% more power; helical designs give smoother force distributions and shift noise to 20-30 Hz, against 500-2000 Hz for straight blades driven by blade-vortex interaction."
+  },
+  {
+    "id": "icas-2024-0581",
+    "order": 1,
+    "published": true,
+    "title": "Computational Analysis on the Effects of Leading Edge Tubercles on the Performance of Rotating Propeller",
+    "authors": ["D. Di Pasquale", "T. Tarun", "S. Shubham", "S. A. Prince", "A. Proenca"],
+    "selfIndex": 1,
+    "venue": "34th Congress of the International Council of the Aeronautical Sciences, Florence",
+    "year": 2024,
+    "href": "https://www.icas.org/ICAS_ARCHIVE/ICAS2024/data/preview/ICAS2024_0581.htm",
+    "abstract": "Whether bio-inspired leading-edge tubercles can suppress blade separation and delay transition on a rotating propeller, assessed with RANS CFD and validated against unsteady vorticity panel and lattice Boltzmann solvers plus a purpose-built Cranfield propeller rig."
+  }
+]

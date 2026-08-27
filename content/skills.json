@@ -1,0 +1,54 @@
+[
+  {
+    "id": "solver-development",
+    "order": 0,
+    "published": true,
+    "title": "Solver development",
+    "items": [
+      { "name": "C / C++", "level": 0.85 },
+      { "name": "Python", "level": 0.95 },
+      { "name": "MPI / parallel computing", "level": 0.7 },
+      { "name": "Finite volume methods", "level": 0.85 },
+      { "name": "Gradient reconstruction schemes", "level": 0.8 },
+      { "name": "Full-potential methods", "level": 0.9 }
+    ]
+  },
+  {
+    "id": "cfd-simulation",
+    "order": 1,
+    "published": true,
+    "title": "CFD and simulation",
+    "items": [
+      { "name": "OpenFOAM", "level": 0.8 },
+      { "name": "ANSYS Fluent", "level": 0.85 },
+      { "name": "FlightStream", "level": 0.7 },
+      { "name": "Turbulence modelling", "level": 0.75 },
+      { "name": "Mesh generation and y+ control", "level": 0.8 },
+      { "name": "Wind tunnel testing", "level": 0.65 }
+    ]
+  },
+  {
+    "id": "machine-learning",
+    "order": 2,
+    "published": true,
+    "title": "ML for fluid mechanics",
+    "items": [
+      { "name": "PyTorch", "level": 0.7 },
+      { "name": "Physics-informed neural operators", "level": 0.65 },
+      { "name": "Surrogate modelling", "level": 0.6 }
+    ]
+  },
+  {
+    "id": "engineering-tooling",
+    "order": 3,
+    "published": true,
+    "title": "Tooling and design",
+    "items": [
+      { "name": "Linux / HPC workflows", "level": 0.8 },
+      { "name": "Bash and automation", "level": 0.75 },
+      { "name": "Git", "level": 0.8 },
+      { "name": "SolidWorks", "level": 0.75 },
+      { "name": "Fusion 360", "level": 0.75 }
+    ]
+  }
+]

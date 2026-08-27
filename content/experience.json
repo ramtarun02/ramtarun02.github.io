@@ -1,0 +1,107 @@
+[
+  {
+    "id": "flowthermo-2026",
+    "order": 0,
+    "published": true,
+    "kind": "internship",
+    "role": "CFD Intern",
+    "organisation": "FlowThermo Lab",
+    "location": "Nottingham, UK",
+    "start": "2026-01",
+    "summary": "Computational engineering consultancy specialising in CFD, FEA and simulation-driven product development.",
+    "highlights": [
+      "Compared solver stability and accuracy across three gradient reconstruction schemes — MUSCL with TVD limiter, Green-Gauss, and least squares",
+      "Implemented finite difference and finite volume methods on structured Cartesian grids, and built a 2D incompressible Euler solver in C++/MPI for the shock tube benchmark",
+      "Investigated turbulence model sensitivity and numerical method behaviour across study cases in Fluent and OpenFOAM"
+    ],
+    "tags": ["C++", "MPI", "OpenFOAM", "ANSYS Fluent", "Numerical methods"]
+  },
+  {
+    "id": "bonv-2023",
+    "order": 1,
+    "published": true,
+    "kind": "role",
+    "role": "Research and Development Engineer",
+    "organisation": "BONV Technologies",
+    "location": "India",
+    "start": "2023-12",
+    "end": "2024-09",
+    "summary": "Aerospace company specialising in eVTOLs and high-payload UAVs.",
+    "highlights": [
+      "Developed more than 25 airframe and chassis concepts in Fusion 360 and SolidWorks; one achieved a 2024 record for the highest payload carried at 19,000 ft",
+      "Produced manufacturing-ready CAD assemblies, weldments and GD&T-compliant drawings to ISO 2964 and ISO 6362-1",
+      "Coordinated aerodynamic, propulsion and structural requirements across a multi-disciplinary team, translating operational targets into design specifications"
+    ],
+    "tags": ["SolidWorks", "Fusion 360", "GD&T", "UAV design"]
+  },
+  {
+    "id": "cambridge-2023",
+    "order": 2,
+    "published": true,
+    "kind": "internship",
+    "role": "Research Intern",
+    "organisation": "University of Cambridge",
+    "location": "Remote",
+    "start": "2023-11",
+    "end": "2024-01",
+    "summary": "Physics-informed machine learning for aeroacoustics and fluid dynamics.",
+    "highlights": [
+      "Built a physics-based neural network in PyTorch estimating the friction factor responsible for indirect noise in non-isentropic nozzles, to within 2–3%",
+      "Developed a physics-informed neural operator (PINO) for non-linear PDEs, reaching 95% accuracy simulating Navier-Stokes for flow past a cylinder"
+    ],
+    "tags": ["PyTorch", "PINO", "Navier-Stokes", "Aeroacoustics"]
+  },
+  {
+    "id": "cranfield-2023",
+    "order": 3,
+    "published": true,
+    "kind": "internship",
+    "role": "Research Intern",
+    "organisation": "Cranfield University",
+    "location": "Cranfield, UK",
+    "start": "2023-05",
+    "end": "2023-08",
+    "summary": "Bio-inspired passive flow control, from wind tunnel to RANS CFD.",
+    "highlights": [
+      "Applied mesh refinement strategies and monitored y+ for near-wall resolution in Fluent Mesh",
+      "Led wind tunnel test campaigns at the National Wind Tunnel Facility on leading-edge tubercle wings, including test matrix design and data-acquisition validation",
+      "Compared mid-fidelity vortex methods against RANS CFD and wind tunnel measurement to evaluate aerodynamic efficiency gains",
+      "Co-authored an ICAS 2024 paper demonstrating 3–7% improvement from optimised tubercle configurations"
+    ],
+    "tags": ["ANSYS Fluent", "FlightStream", "Wind tunnel", "RANS"]
+  },
+  {
+    "id": "msc-cranfield",
+    "order": 4,
+    "published": true,
+    "kind": "education",
+    "role": "MSc by Research, Aerospace Engineering",
+    "organisation": "Cranfield University",
+    "location": "Cranfield, UK",
+    "start": "2024-09",
+    "end": "2026-04",
+    "summary": "Thesis: improving a viscous full-potential (VFP) transonic flow solver for rapid conceptual aircraft design.",
+    "highlights": [
+      "Redesigned the legacy VFP workflow as FlowVFP, an AI/ML-compatible in-house solver for rapid conceptual transonic design, presented at the AIRBUS OneHeart Design Sprint 2026",
+      "Established the failure boundary of a coupled full-potential / integral boundary-layer method, showing it is governed by pre-shock Mach number rather than incidence"
+    ],
+    "tags": ["Full potential", "Transonic", "Python", "Flask", "React"]
+  },
+  {
+    "id": "btech-iit",
+    "order": 5,
+    "published": true,
+    "kind": "education",
+    "role": "B.Tech, Materials Engineering",
+    "organisation": "Indian Institute of Technology (BHU), Varanasi",
+    "location": "Varanasi, India",
+    "start": "2020-11",
+    "end": "2024-05",
+    "summary": "Materials engineering with a numerical-methods and computing emphasis.",
+    "highlights": [
+      "Modules in C++17 and Python, engineering mathematics, numerical techniques, partial differential equations, deformation and fracture, and composite materials",
+      "Elected Secretary of the Society of Aeromodelling and Aerial Robotics under the Science and Technology Council"
+    ],
+    "tags": ["C++17", "Python", "PDEs", "Numerical techniques"]
+  }
+]
