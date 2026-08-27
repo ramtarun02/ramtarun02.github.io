@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { site, siteUrl } from '@/lib/site';
 import { themeInitScript } from '@/lib/theme';
+import { GlassFilters } from '@/components/glass/GlassFilters';
 
 // Self-hosted fonts. Deliberately not next/font/google: no third-party request
 // at runtime, no build-time dependency on fonts.googleapis.com, and CI builds
@@ -44,7 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <GlassFilters />
+        {children}
+      </body>
     </html>
   );
 }

@@ -37,6 +37,9 @@
   --warn: #f2b24c;
   --good: #4ade9b;
   --shadow-panel: 0 24px 60px -20px rgb(0 0 0 / 0.75);
+  /* Legibility floor: composited under the glass tint so text keeps its
+     contrast when a panel sits over vivid content (the flow field). */
+  --glass-scrim: rgb(6 10 18 / 0.44);
   color-scheme: dark;
 }
 
@@ -57,6 +60,7 @@
     --warn: #a9700b;
     --good: #0f7a4d;
     --shadow-panel: 0 20px 50px -24px rgb(20 40 80 / 0.28);
+    --glass-scrim: rgb(244 247 252 / 0.5);
     color-scheme: light;
   }
 }
@@ -77,6 +81,7 @@
   --warn: #a9700b;
   --good: #0f7a4d;
   --shadow-panel: 0 20px 50px -24px rgb(20 40 80 / 0.28);
+  --glass-scrim: rgb(244 247 252 / 0.5);
   color-scheme: light;
 }
 
@@ -105,5 +110,167 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Typographic scale
+   Ratio 1.25 at the small end, opening to 1.333 for display
+   sizes so headings gain presence without the body drifting.
+   ============================================================ */
+
+:root {
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: clamp(2.75rem, 6vw, 4.5rem);
+  --text-6xl: clamp(3.25rem, 8vw, 6rem);
+
+  --measure: 65ch;
+
+  /* Continuous-curvature radii. Apple's corners are superellipses; where the
+     browser supports corner-shape these become true squircles (see below). */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* Glass. --glass-tint is overridable per panel so a surface sitting over the
+     flow field can be darkened for contrast without touching the base token. */
+  --glass-tint: var(--glass);
+  --glass-blur: 26px;
+  --glass-saturate: 165%;
+}
+
+/* ============================================================
+   Squircle geometry
+   corner-shape gives real continuous curvature. Everything else
+   falls back to a plain radius, which is the honest degradation:
+   slightly rounder corners, identical layout.
+   ============================================================ */
+
+.u-squircle {
+  border-radius: var(--radius-lg);
+}
+
+@supports (corner-shape: superellipse(4)) {
+  .u-squircle {
+    corner-shape: superellipse(4);
+  }
+}
+
+/* ============================================================
+   Glass surface
+   ============================================================ */
+
+.glass {
+  position: relative;
+  background: linear-gradient(var(--glass-scrim), var(--glass-scrim)), var(--glass-tint);
+  border: 1px solid var(--edge);
+  box-shadow: var(--shadow-panel);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  isolation: isolate;
+}
+
+/* Specular highlight along the top edge, angled to a single notional light
+   source kept consistent across every surface on the site. */
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--edge-highlight) 22%,
+    var(--edge-highlight) 78%,
+    transparent 100%
+  );
+}
+
+.glass--strong {
+  --glass-tint: var(--glass-strong);
+  --glass-blur: 34px;
+}
+
+.glass--quiet {
+  --glass-blur: 16px;
+  box-shadow: none;
+}
+
+/* Decorative panels that carry no text can drop the legibility floor and show
+   more of what is behind them. Never use this on a surface with body copy. */
+.glass--clear {
+  --glass-scrim: transparent;
+}
+
+/* Progressive enhancement: where backdrop-filter accepts an SVG filter
+   reference, add a low-amplitude displacement so the panel edge bends what
+   sits behind it. Applied via a class set at runtime after feature detection,
+   because @supports cannot test url() filter support reliably. */
+.supports-refraction .glass {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate))
+    url('#glass-refraction');
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) url('#glass-refraction');
+}
+
+/* Opt a single surface out of refraction — used where a panel sits over text
+   that must stay pin-sharp. */
+.supports-refraction .glass--flat {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+/* ============================================================
+   Utility
+   ============================================================ */
+
+.u-measure {
+  max-width: var(--measure);
+}
+
+.u-scroll-x {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+/* Uppercase micro-labels — used for eyebrows and data captions. */
+.u-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Theme transition
+   The cross-fade is done with the View Transitions API so both
+   themes are composited rather than repainted mid-flight.
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 420ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    mix-blend-mode: normal;
+  }
+}
+
+/* Browsers without View Transitions still get a soft change rather than a snap. */
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    transition:
+      background-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 320ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
