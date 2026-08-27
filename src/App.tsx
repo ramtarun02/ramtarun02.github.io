@@ -3,7 +3,6 @@ import {
   motion,
   useScroll,
   useTransform,
-  useMotionValueEvent,
   AnimatePresence,
   useReducedMotion,
 } from 'framer-motion';
@@ -149,38 +148,44 @@ const EXPERTISE = [
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } },
 };
 
-const stagger = {
-  visible: { transition: { staggerChildren: 0.12 } },
+const stagger: Variants = {
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.02 } },
 };
 
-const scaleUp = {
-  hidden: { opacity: 0, scale: 0.92 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: EASE } },
+const scaleUp: Variants = {
+  hidden: { opacity: 0, scale: 0.97 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: EASE } },
 };
 
-const slideRight = {
-  hidden: { opacity: 0, x: -60 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: EASE } },
+const slideRight: Variants = {
+  hidden: { opacity: 0, x: -32 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.55, ease: EASE } },
 };
 
-const slideLeft = {
-  hidden: { opacity: 0, x: 60 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: EASE } },
+const slideLeft: Variants = {
+  hidden: { opacity: 0, x: 32 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.55, ease: EASE } },
 };
 
 /* ───────────────────────── section reveal wrapper ───────────────────────── */
 
 function Reveal({ children, className = '', variants: v = fadeUp }: { children: React.ReactNode; className?: string; variants?: Variants }) {
+  const prefersReduced = useReducedMotion();
+
+  if (prefersReduced) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.15 }}
+      viewport={{ once: true, amount: 0.2, margin: '0px 0px -48px 0px' }}
       variants={v}
       className={className}
     >
@@ -212,21 +217,21 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       onClick={onClose}
     >
       {/* backdrop */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-slate-950/35 backdrop-blur-[2px]" />
 
       {/* modal */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.92, y: 30 }}
+        initial={{ opacity: 0, scale: 0.96, y: 16 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-[24px] bg-white/95 backdrop-blur-xl shadow-2xl border border-white/40 modal-scroll"
+        exit={{ opacity: 0, scale: 0.98, y: 10 }}
+        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-[24px] bg-white/96 backdrop-blur-md shadow-[0_30px_80px_rgba(15,23,42,0.16)] border border-white/50 modal-scroll"
         onClick={(e) => e.stopPropagation()}
       >
         {/* close button */}
         <button
           onClick={onClose}
-          className="sticky top-4 float-right mr-4 mt-4 z-20 w-10 h-10 rounded-full bg-white/80 backdrop-blur border border-white/60 shadow flex items-center justify-center hover:bg-white transition-colors"
+          className="sticky top-4 float-right mr-4 mt-4 z-20 w-10 h-10 rounded-full bg-white/85 border border-white/70 shadow flex items-center justify-center hover:bg-white hover:-translate-y-0.5 transition-[background-color,transform] duration-200"
           aria-label="Close modal"
         >
           <Icon icon="lucide:x" className="w-5 h-5" />
@@ -234,7 +239,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
         {/* hero image */}
         <div className="h-64 md:h-80 w-full relative overflow-hidden rounded-t-[24px]">
-          <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+          <img src={project.image} alt={project.title} decoding="async" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
         </div>
 
@@ -260,17 +265,18 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
           {/* gallery marquee */}
           <div className="mt-12">
             <h3 className="text-lg font-bold mb-4">Project Gallery</h3>
-            <div className="overflow-hidden rounded-2xl">
-              <div className="flex gap-4 animate-marquee">
-                {[...project.gallery, ...project.gallery, ...project.gallery, ...project.gallery].map((img, i) => (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {project.gallery.map((img, i) => (
+                <div key={img + i} className="overflow-hidden rounded-[18px] bg-slate-100 shadow-sm">
                   <img
-                    key={i}
                     src={img}
-                    alt={`${project.title} screenshot ${(i % project.gallery.length) + 1}`}
-                    className="h-48 md:h-64 w-auto rounded-xl flex-shrink-0 object-cover shadow-md"
+                    alt={`${project.title} screenshot ${i + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                    className="interactive-media h-48 md:h-56 w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
                   />
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -287,19 +293,21 @@ export default function App() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-  const [heroScrolled, setHeroScrolled] = useState(false);
 
   const heroRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollY } = useScroll();
 
   /* -- avatar morph scroll transforms -- */
-  const heroAvatarScale = useTransform(scrollY, [0, 350], [1, 0.15]);
-  const heroAvatarOpacity = useTransform(scrollY, [100, 350], [1, 0]);
-  const heroAvatarY = useTransform(scrollY, [0, 350], [0, -180]);
-  const headerAvatarOpacity = useTransform(scrollY, [150, 350], [0, 1]);
-  const headerAvatarScale = useTransform(scrollY, [150, 350], [0.6, 1]);
-
-  useMotionValueEvent(scrollY, 'change', (v) => setHeroScrolled(v > 200));
+  const heroAvatarScale = useTransform(scrollY, [0, 320], [1, 0.28]);
+  const heroAvatarOpacity = useTransform(scrollY, [80, 280], [1, 0]);
+  const heroAvatarY = useTransform(scrollY, [0, 320], [0, -120]);
+  const headerAvatarOpacity = useTransform(scrollY, [140, 260], [0, 1]);
+  const headerAvatarScale = useTransform(scrollY, [140, 260], [0.88, 1]);
+  const scrollTopOpacity = useTransform(scrollY, [160, 260], [0, 1]);
+  const scrollTopScale = useTransform(scrollY, [160, 260], [0.92, 1]);
+  const scrollTopY = useTransform(scrollY, [160, 260], [12, 0]);
+  const scrollTopPointerEvents = useTransform(scrollY, (value) => (value > 220 ? 'auto' : 'none'));
 
   /* -- smooth scroll -- */
   const scrollTo = (id: string) => {
@@ -338,30 +346,42 @@ export default function App() {
     return () => { document.body.style.overflow = ''; };
   }, [mobileMenuOpen]);
 
+  useEffect(() => {
+    if (videoRef.current && !prefersReduced) {
+      videoRef.current.playbackRate = 0.82;
+    }
+  }, [prefersReduced]);
+
   return (
-    <div className="min-h-screen bg-[#F9FAFB] font-mono text-[#181B20] selection:bg-[#426EF0]/20 selection:text-[#426EF0]">
+    <div className="min-h-screen bg-[#FAF7F2] font-mono text-[#121722] selection:bg-[#D6A85C]/25 selection:text-[#3159D8]">
 
-      {/* ────── ambient video background ────── */}
+      {/* ────── ambient background ────── */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* decorative blobs */}
-        <div className="absolute top-[-77px] left-[-144px] w-[576px] h-[308px] bg-[#426EF0]/10 rounded-full blur-[120px]" />
-        <div className="absolute top-[307px] right-[-100px] w-[432px] h-[231px] bg-[#426EF0]/5 rounded-full blur-[100px]" />
-        <div className="absolute top-[460px] right-[-200px] w-[720px] h-[384px] bg-[#25C0F4]/10 rounded-full blur-[150px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(66,110,240,0.12),transparent_0_34%),radial-gradient(circle_at_82%_18%,rgba(37,192,244,0.14),transparent_0_28%),radial-gradient(circle_at_62%_22%,rgba(245,158,11,0.10),transparent_0_22%),linear-gradient(180deg,rgba(249,250,251,0.62),rgba(241,244,254,0.38))]" />
+        <div className="ambient-orb absolute top-[-60px] left-[-100px] w-[420px] h-[240px] bg-[#426EF0]/10 rounded-full" />
+        <div className="ambient-orb absolute top-[260px] right-[-80px] w-[320px] h-[220px] bg-[#25C0F4]/10 rounded-full" />
+        <div className="ambient-orb absolute bottom-[-120px] left-[18%] w-[380px] h-[220px] bg-[#8B5CF6]/8 rounded-full" />
+        <div className="ambient-orb absolute top-[12%] right-[16%] w-[240px] h-[160px] bg-[#F59E0B]/10 rounded-full" />
 
-        {/* water-drop video blend */}
-        <video
-          src="./assets/water-drop.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="video-bg"
-          aria-hidden="true"
-        />
+        {!prefersReduced && (
+          <video
+            ref={videoRef}
+            src="./assets/water-drop.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="video-bg hidden lg:block"
+            aria-hidden="true"
+          />
+        )}
+
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,240,0.03)_0%,rgba(249,250,251,0.50)_100%)]" />
       </div>
 
       {/* ────── header ────── */}
-      <header className="sticky top-0 z-50 w-full h-16 bg-white/70 backdrop-blur-xl border-b border-white/50 shadow-sm">
+      <header className="sticky top-0 z-50 w-full h-16 bg-[rgba(255,252,247,0.80)] backdrop-blur-md border-b border-[#E8DCC8]/80 shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
         <div className="max-w-7xl mx-auto h-full px-6 lg:px-12 flex items-center justify-between">
           <button onClick={() => scrollTo('home')} className="flex items-center gap-3 group">
             <motion.div
@@ -407,7 +427,7 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-x-0 top-16 bottom-0 z-40 bg-white/95 backdrop-blur-xl md:hidden"
+            className="fixed inset-x-0 top-16 bottom-0 z-40 bg-white/90 backdrop-blur-md md:hidden"
           >
             <nav className="flex flex-col items-center gap-6 pt-12">
               {NAV_ITEMS.map((item) => (
@@ -441,7 +461,7 @@ export default function App() {
         >
           {/* profile picture */}
           <motion.div
-            className="relative w-full lg:w-2/5 flex justify-center"
+            className="gpu-layer relative w-full lg:w-2/5 flex justify-center"
             style={prefersReduced ? {} : { scale: heroAvatarScale, opacity: heroAvatarOpacity, y: heroAvatarY }}
           >
             <div className="relative w-[260px] h-[260px] md:w-[330px] md:h-[330px] bg-[#DEFDF2] rounded-full shadow-2xl overflow-visible">
@@ -454,14 +474,14 @@ export default function App() {
 
           {/* hero card */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={prefersReduced ? false : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full lg:w-3/5 glass-card p-8 md:p-10 rounded-[18px] shadow-xl"
+            transition={{ duration: 0.65, delay: prefersReduced ? 0 : 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full lg:w-3/5 glass-card smooth-card p-8 md:p-10 rounded-[20px] shadow-[0_24px_70px_rgba(15,23,42,0.08)]"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#F1F4FE]/50 border border-[#426EF0]/20 rounded-full mb-6">
-              <div className="w-2 h-2 bg-[#426EF0] rounded-full animate-pulse" />
-              <span className="text-xs font-medium text-[#426EF0]">Available for new opportunities</span>
+            <div className="lux-pill inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 shadow-sm">
+              <div className="w-2 h-2 bg-[#D6A85C] rounded-full animate-pulse" />
+              <span className="text-xs font-medium">Available for new opportunities</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-3 font-sans">Tarun Ramprakash</h1>
@@ -490,12 +510,12 @@ export default function App() {
             <div className="flex flex-col sm:flex-row gap-4">
               <button
                 onClick={() => scrollTo('projects')}
-                className="px-8 py-3 bg-[#426EF0] text-white rounded-full font-medium shadow-lg hover:bg-[#3659D1] hover:shadow-xl hover:scale-[1.03] transition-all flex items-center justify-center gap-2"
+                className="lux-primary-button px-8 py-3 text-white rounded-full font-medium hover:-translate-y-0.5 transition-[transform,box-shadow,background-color] duration-200 flex items-center justify-center gap-2"
               >
                 View Projects
                 <Icon icon="lucide:arrow-right" className="w-4 h-4" />
               </button>
-              <button className="px-8 py-3 bg-white/40 border border-white/60 rounded-full font-medium hover:bg-white/60 hover:scale-[1.03] transition-all flex items-center justify-center gap-2">
+              <button className="lux-secondary-button px-8 py-3 rounded-full font-medium hover:bg-white/85 hover:-translate-y-0.5 transition-[transform,background-color,box-shadow] duration-200 flex items-center justify-center gap-2">
                 <Icon icon="lucide:download" className="w-4 h-4" />
                 Download CV
               </button>
@@ -505,7 +525,7 @@ export default function App() {
 
         {/* ════════════ QUOTE 1 ════════════ */}
         <Reveal>
-          <section className="w-full py-20 bg-[#F1F4FE]/30 backdrop-blur-sm border-y border-white/40">
+          <section className="lux-quote-band w-full py-20">
             <div className="max-w-4xl mx-auto px-6 text-center">
               <p className="text-xl md:text-2xl font-light italic leading-relaxed mb-6">
                 "The laws of aerodynamics are unforgiving, but the numerical methods we use to understand them can be beautiful."
@@ -520,7 +540,7 @@ export default function App() {
           <Reveal>
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold font-sans mb-4">Featured Projects</h2>
-              <div className="w-20 h-1 bg-[#426EF0]/40 mx-auto" />
+              <div className="lux-divider w-20 h-1 mx-auto rounded-full" />
             </div>
           </Reveal>
 
@@ -535,8 +555,8 @@ export default function App() {
               <motion.div
                 key={project.id}
                 variants={fadeUp}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                className="glass-card rounded-[18px] overflow-hidden shadow-lg flex flex-col h-full cursor-pointer group"
+                whileHover={prefersReduced ? undefined : { y: -6, scale: 1.01, transition: { duration: 0.22, ease: EASE } }}
+                className="glass-card smooth-card rounded-[20px] overflow-hidden shadow-[0_18px_45px_rgba(15,23,42,0.08)] flex flex-col h-full cursor-pointer group"
                 onClick={() => setActiveProject(project)}
                 role="button"
                 tabIndex={0}
@@ -546,10 +566,12 @@ export default function App() {
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                    decoding="async"
+                    className="interactive-media w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.035]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                  <div className="absolute inset-0 bg-[#426EF0]/0 group-hover:bg-[#426EF0]/10 transition-colors duration-300 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-transparent" />
+                  <div className="absolute inset-0 bg-[#426EF0]/0 group-hover:bg-[#426EF0]/6 transition-colors duration-300 flex items-center justify-center">
                     <Icon icon="lucide:expand" className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
                   </div>
                 </div>
@@ -574,7 +596,7 @@ export default function App() {
 
         {/* ════════════ QUOTE 2 ════════════ */}
         <Reveal>
-          <section className="w-full py-20 bg-[#F1F4FE]/30 backdrop-blur-sm border-y border-white/40">
+          <section className="lux-quote-band w-full py-20">
             <div className="max-w-4xl mx-auto px-6 text-center">
               <p className="text-xl md:text-2xl font-light italic leading-relaxed mb-6">
                 "All models are wrong, but some are useful. The goal is to make them run faster without losing the physics."
@@ -589,7 +611,7 @@ export default function App() {
           <Reveal>
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold font-sans mb-4">Technical Expertise</h2>
-              <div className="w-20 h-1 bg-[#426EF0]/40 mx-auto mb-6" />
+              <div className="lux-divider w-20 h-1 mx-auto mb-6 rounded-full" />
               <p className="max-w-2xl mx-auto text-[#8F96A3] text-base">
                 A synergistic blend of deep physics knowledge, high-performance computing, and modern data-driven techniques.
               </p>
@@ -607,8 +629,8 @@ export default function App() {
               <motion.div
                 key={e.title}
                 variants={scaleUp}
-                whileHover={{ y: -6, transition: { duration: 0.3 } }}
-                className="glass-card p-8 rounded-[24px] shadow-md flex flex-col items-center text-center bg-gradient-to-br from-white/80 to-[#F1F4FE]/80"
+                whileHover={prefersReduced ? undefined : { y: -4, scale: 1.01, transition: { duration: 0.22, ease: EASE } }}
+                className="glass-card smooth-card p-8 rounded-[24px] shadow-md flex flex-col items-center text-center bg-gradient-to-br from-white/85 to-[#F1F4FE]/78"
               >
                 <div
                   className="w-16 h-16 rounded-full bg-white shadow-sm flex items-center justify-center mb-6 border"
@@ -638,7 +660,7 @@ export default function App() {
           <Reveal>
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold font-sans mb-4">Professional Journey</h2>
-              <div className="w-20 h-1 bg-[#426EF0]/40 mx-auto" />
+              <div className="lux-divider w-20 h-1 mx-auto rounded-full" />
             </div>
           </Reveal>
 
@@ -653,7 +675,7 @@ export default function App() {
                   {isLeft ? (
                     <>
                       <Reveal className="w-full md:w-[45%] order-2 md:order-1" variants={slideRight}>
-                        <div className="glass-card p-8 rounded-[18px] shadow-lg md:text-right">
+                        <div className="glass-card smooth-card p-8 rounded-[18px] shadow-lg md:text-right">
                           <span className="text-sm font-semibold text-[#426EF0] mb-2 block">{j.period}</span>
                           <h3 className="text-2xl font-bold mb-1">{j.title}</h3>
                           <p className="text-[#8F96A3] font-medium mb-4">{j.org}</p>
@@ -661,10 +683,10 @@ export default function App() {
                         </div>
                       </Reveal>
                       <motion.div
-                        initial={{ scale: 0 }}
-                        whileInView={{ scale: 1 }}
+                        initial={{ scale: 0.82, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
                         viewport={{ once: true }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                         className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-[#426EF0] rounded-full shadow-md z-10 hidden md:block"
                       />
                       <div className="w-full md:w-[45%] order-1 md:order-2 mb-8 md:mb-0" />
@@ -673,14 +695,14 @@ export default function App() {
                     <>
                       <div className="w-full md:w-[45%] order-1" />
                       <motion.div
-                        initial={{ scale: 0 }}
-                        whileInView={{ scale: 1 }}
+                        initial={{ scale: 0.82, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
                         viewport={{ once: true }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                         className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-[#426EF0] rounded-full shadow-md z-10 hidden md:block"
                       />
                       <Reveal className="w-full md:w-[45%] order-2" variants={slideLeft}>
-                        <div className="glass-card p-8 rounded-[18px] shadow-lg">
+                        <div className="glass-card smooth-card p-8 rounded-[18px] shadow-lg">
                           <span className="text-sm font-semibold text-[#426EF0] mb-2 block">{j.period}</span>
                           <h3 className="text-2xl font-bold mb-1">{j.title}</h3>
                           <p className="text-[#8F96A3] font-medium mb-4">{j.org}</p>
@@ -697,7 +719,7 @@ export default function App() {
 
         {/* ════════════ QUOTE 3 ════════════ */}
         <Reveal>
-          <section className="w-full py-20 bg-[#F1F4FE]/30 backdrop-blur-sm border-y border-white/40">
+          <section className="lux-quote-band w-full py-20">
             <div className="max-w-4xl mx-auto px-6 text-center">
               <p className="text-xl md:text-2xl font-light italic leading-relaxed mb-6">
                 "Theory guides, experiment decides, and computation provides the insight to bridge them."
@@ -712,7 +734,7 @@ export default function App() {
           <Reveal>
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold font-sans mb-4">Academic Background</h2>
-              <div className="w-20 h-1 bg-[#426EF0]/40 mx-auto" />
+              <div className="lux-divider w-20 h-1 mx-auto rounded-full" />
             </div>
           </Reveal>
 
@@ -727,8 +749,8 @@ export default function App() {
               <motion.div
                 key={edu.period}
                 variants={fadeUp}
-                whileHover={{ y: -4, transition: { duration: 0.3 } }}
-                className="glass-card p-8 rounded-[18px] shadow-lg relative overflow-hidden"
+                whileHover={prefersReduced ? undefined : { y: -4, scale: 1.005, transition: { duration: 0.22, ease: EASE } }}
+                className="glass-card smooth-card p-8 rounded-[18px] shadow-lg relative overflow-hidden"
               >
                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#426EF0]/40" />
                 <div className="flex items-center gap-2 text-[#426EF0] mb-4">
@@ -753,9 +775,10 @@ export default function App() {
           <Reveal variants={scaleUp}>
             <div className="glass-card rounded-[24px] shadow-2xl overflow-hidden flex flex-col lg:flex-row bg-white/80">
               {/* contact info */}
-              <div className="lg:w-2/5 p-12 bg-gradient-to-br from-[#E3E6FE] to-[#F1F4FE] relative overflow-hidden">
+              <div className="lg:w-2/5 p-12 bg-gradient-to-br from-[#F8F1E2] via-[#EEF2FF] to-[#F7F8FC] relative overflow-hidden">
                 <div className="absolute top-[-50px] right-[-50px] w-48 h-48 bg-[#426EF0]/10 rounded-full blur-3xl" />
                 <div className="absolute bottom-[-80px] left-[-80px] w-64 h-64 bg-[#25C0F4]/10 rounded-full blur-3xl" />
+                <div className="absolute top-[28%] left-[8%] w-40 h-40 bg-[#F59E0B]/10 rounded-full blur-3xl" />
 
                 <div className="relative z-10">
                   <h2 className="text-3xl font-bold font-sans mb-6 tracking-tight">Let&apos;s Connect</h2>
@@ -779,7 +802,7 @@ export default function App() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={s.label}
-                        className="w-12 h-12 rounded-xl bg-white/50 border border-white/60 flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-sm"
+                        className="w-12 h-12 rounded-xl bg-white/55 border border-white/70 flex items-center justify-center hover:bg-white hover:-translate-y-0.5 transition-[transform,background-color,box-shadow] duration-200 shadow-sm"
                       >
                         <Icon icon={s.icon} className="w-5 h-5" />
                       </a>
@@ -836,7 +859,7 @@ export default function App() {
                   <button
                     type="submit"
                     disabled={formStatus === 'sending'}
-                    className="w-full py-4 bg-[#426EF0] text-white rounded-xl font-medium shadow-lg hover:bg-[#3659D1] hover:shadow-xl transition-all flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full py-4 bg-[#426EF0] text-white rounded-xl font-medium shadow-lg hover:bg-[#3659D1] hover:shadow-xl hover:-translate-y-0.5 transition-[transform,box-shadow,background-color] duration-200 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {formStatus === 'sending' ? (
                       <>
@@ -869,7 +892,7 @@ export default function App() {
       </main>
 
       {/* ────── footer ────── */}
-      <footer className="w-full py-12 bg-white/60 backdrop-blur-xl border-t border-white/50">
+      <footer className="w-full py-12 bg-[rgba(255,252,247,0.82)] backdrop-blur-md border-t border-[#E8DCC8]/80">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-8">
           <span className="text-sm text-[#8F96A3]">2026 Tarun Ramprakash - Computational Aerodynamics</span>
 
@@ -881,7 +904,7 @@ export default function App() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                className="text-[#8F96A3] hover:text-[#426EF0] hover:scale-125 transition-all"
+                className="text-[#8F96A3] hover:text-[#426EF0] hover:-translate-y-0.5 transition-[transform,color] duration-200"
               >
                 <Icon icon={s.icon} className="w-4 h-4" />
               </a>
@@ -889,7 +912,7 @@ export default function App() {
             <a
               href="mailto:tarun.uk24@gmail.com"
               aria-label="Email"
-              className="text-[#8F96A3] hover:text-[#426EF0] hover:scale-125 transition-all"
+              className="text-[#8F96A3] hover:text-[#426EF0] hover:-translate-y-0.5 transition-[transform,color] duration-200"
             >
               <Icon icon="lucide:mail" className="w-4 h-4" />
             </a>
@@ -898,20 +921,14 @@ export default function App() {
       </footer>
 
       {/* ────── scroll-to-top ────── */}
-      <AnimatePresence>
-        {heroScrolled && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            onClick={() => scrollTo('home')}
-            className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-[#426EF0] text-white shadow-xl flex items-center justify-center hover:bg-[#3659D1] hover:scale-110 transition-all"
-            aria-label="Scroll to top"
-          >
-            <Icon icon="lucide:chevron-up" className="w-5 h-5" />
-          </motion.button>
-        )}
-      </AnimatePresence>
+      <motion.button
+        onClick={() => scrollTo('home')}
+        style={prefersReduced ? undefined : { opacity: scrollTopOpacity, scale: scrollTopScale, y: scrollTopY, pointerEvents: scrollTopPointerEvents }}
+        className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-[#426EF0] text-white shadow-xl flex items-center justify-center hover:bg-[#3659D1] hover:-translate-y-0.5 transition-[transform,background-color,box-shadow] duration-200"
+        aria-label="Scroll to top"
+      >
+        <Icon icon="lucide:chevron-up" className="w-5 h-5" />
+      </motion.button>
 
       {/* ────── project modal ────── */}
       <AnimatePresence>
