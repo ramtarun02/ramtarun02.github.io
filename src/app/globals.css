@@ -1,0 +1,109 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Design tokens — dark-first (build spec §3).
+   The velocity-magnitude ramp doubles as identity and legend.
+   ============================================================ */
+
+@theme static {
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+
+  /* velocity-magnitude ramp: low -> high */
+  --color-vel-0: #0b1b3a;
+  --color-vel-1: #14407e;
+  --color-vel-2: #1e6fc4;
+  --color-vel-3: #3fd2ee;
+  --color-vel-4: #5fe3c0;
+  --color-vel-5: #a8e063;
+  --color-vel-6: #f2b24c;
+}
+
+/* dark is the signature theme, so it owns the bare :root */
+:root {
+  --ground: #060a12;
+  --ground-raised: #0a111d;
+  --glass: rgb(148 178 224 / 0.055);
+  --glass-strong: rgb(148 178 224 / 0.09);
+  --edge: rgb(150 183 232 / 0.16);
+  --edge-highlight: rgb(190 220 255 / 0.3);
+  --ink: #e8effa;
+  --ink-muted: #a9b7cd;
+  --ink-faint: #6e7e97;
+  --accent: #3fd2ee;
+  --accent-alt: #5b8cff;
+  --accent-contrast: #061019;
+  --warn: #f2b24c;
+  --good: #4ade9b;
+  --shadow-panel: 0 24px 60px -20px rgb(0 0 0 / 0.75);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --ground: #f4f7fc;
+    --ground-raised: #e9eff8;
+    --glass: rgb(255 255 255 / 0.62);
+    --glass-strong: rgb(255 255 255 / 0.8);
+    --edge: rgb(30 64 110 / 0.13);
+    --edge-highlight: rgb(255 255 255 / 0.9);
+    --ink: #0c1524;
+    --ink-muted: #41506a;
+    --ink-faint: #76859c;
+    --accent: #0a8fb0;
+    --accent-alt: #2f5fe0;
+    --accent-contrast: #ffffff;
+    --warn: #a9700b;
+    --good: #0f7a4d;
+    --shadow-panel: 0 20px 50px -24px rgb(20 40 80 / 0.28);
+    color-scheme: light;
+  }
+}
+
+:root[data-theme='light'] {
+  --ground: #f4f7fc;
+  --ground-raised: #e9eff8;
+  --glass: rgb(255 255 255 / 0.62);
+  --glass-strong: rgb(255 255 255 / 0.8);
+  --edge: rgb(30 64 110 / 0.13);
+  --edge-highlight: rgb(255 255 255 / 0.9);
+  --ink: #0c1524;
+  --ink-muted: #41506a;
+  --ink-faint: #76859c;
+  --accent: #0a8fb0;
+  --accent-alt: #2f5fe0;
+  --accent-contrast: #ffffff;
+  --warn: #a9700b;
+  --good: #0f7a4d;
+  --shadow-panel: 0 20px 50px -24px rgb(20 40 80 / 0.28);
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

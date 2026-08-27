@@ -1,73 +1,56 @@
-# React + TypeScript + Vite
+# Tarun Ramprakash — portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio for an aerospace researcher working in CFD and solver development.
+Dark-first, Apple-inspired glass UI with a WebGL flow-field hero, and a schema-driven
+admin so no content is hardcoded.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Concern       | Choice                                              |
+| ------------- | --------------------------------------------------- |
+| Framework     | Next.js 15 (App Router), React 19                   |
+| Language      | TypeScript 5.7, `strict` + `noUncheckedIndexedAccess` |
+| Styling       | Tailwind 4, design tokens as CSS custom properties  |
+| Fonts         | Self-hosted via `@fontsource` (Latin subsets only)  |
+| Content       | Zod-validated JSON/MDX committed to this repo       |
+| Testing       | Vitest (unit), Playwright + axe (E2E, a11y)         |
+| Package mgr   | pnpm 11, Node 22                                    |
 
-## React Compiler
+## Getting started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+corepack enable          # provides pnpm
+pnpm install
+pnpm dev                 # http://localhost:3000
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Scripts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Script             | Does                                                |
+| ------------------ | --------------------------------------------------- |
+| `pnpm dev`         | Development server                                  |
+| `pnpm build`       | Production build                                    |
+| `pnpm verify`      | Typecheck, lint, format check, unit tests           |
+| `pnpm test:e2e`    | Playwright end-to-end and accessibility suite       |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+`pnpm verify` is what CI gates on. Run it before pushing.
+
+## Configuration
+
+| Variable               | Purpose                                                    |
+| ---------------------- | ---------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin. Unset falls back to `http://localhost:3000`. |
+| `STATIC_EXPORT`        | Set to `1` for a fully static build (GitHub Pages).        |
+
+Hosting is deliberately undecided; nothing outside `next.config.ts` branches on it.
+
+## Theming
+
+Dark is the signature theme and owns the bare `:root`. Light is defined under
+`prefers-color-scheme: light` and again under `[data-theme='light']`, so an explicit
+choice beats the OS preference in both directions. Every colour is a token — never
+declare one inside a media or `[data-theme]` block only.
+
+## Decisions
+
+Architecture decision records live in `docs/adr/`.
