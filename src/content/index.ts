@@ -54,3 +54,28 @@ export const publications: Publication[] = visible(
 /** Work history, newest first — education is shown separately. */
 export const roles: Experience[] = experience.filter((item) => item.kind !== 'education');
 export const education: Experience[] = experience.filter((item) => item.kind === 'education');
+
+import crmStudy from '../../content/case-studies/crm-vfp-incidence-limit.json';
+import rae2822Study from '../../content/case-studies/rae2822-transonic-rans.json';
+import neuralBemtStudy from '../../content/case-studies/neural-bemt.json';
+import { caseStudyCollection, type CaseStudy } from './schema';
+
+/**
+ * Case studies. Drafts are excluded from the published list so a study can be
+ * written across several sessions without appearing live.
+ */
+const allCaseStudies: CaseStudy[] = visible(
+  parseOrThrow(
+    caseStudyCollection,
+    [crmStudy, rae2822Study, neuralBemtStudy],
+    'content/case-studies',
+  ),
+);
+
+export const caseStudies: CaseStudy[] = allCaseStudies.filter(
+  (study) => study.status === 'published',
+);
+
+export function caseStudyBySlug(slug: string): CaseStudy | undefined {
+  return caseStudies.find((study) => study.slug === slug);
+}

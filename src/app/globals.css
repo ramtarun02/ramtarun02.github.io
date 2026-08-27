@@ -120,19 +120,22 @@ body {
    ============================================================ */
 
 :root {
-  --text-2xs: 0.6875rem;
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.375rem;
-  --text-2xl: 1.75rem;
-  --text-3xl: 2.25rem;
-  --text-4xl: 3rem;
-  --text-5xl: clamp(2.75rem, 6vw, 4.5rem);
-  --text-6xl: clamp(3.25rem, 8vw, 6rem);
+  /* Sizes are fluid: each interpolates with the viewport between a comfortable
+     small-screen minimum and a desktop maximum, so nothing is set in fixed
+     pixels and nothing needs a breakpoint to stay readable. */
+  --text-2xs: 0.75rem;
+  --text-xs: 0.8125rem;
+  --text-sm: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+  --text-base: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-lg: clamp(1.1875rem, 1.1rem + 0.35vw, 1.3125rem);
+  --text-xl: clamp(1.375rem, 1.25rem + 0.6vw, 1.625rem);
+  --text-2xl: clamp(1.625rem, 1.4rem + 1vw, 2rem);
+  --text-3xl: clamp(1.875rem, 1.5rem + 1.8vw, 2.625rem);
+  --text-4xl: clamp(2.25rem, 1.7rem + 2.6vw, 3.25rem);
+  --text-5xl: clamp(2.5rem, 1.6rem + 4.4vw, 4.5rem);
+  --text-6xl: clamp(2.75rem, 1.5rem + 6.2vw, 6rem);
 
-  --measure: 65ch;
+  --measure: 68ch;
 
   /* Continuous-curvature radii. Apple's corners are superellipses; where the
      browser supports corner-shape these become true squircles (see below). */
@@ -329,4 +332,16 @@ body {
   to {
     transform: translate3d(-3%, 2%, 0) scale(1.08);
   }
+}
+
+/* Case-study body copy: set larger and looser than interface text, because it
+   is read continuously rather than scanned. */
+.cs-prose {
+  font-size: var(--text-lg);
+  line-height: 1.72;
+}
+
+body {
+  font-size: var(--text-base);
+  line-height: 1.6;
 }

@@ -1,0 +1,114 @@
+{
+  "id": "rae2822-transonic-rans",
+  "slug": "rae2822-transonic-rans",
+  "order": 1,
+  "published": true,
+  "status": "published",
+  "year": 2026,
+  "title": "What a grid convergence study is actually telling you",
+  "subtitle": "RAE 2822 supercritical section · OpenFOAM rhoSimpleFoam · M∞ 0.729, α 2.31°, Re 6.49×10⁶",
+  "thesis": "The mesh refinement study did not converge, and saying so is the result — a 23% uncertainty band honestly reported is worth more than a tidy number that is wrong.",
+  "domain": "RANS CFD · verification and validation",
+  "tools": ["OpenFOAM v2412", "snappyHexMesh", "Python", "ParaView"],
+  "blocks": [
+    {
+      "type": "prose",
+      "paragraphs": [
+        "The RAE 2822 at M∞ = 0.729 and α = 2.31° is one of the most heavily documented transonic test cases in existence, which makes it a poor place to claim novelty and an excellent place to be rigorous. The aim here was a grid-independent baseline, parametric sweeps in incidence and Mach number, and a turbulence-model comparison — the ordinary verification work that has to sit underneath any result anyone else is going to rely on.",
+        "The interesting outcome was not the baseline. It was that the grid study refused to behave, and following that honestly says more about the case than a clean number would have."
+      ]
+    },
+    {
+      "type": "keyNumbers",
+      "items": [
+        { "value": "4", "label": "Mesh levels", "note": "24k → 2.22M cells" },
+        { "value": "23%", "label": "Grid convergence index on C_L", "note": "finest pair" },
+        { "value": "~8%", "label": "Spread in C_L across turbulence models" },
+        { "value": "108", "label": "Average y⁺ on the finest mesh", "note": "wall functions, not a resolved layer" }
+      ]
+    },
+    {
+      "type": "heading",
+      "eyebrow": "Verification",
+      "text": "Four meshes, and no asymptotic range"
+    },
+    {
+      "type": "prose",
+      "paragraphs": [
+        "Four refinement levels were built with snappyHexMesh, from 24,103 cells to 2,218,368, with mesh quality checked at each level — maximum non-orthogonality stayed between 56° and 61°, average non-orthogonality improved steadily from 9.4° to 5.1°, and no level failed OpenFOAM's own checks. On that evidence the meshes are sound. The forces they produce are not well behaved."
+      ]
+    },
+    {
+      "type": "chart",
+      "chart": "gridConvergence",
+      "caption": "Lift coefficient against representative cell size across four refinement levels. A converging series should approach a limit monotonically; this one overshoots at the second level and comes back down."
+    },
+    {
+      "type": "callout",
+      "tone": "caution",
+      "title": "The grid study does not support a tight uncertainty bound",
+      "body": "Richardson extrapolation on the finest three levels returns an apparent order of 1.81 for lift and a grid convergence index of 23%. The asymptotic ratio — which should sit near 1 if the series is in the asymptotic range — comes out at 0.127. Drag is worse: non-monotonic across the series, apparent order 0.70, GCI 42%. These are not discretisation-error estimates. They are a statement that the solution is not yet grid converged at 2.2M cells."
+    },
+    {
+      "type": "prose",
+      "paragraphs": [
+        "There is a plausible physical reason, and it matters because it changes what should be done about it. Extended convergence monitoring at the baseline condition showed the flow sitting close to shock buffet — the forces do not settle to a fixed point so much as hover. If part of what the refinement study is measuring is genuine unsteadiness rather than discretisation error, then no amount of further refinement will produce a clean Richardson fit, because the quantity being extrapolated does not have a steady value to converge to.",
+        "The second contributor is more mundane. Average y⁺ on the finest mesh is 108, with a maximum of 383. That is squarely wall-function territory, not a resolved viscous sublayer. For a case whose defining feature is a shock interacting with a boundary layer, near-wall treatment is not a detail — and refining the far field while leaving the first cell in the log layer will not fix the forces."
+      ]
+    },
+    {
+      "type": "heading",
+      "eyebrow": "Sensitivity",
+      "text": "Turbulence model choice is a result, not a formality"
+    },
+    {
+      "type": "prose",
+      "paragraphs": [
+        "Three RANS closures were run on the identical finest mesh at identical conditions: k-ω SST, k-ε and Spalart-Allmaras. All three agree qualitatively about where the shock sits and how it behaves. They disagree about lift by about 8%.",
+        "That spread is larger than most of the effects a parametric study of this kind is used to detect. It means any downstream use of these numbers has to name the closure it came from, and it means a lift value quoted without one is not a measurement of the aerofoil — it is a measurement of the aerofoil and the model together. None of the three reached the residual target within the 2000-iteration budget, which bounds how hard the comparison can be pushed."
+      ]
+    },
+    {
+      "type": "table",
+      "caption": "Forces at M∞ = 0.729, α = 2.31° on the 2.22M-cell mesh. Same geometry, same mesh, same conditions.",
+      "columns": ["Turbulence model", "C_L", "C_D", "C_M"],
+      "rows": [
+        ["k-ω SST", "0.683", "0.0195", "-0.103"],
+        ["k-ε", "0.647", "0.0193", "-0.094"],
+        ["Spalart-Allmaras", "0.629", "0.0186", "-0.090"]
+      ],
+      "highlightRow": 0
+    },
+    {
+      "type": "heading",
+      "eyebrow": "Sweeps",
+      "text": "Where steady RANS answers, and where it only appears to"
+    },
+    {
+      "type": "prose",
+      "paragraphs": [
+        "The incidence sweep from −2° to 6° and the Mach sweep from 0.50 to 0.80 both behave as a supercritical section should: lift rising roughly linearly, drag climbing sharply as the shock strengthens past the design Mach number. Drag at α = 6° reaches 0.087, more than four times the baseline value, and the Mach sweep shows drag divergence setting in between M = 0.75 and M = 0.80.",
+        "Two of those points are not really steady. At α = 6° and at M = 0.80 the solution exhibits shock-buffet unsteadiness, and a steady RANS solver asked for a point value under those conditions will return one regardless. The number it returns is an artefact of stopping, not a property of the flow. Both conditions are flagged rather than quoted.",
+        "A time-accurate solve with rhoCentralFoam was run from an impulsive freestream to capture shock formation directly. It produced a physically credible development and a drag trajectory consistent with the steady result, then diverged at t ≈ 32 ms with the Courant number reaching about 3.0. Drag had effectively settled; lift and moment had not. It is reported as a qualitative result on a coarser mesh, which is what it is."
+      ]
+    },
+    {
+      "type": "callout",
+      "tone": "finding",
+      "title": "What this study supports",
+      "body": "A well-resolved qualitative picture of transonic shock behaviour on the RAE 2822, a demonstrated drag-divergence trend, and a quantified sensitivity to turbulence closure. What it does not support is a tight quantitative uncertainty bound on lift or drag, or point values at the two buffet conditions. Both statements are useful; only one of them is comfortable."
+    },
+    {
+      "type": "heading",
+      "eyebrow": "Next",
+      "text": "What would actually fix it"
+    },
+    {
+      "type": "prose",
+      "paragraphs": [
+        "Refinement targeted at the near-wall region to bring y⁺ toward 1, rather than uniform refinement of the whole domain — the current series spends most of its cells where they change the answer least. Grid independence re-established at each sweep condition rather than inherited from the baseline. And URANS or scale-resolving treatment for the two buffet points, since no steady method will produce a defensible value there.",
+        "Until those are done, this is a verification study that reports an honest 23% rather than a tidy 2%. That is the less impressive-looking result and the more useful one, and it is the same lesson as the transonic solver study: a method is worth exactly as much as your knowledge of where it stops working."
+      ]
+    }
+  ]
+}

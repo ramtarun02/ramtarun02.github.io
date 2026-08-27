@@ -1,14 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 const LINKS = [
-  { href: '#about', label: 'About' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#research', label: 'Research' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/work', label: 'Case studies' },
+  { href: '/#about', label: 'About' },
+  { href: '/#experience', label: 'Experience' },
+  { href: '/#research', label: 'Research' },
+  { href: '/#skills', label: 'Skills' },
+  { href: '/#contact', label: 'Contact' },
 ] as const;
 
 /** Transparent over the hero, glass once the page scrolls under it. */
@@ -30,9 +32,9 @@ export function SiteHeader({ name }: { name: string }) {
       style={scrolled ? { borderRadius: 0, borderWidth: '0 0 1px 0' } : undefined}
     >
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
-        <a href="#top" className="font-[family-name:var(--font-display)] text-lg tracking-tight">
+        <Link href="/" className="font-[family-name:var(--font-display)] text-lg tracking-tight">
           {name}
-        </a>
+        </Link>
         <nav aria-label="Sections" className="ml-auto hidden md:block">
           <ul className="flex items-center gap-7">
             {LINKS.map((link) => (
