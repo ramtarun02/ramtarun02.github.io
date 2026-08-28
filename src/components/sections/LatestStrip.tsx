@@ -1,114 +1,164 @@
 'use client';
 
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { motion } from 'motion/react';
 import { GlassPanel } from '@/components/glass/GlassPanel';
+import { revealViewport, spring, staggerVariants } from '@/lib/motion';
 import type { LatestItem } from '@/content';
+import type { SectionCopy } from '@/content/schema';
 
 /**
- * Latest work, as a strip that tracks the page rather than a carousel that
- * moves on its own.
+ * Latest work as a scrollable rail.
  *
- * Scroll-linked rather than autoplaying: the reader controls it, nothing moves
- * while they are trying to read, and there are no controls to design. Under
- * reduced motion it becomes an ordinary horizontally scrollable row.
+ * The animation is an entrance, not a scroll-linked drift. Tying the rail's
+ * position to page scroll meant it had already travelled by the time a reader
+ * arriving from the hero could see it — the first card was half off-screen
+ * before anyone had looked at it. Cards now arrive in place and stay there,
+ * and the reader moves the rail themselves.
  */
-export function LatestStrip({ items }: { items: LatestItem[] }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
+export function LatestStrip({ items, copy }: { items: LatestItem[]; copy: SectionCopy }) {
+  const railRef = useRef<HTMLDivElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
+  const syncEdges = useCallback(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    setAtStart(rail.scrollLeft <= 4);
+    setAtEnd(rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 4);
+  }, []);
 
-  // The row drifts left as the section crosses the viewport. The range is
-  // deliberately shallow — this is a parallax, not a hijacked scroll.
-  const x = useTransform(scrollYProgress, [0, 1], ['4%', '-22%']);
+  useEffect(() => {
+    syncEdges();
+    window.addEventListener('resize', syncEdges);
+    return () => window.removeEventListener('resize', syncEdges);
+  }, [syncEdges]);
+
+  const page = useCallback((direction: -1 | 1) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    rail.scrollBy({ left: direction * Math.min(rail.clientWidth * 0.8, 900), behavior: 'smooth' });
+  }, []);
 
   if (items.length === 0) return null;
 
   return (
-    <section
-      ref={sectionRef}
-      id="latest"
-      className="relative overflow-hidden py-24 sm:py-28"
-      aria-labelledby="latest-heading"
-    >
-      <div className="mx-auto mb-10 max-w-6xl px-6">
-        <p className="u-label" style={{ color: 'var(--accent)' }}>
-          Latest
-        </p>
-        <h2
-          id="latest-heading"
-          className="mt-4 tracking-tight text-balance"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'var(--text-4xl)',
-            lineHeight: 1.05,
-          }}
-        >
-          Recently published
-        </h2>
+    <section id="latest" className="py-20 sm:py-28" aria-labelledby="latest-heading">
+      <div className="shell mb-10 flex flex-wrap items-end justify-between gap-6">
+        <div className="flex flex-col gap-4">
+          <p className="u-label" style={{ color: 'var(--accent)' }}>
+            {copy.eyebrow}
+          </p>
+          <h2 id="latest-heading" className="u-display" style={{ fontSize: 'var(--text-4xl)' }}>
+            {copy.title}
+          </h2>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {copy.lede ? (
+            <p className="hidden max-w-sm text-sm sm:block" style={{ color: 'var(--ink-muted)' }}>
+              {copy.lede}
+            </p>
+          ) : null}
+          <div className="flex gap-2">
+            <RailButton label="Scroll left" disabled={atStart} onClick={() => page(-1)}>
+              ←
+            </RailButton>
+            <RailButton label="Scroll right" disabled={atEnd} onClick={() => page(1)}>
+              →
+            </RailButton>
+          </div>
+        </div>
       </div>
 
-      {reduceMotion ? (
-        <div className="u-scroll-x flex gap-5 px-6">
+      <motion.div
+        ref={railRef}
+        onScroll={syncEdges}
+        className="u-scroll-x latest-rail"
+        style={{ paddingInline: 'var(--gutter)' }}
+        variants={staggerVariants(0.09, 0.05)}
+        initial="hidden"
+        whileInView="visible"
+        viewport={revealViewport}
+      >
+        <div className="flex w-max gap-5 pb-4">
           {items.map((item) => (
             <Card key={item.id} item={item} />
           ))}
         </div>
-      ) : (
-        <motion.div className="flex gap-5 px-6" style={{ x }}>
-          {items.map((item) => (
-            <Card key={item.id} item={item} />
-          ))}
-        </motion.div>
-      )}
+      </motion.div>
     </section>
   );
 }
 
+function RailButton({
+  children,
+  label,
+  disabled,
+  onClick,
+}: {
+  children: React.ReactNode;
+  label: string;
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      className="glass grid h-11 w-11 place-items-center text-sm transition-opacity disabled:opacity-30"
+      style={{ borderRadius: 'var(--radius-pill)' }}
+    >
+      {children}
+    </button>
+  );
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: spring.standard },
+};
+
 function Card({ item }: { item: LatestItem }) {
   return (
-    <Link
-      href={item.href}
-      className="block w-[min(78vw,26rem)] shrink-0"
-      aria-label={`${item.kind}: ${item.title}`}
-    >
-      <GlassPanel as="article" flowBody radius="xl" className="flex h-full flex-col p-7">
-        <div className="flex flex-wrap items-center gap-3">
-          <span
-            className="u-label px-2.5 py-1"
-            style={{
-              borderRadius: 'var(--radius-pill)',
-              background: 'color-mix(in srgb, var(--accent) 16%, transparent)',
-              color: 'var(--accent)',
-            }}
+    <motion.div variants={cardVariants} className="w-[min(84vw,24rem)] shrink-0">
+      <Link href={item.href} className="block h-full" aria-label={`${item.kind}: ${item.title}`}>
+        <GlassPanel as="article" interactive radius="xl" className="flex h-full flex-col p-7">
+          <div className="flex flex-wrap items-center gap-3">
+            <span
+              className="u-label px-2.5 py-1"
+              style={{
+                borderRadius: 'var(--radius-pill)',
+                background: 'color-mix(in srgb, var(--accent) 18%, transparent)',
+                color: 'var(--accent)',
+              }}
+            >
+              {item.kind}
+            </span>
+            <time className="u-label" style={{ color: 'var(--ink-faint)' }} dateTime={item.date}>
+              {new Date(item.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
+            </time>
+          </div>
+
+          <h3
+            className="mt-5 text-balance"
+            style={{ fontSize: 'var(--text-2xl)', fontWeight: 600, lineHeight: 1.15 }}
           >
-            {item.kind}
-          </span>
-          <time className="u-label" style={{ color: 'var(--ink-faint)' }} dateTime={item.date}>
-            {new Date(item.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
-          </time>
-        </div>
+            {item.title}
+          </h3>
 
-        <h3
-          className="mt-5 text-balance"
-          style={{ fontSize: 'var(--text-2xl)', fontWeight: 600, lineHeight: 1.15 }}
-        >
-          {item.title}
-        </h3>
+          <p className="mt-4 flex-1 text-sm" style={{ color: 'var(--ink-muted)' }}>
+            {item.summary}
+          </p>
 
-        <p className="mt-4 flex-1 text-sm" style={{ color: 'var(--ink-muted)' }}>
-          {item.summary}
-        </p>
-
-        <p className="mt-6 text-sm font-semibold" style={{ color: 'var(--accent)' }}>
-          Read →
-        </p>
-      </GlassPanel>
-    </Link>
+          <p className="mt-6 text-sm font-semibold" style={{ color: 'var(--accent)' }}>
+            Read →
+          </p>
+        </GlassPanel>
+      </Link>
+    </motion.div>
   );
 }

@@ -187,3 +187,32 @@ export const postSchema = publishable.extend({
 
 export const postCollection = z.array(postSchema);
 export type Post = z.infer<typeof postSchema>;
+
+/* ============================================================
+   Section copy
+   Headings live in content, not in components, so they can be
+   edited — and are written to stay true as entries are added.
+   A heading that counts the items below it ("Three studies")
+   becomes a lie the moment a fourth is published.
+   ============================================================ */
+
+export const sectionCopySchema = z.object({
+  eyebrow: z.string().min(1),
+  title: z.string().min(1),
+  lede: z.string(),
+});
+
+export const sectionsSchema = z.object({
+  latest: sectionCopySchema,
+  caseStudies: sectionCopySchema,
+  projects: sectionCopySchema,
+  research: sectionCopySchema,
+  experience: sectionCopySchema,
+  skills: sectionCopySchema,
+  about: sectionCopySchema,
+  contact: sectionCopySchema,
+  writing: sectionCopySchema,
+});
+
+export type SectionCopy = z.infer<typeof sectionCopySchema>;
+export type Sections = z.infer<typeof sectionsSchema>;

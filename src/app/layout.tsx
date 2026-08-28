@@ -1,11 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { site, siteUrl } from '@/lib/site';
-import { themeInitScript } from '@/lib/theme';
-import { GlassFilters } from '@/components/glass/GlassFilters';
+import { SpaceField } from '@/components/space/SpaceField';
 
-// Self-hosted fonts. Deliberately not next/font/google: no third-party request
-// at runtime, no build-time dependency on fonts.googleapis.com, and CI builds
-// offline. Weights are imported explicitly so nothing unused ships.
+// Self-hosted fonts. Latin subsets only, weights imported explicitly: nothing
+// unused ships, and the build needs no network.
 import '@fontsource/ibm-plex-sans/latin-400.css';
 import '@fontsource/ibm-plex-sans/latin-500.css';
 import '@fontsource/ibm-plex-sans/latin-600.css';
@@ -33,20 +31,17 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: dark)', color: '#060a12' },
-    { media: '(prefers-color-scheme: light)', color: '#f4f7fc' },
-  ],
+  themeColor: '#05070f',
+  colorScheme: 'dark',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
+    <html lang="en-GB">
       <body className="antialiased">
-        <GlassFilters />
+        {/* One background for the whole site: the scene persists across
+            navigation instead of being torn down and rebuilt per page. */}
+        <SpaceField />
         {children}
       </body>
     </html>

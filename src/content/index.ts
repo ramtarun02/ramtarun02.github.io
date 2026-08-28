@@ -166,3 +166,12 @@ export const latest: LatestItem[] = [
     meta: post.tags.join(' · '),
   })),
 ].sort((a, b) => b.date.localeCompare(a.date));
+
+import sectionsJson from '../../content/sections.json';
+import { sectionsSchema, type Sections } from './schema';
+
+export const sections: Sections = parseOrThrow(
+  sectionsSchema,
+  sectionsJson,
+  'content/sections.json',
+);

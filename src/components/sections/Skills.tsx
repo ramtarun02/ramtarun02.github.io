@@ -1,6 +1,6 @@
 import { GlassPanel } from '@/components/glass/GlassPanel';
 import { Section } from './Section';
-import type { SkillGroup } from '@/content/schema';
+import type { SectionCopy, SkillGroup } from '@/content/schema';
 
 /** Proficiency maps onto the velocity ramp, so colour carries the same meaning
  *  everywhere on the site rather than being decoration. */
@@ -17,17 +17,12 @@ export function rampColor(level: number): string {
   return RAMP[index] ?? RAMP[0];
 }
 
-export function Skills({ groups }: { groups: SkillGroup[] }) {
+export function Skills({ groups, copy }: { groups: SkillGroup[]; copy: SectionCopy }) {
   return (
-    <Section
-      id="skills"
-      eyebrow="Capabilities"
-      title="What I actually use"
-      lede="Weighted by how much of it I have written rather than read about. Colour follows the velocity ramp used throughout the site."
-    >
-      <div className="grid gap-4 sm:grid-cols-2">
+    <Section id="skills" copy={copy}>
+      <div className="grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
         {groups.map((group) => (
-          <GlassPanel key={group.id} as="article" flowBody className="p-6 sm:p-8">
+          <GlassPanel key={group.id} as="article" interactive className="p-6 sm:p-8">
             <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 600 }}>{group.title}</h3>
             <ul className="mt-5 flex flex-col gap-3.5">
               {group.items.map((item) => (

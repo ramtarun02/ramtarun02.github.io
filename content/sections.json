@@ -1,0 +1,47 @@
+{
+  "latest": {
+    "eyebrow": "Latest",
+    "title": "Fresh from the desk",
+    "lede": "The most recent write-ups, newest first."
+  },
+  "caseStudies": {
+    "eyebrow": "Case studies",
+    "title": "The long form",
+    "lede": "Full write-ups — the question, the method, the evidence, and the limit. The limit is the part most write-ups leave out, and usually the part worth reading."
+  },
+  "projects": {
+    "eyebrow": "Code",
+    "title": "Built in the open",
+    "lede": "Curated rather than dumped. These are the repositories worth reading; everything else stays on GitHub."
+  },
+  "research": {
+    "eyebrow": "Research",
+    "title": "Peer-reviewed work",
+    "lede": "Conference papers in rotor and turbine aerodynamics, across mid-fidelity and high-fidelity methods."
+  },
+  "experience": {
+    "eyebrow": "Experience",
+    "title": "The route so far",
+    "lede": "Research groups, a UAV manufacturer and a computational consultancy — consistently on the numerical side."
+  },
+  "skills": {
+    "eyebrow": "Capabilities",
+    "title": "Working tools",
+    "lede": "Weighted by how much of it I have written rather than read about."
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "Where methods stop being trustworthy",
+    "lede": ""
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Start a conversation",
+    "lede": "Open to collaboration on academic or industrial work in CFD and solver development — particularly conceptual design tooling, and the limits of low-fidelity methods."
+  },
+  "writing": {
+    "eyebrow": "Writing",
+    "title": "Notes on method",
+    "lede": "Shorter pieces: things a solver did that it should not have, and the occasional argument about what low-fidelity methods are actually for."
+  }
+}

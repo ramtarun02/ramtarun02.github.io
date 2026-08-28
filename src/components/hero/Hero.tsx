@@ -13,14 +13,14 @@ import type { Profile } from '@/content/schema';
 export function Hero({ profile }: { profile: Profile }) {
   return (
     <section className="relative flex min-h-[100svh] w-full items-center">
-      <div className="mx-auto w-full max-w-6xl px-6 py-28 sm:py-24">
+      <div className="shell w-full py-28 sm:py-24">
         <motion.div
-          className="w-full max-w-2xl"
+          className="w-full max-w-3xl"
           variants={staggerVariants(0.08, 0.1)}
           initial="hidden"
           animate="visible"
         >
-          <GlassPanel variant="strong" radius="xl" flowBody className="p-7 sm:p-10 md:p-12">
+          <GlassPanel variant="strong" radius="xl" interactive className="p-7 sm:p-10 md:p-12">
             <motion.p
               variants={revealVariants}
               className="u-label inline-flex items-center gap-2.5"

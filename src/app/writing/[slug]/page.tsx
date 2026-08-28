@@ -1,20 +1,18 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FlowLayer } from '@/components/flow/FlowLayer';
 import { SiteHeader } from '@/components/nav/SiteHeader';
 import { SiteFooter } from '@/components/nav/SiteFooter';
 import { Markdown } from '@/components/markdown/Markdown';
-import { DocumentMeta } from '@/components/markdown/DocumentMeta';
+import { DocumentRail } from '@/components/markdown/DocumentRail';
 import { postBySlug, posts, profile } from '@/content';
 
 export const dynamicParams = false;
 
 /**
- * Static export refuses a dynamic route that generates no pages at all, and
- * there are no posts yet. Emitting one placeholder — which renders as a 404 —
- * keeps the route in the build without inventing content. It disappears on its
- * own the moment a real post is published, so nothing has to be remembered.
+ * Static export refuses a dynamic route that generates no pages, and there are
+ * no posts yet. One placeholder — which renders as a 404 — keeps the route in
+ * the build without inventing content, and disappears on its own when a real
+ * post is published.
  */
 const PLACEHOLDER = '__no-posts-yet';
 
@@ -39,39 +37,40 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const post = postBySlug(slug);
   if (!post) notFound();
 
+  const published = new Date(post.date).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
   return (
     <>
-      <FlowLayer />
       <SiteHeader name={profile.name} />
-      <main className="reading-surface mx-auto max-w-3xl px-6 pt-32 pb-24 sm:pt-40">
-        <Link href="/writing" className="u-label" style={{ color: 'var(--accent)' }}>
-          ← All writing
-        </Link>
-        <h1
-          className="mt-8 tracking-tight text-balance"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'var(--text-5xl)',
-            lineHeight: 1.02,
-          }}
-        >
-          {post.title}
-        </h1>
-        <p
-          className="mt-4 font-[family-name:var(--font-mono)] text-sm"
-          style={{ color: 'var(--ink-faint)' }}
-        >
-          {new Date(post.date).toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          })}
-        </p>
-        <hr className="my-12" style={{ border: 0, borderTop: '1px solid var(--edge)' }} />
-        <DocumentMeta source={post.body} />
 
-        <Markdown source={post.body} />
+      <main className="reading-surface shell pt-32 pb-24 sm:pt-40">
+        <header className="mb-16 flex max-w-5xl flex-col gap-6">
+          <h1 className="u-display" style={{ fontSize: 'var(--text-5xl)' }}>
+            {post.title}
+          </h1>
+          <p style={{ fontSize: 'var(--text-xl)', color: 'var(--ink-muted)' }}>{post.summary}</p>
+        </header>
+
+        <hr className="u-rule mb-14" />
+
+        <div className="doc-grid">
+          <DocumentRail
+            source={post.body}
+            backHref="/writing"
+            backLabel="All writing"
+            meta={[{ label: 'Published', value: published }]}
+            tags={post.tags}
+          />
+          <article className="min-w-0">
+            <Markdown source={post.body} />
+          </article>
+        </div>
       </main>
+
       <SiteFooter />
     </>
   );

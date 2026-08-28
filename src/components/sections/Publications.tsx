@@ -1,18 +1,13 @@
 import { GlassPanel } from '@/components/glass/GlassPanel';
 import { Section } from './Section';
-import type { Publication } from '@/content/schema';
+import type { Publication, SectionCopy } from '@/content/schema';
 
-export function Publications({ items }: { items: Publication[] }) {
+export function Publications({ items, copy }: { items: Publication[]; copy: SectionCopy }) {
   return (
-    <Section
-      id="research"
-      eyebrow="Research"
-      title="Published work"
-      lede="Peer-reviewed conference work in rotor and turbine aerodynamics, using both mid-fidelity and high-fidelity methods."
-    >
+    <Section id="research" copy={copy}>
       <div className="flex flex-col gap-4">
         {items.map((paper) => (
-          <GlassPanel key={paper.id} as="article" flowBody className="p-6 sm:p-8">
+          <GlassPanel key={paper.id} as="article" interactive className="p-6 sm:p-8">
             <div className="flex flex-wrap items-center gap-3">
               {paper.selfIndex === 0 ? (
                 <span

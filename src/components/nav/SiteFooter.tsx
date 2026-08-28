@@ -2,7 +2,7 @@ import { site } from '@/lib/site';
 
 export function SiteFooter() {
   return (
-    <footer className="mx-auto max-w-6xl px-6 pt-8 pb-16">
+    <footer className="shell pt-8 pb-16">
       <div
         className="flex flex-col gap-4 pt-8 text-xs sm:flex-row sm:items-start sm:justify-between"
         style={{ borderTop: '1px solid var(--edge)', color: 'var(--ink-faint)' }}

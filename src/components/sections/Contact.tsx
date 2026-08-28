@@ -1,17 +1,12 @@
 import { GlassPanel } from '@/components/glass/GlassPanel';
 import { Section } from './Section';
 import { ContactForm } from './ContactForm';
-import type { Profile } from '@/content/schema';
+import type { Profile, SectionCopy } from '@/content/schema';
 
-export function Contact({ profile }: { profile: Profile }) {
+export function Contact({ profile, copy }: { profile: Profile; copy: SectionCopy }) {
   return (
-    <Section
-      id="contact"
-      eyebrow="Contact"
-      title="Working on something transonic?"
-      lede="I am open to collaboration on academic or industrial work in CFD and solver development — particularly anything involving conceptual design tooling, or the limits of low-fidelity methods."
-    >
-      <GlassPanel variant="strong" radius="xl" flowBody className="p-8 sm:p-10">
+    <Section id="contact" copy={copy} wide>
+      <GlassPanel variant="strong" radius="xl" interactive className="p-8 sm:p-10">
         <div className="flex flex-wrap gap-3">
           {profile.links.map((link) => (
             <a

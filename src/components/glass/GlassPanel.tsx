@@ -19,41 +19,39 @@ const RADIUS_VAR: Record<GlassRadius, string> = {
 
 export interface GlassPanelProps {
   children: ReactNode;
-  /** Rendered element. Use a semantic tag — `section`, `article`, `aside`. */
   as?: ElementType;
   variant?: GlassVariant;
   radius?: GlassRadius;
   className?: string;
   /**
-   * Marks the panel as a bluff body in the flow layer: streamlines part around
-   * it and close behind. Use on substantial surfaces, not on chips and pills —
-   * a dozen tiny bodies read as noise rather than as flow.
+   * Lifts, warms its edge and catches a travelling highlight on hover or
+   * focus. Use on anything a reader can act on; a static panel sitting on a
+   * moving background reads as a sticker rather than as part of the scene.
    */
-  flowBody?: boolean;
+  interactive?: boolean;
 }
 
-/**
- * The site's one glass surface. Every panel, card and chip is this component,
- * so the material stays consistent and there is a single place to change it.
- */
+/** The site's one panel surface, so the material has a single definition. */
 export function GlassPanel({
   children,
   as: Tag = 'div',
   variant = 'default',
   radius = 'lg',
   className = '',
-  flowBody = false,
+  interactive = false,
 }: GlassPanelProps) {
-  const classes = ['glass', 'u-squircle', VARIANT_CLASS[variant], className]
+  const classes = [
+    'glass',
+    'u-squircle',
+    VARIANT_CLASS[variant],
+    interactive ? 'panel-interactive panel-alive' : '',
+    className,
+  ]
     .filter(Boolean)
     .join(' ');
 
   return (
-    <Tag
-      className={classes}
-      style={{ borderRadius: RADIUS_VAR[radius] }}
-      {...(flowBody ? { 'data-flow-body': '' } : {})}
-    >
+    <Tag className={classes} style={{ borderRadius: RADIUS_VAR[radius] }}>
       {children}
     </Tag>
   );

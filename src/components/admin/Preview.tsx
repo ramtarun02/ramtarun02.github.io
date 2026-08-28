@@ -16,6 +16,7 @@ import {
   type ResolvedProject,
 } from '@/content/schema';
 import type { z } from 'zod';
+import { sections } from '@/content';
 
 /**
  * Live preview built from the real components, not a markdown approximation.
@@ -36,7 +37,9 @@ export function Preview({
   const list = Array.isArray(data) ? (data as unknown[]) : [];
 
   if (collectionKey === 'profile') {
-    return renderOne(profileSchema, data, (profile) => <About profile={profile} />);
+    return renderOne(profileSchema, data, (profile) => (
+      <About profile={profile} copy={sections.about} />
+    ));
   }
 
   if (collectionKey === 'case-studies') {
@@ -71,21 +74,27 @@ export function Preview({
       <Experience
         roles={items.filter((item) => item.kind !== 'education')}
         education={items.filter((item) => item.kind === 'education')}
+        copy={sections.experience}
       />
     ));
   }
 
   if (collectionKey === 'publications') {
-    return renderMany(publicationSchema, list, (items) => <Publications items={items} />);
+    return renderMany(publicationSchema, list, (items) => (
+      <Publications items={items} copy={sections.research} />
+    ));
   }
 
   if (collectionKey === 'skills') {
-    return renderMany(skillGroupSchema, list, (items) => <Skills groups={items} />);
+    return renderMany(skillGroupSchema, list, (items) => (
+      <Skills groups={items} copy={sections.skills} />
+    ));
   }
 
   if (collectionKey === 'projects') {
     return renderMany(projectSchema, list, (items) => (
       <Projects
+        copy={sections.projects}
         user="ramtarun02"
         items={items.map<ResolvedProject>((project) => ({
           ...project,

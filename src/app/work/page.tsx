@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { GlassPanel } from '@/components/glass/GlassPanel';
-import { FlowLayer } from '@/components/flow/FlowLayer';
 import { SiteHeader } from '@/components/nav/SiteHeader';
 import { SiteFooter } from '@/components/nav/SiteFooter';
-import { caseStudies, profile } from '@/content';
+import { caseStudies, profile, sections } from '@/content';
 
 export const metadata: Metadata = {
   title: 'Case studies',
@@ -15,11 +14,10 @@ export const metadata: Metadata = {
 export default function WorkIndexPage() {
   return (
     <>
-      <FlowLayer />
       <SiteHeader name={profile.name} />
-      <main className="mx-auto max-w-6xl px-6 pt-32 pb-24 sm:pt-40">
+      <main className="shell pt-32 pb-24 sm:pt-40">
         <p className="u-label" style={{ color: 'var(--accent)' }}>
-          Case studies
+          {sections.caseStudies.eyebrow}
         </p>
         <h1
           className="mt-4 tracking-tight text-balance"
@@ -29,7 +27,7 @@ export default function WorkIndexPage() {
             lineHeight: 1.02,
           }}
         >
-          Work, written up properly
+          {sections.caseStudies.title}
         </h1>
         <p
           className="u-measure mt-6"
@@ -39,10 +37,10 @@ export default function WorkIndexPage() {
           limit is the part most write-ups leave out, and it is usually the part worth reading.
         </p>
 
-        <div className="mt-16 flex flex-col gap-5">
+        <div className="mt-16 grid gap-5 lg:grid-cols-2 2xl:grid-cols-3">
           {caseStudies.map((study) => (
             <Link key={study.id} href={`/work/${study.slug}`} className="group block">
-              <GlassPanel as="article" radius="xl" flowBody className="p-7 sm:p-10">
+              <GlassPanel as="article" radius="xl" interactive className="p-7 sm:p-10">
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="u-label" style={{ color: 'var(--accent)' }}>
                     {study.domain}

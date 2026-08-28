@@ -3,48 +3,56 @@
 import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { revealVariants, revealViewport, staggerVariants } from '@/lib/motion';
+import type { SectionCopy } from '@/content/schema';
 
 interface SectionProps {
   id: string;
-  eyebrow: string;
-  title: string;
-  lede?: string;
+  copy: SectionCopy;
   children: ReactNode;
+  /** Header spans the full width instead of sitting beside the content. */
+  wide?: boolean;
 }
 
-/** Shared section shell: consistent rhythm, heading hierarchy and reveal. */
-export function Section({ id, eyebrow, title, lede, children }: SectionProps) {
+/**
+ * Shared section shell.
+ *
+ * The header sits in a left column on wide screens and the content takes the
+ * rest, which uses the screen instead of stacking everything down a narrow
+ * ribbon. Copy comes from content so headings can be edited — and so no
+ * heading has to be rewritten when an entry is added.
+ */
+export function Section({ id, copy, children, wide = false }: SectionProps) {
   return (
     <motion.section
       id={id}
-      className="mx-auto w-full max-w-6xl scroll-mt-24 px-6 py-24 sm:py-32"
+      className="shell scroll-mt-28 py-20 sm:py-28"
       variants={staggerVariants()}
       initial="hidden"
       whileInView="visible"
       viewport={revealViewport}
     >
-      <motion.p variants={revealVariants} className="u-label" style={{ color: 'var(--accent)' }}>
-        {eyebrow}
-      </motion.p>
-      <motion.h2
-        variants={revealVariants}
-        className="mt-4 tracking-tight text-balance"
-        style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-4xl)', lineHeight: 1.05 }}
+      <div
+        className={
+          wide ? 'flex flex-col gap-12' : 'grid gap-10 lg:grid-cols-[22rem_minmax(0,1fr)] lg:gap-16'
+        }
       >
-        {title}
-      </motion.h2>
-      {lede ? (
-        <motion.p
+        <motion.header
           variants={revealVariants}
-          className="u-measure mt-5"
-          style={{ fontSize: 'var(--text-lg)', color: 'var(--ink-muted)' }}
+          className="flex flex-col gap-4 lg:sticky lg:top-28 lg:self-start"
         >
-          {lede}
-        </motion.p>
-      ) : null}
-      <motion.div variants={revealVariants} className="mt-12">
-        {children}
-      </motion.div>
+          <p className="u-label" style={{ color: 'var(--accent)' }}>
+            {copy.eyebrow}
+          </p>
+          <h2 className="u-display" style={{ fontSize: 'var(--text-4xl)' }}>
+            {copy.title}
+          </h2>
+          {copy.lede ? (
+            <p style={{ fontSize: 'var(--text-base)', color: 'var(--ink-muted)' }}>{copy.lede}</p>
+          ) : null}
+        </motion.header>
+
+        <motion.div variants={revealVariants}>{children}</motion.div>
+      </div>
     </motion.section>
   );
 }

@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { FlowLayer } from '@/components/flow/FlowLayer';
 import { SiteHeader } from '@/components/nav/SiteHeader';
 import { SiteFooter } from '@/components/nav/SiteFooter';
 import { GlassPanel } from '@/components/glass/GlassPanel';
-import { posts, profile } from '@/content';
+import { posts, profile, sections } from '@/content';
 
 export const metadata: Metadata = {
   title: 'Writing',
@@ -14,11 +13,10 @@ export const metadata: Metadata = {
 export default function WritingPage() {
   return (
     <>
-      <FlowLayer />
       <SiteHeader name={profile.name} />
-      <main className="mx-auto max-w-4xl px-6 pt-32 pb-24 sm:pt-40">
+      <main className="shell pt-32 pb-24 sm:pt-40">
         <p className="u-label" style={{ color: 'var(--accent)' }}>
-          Writing
+          {sections.writing.eyebrow}
         </p>
         <h1
           className="mt-4 tracking-tight text-balance"
@@ -28,7 +26,7 @@ export default function WritingPage() {
             lineHeight: 1.02,
           }}
         >
-          Notes on method
+          {sections.writing.title}
         </h1>
 
         {posts.length === 0 ? <EmptyState /> : <PostList />}
@@ -40,10 +38,10 @@ export default function WritingPage() {
 
 function PostList() {
   return (
-    <div className="mt-14 flex flex-col gap-5">
+    <div className="mt-14 grid gap-5 lg:grid-cols-2 2xl:grid-cols-3">
       {posts.map((post) => (
         <Link key={post.id} href={`/writing/${post.slug}`} className="block">
-          <GlassPanel as="article" flowBody className="p-7 sm:p-9">
+          <GlassPanel as="article" interactive className="p-7 sm:p-9">
             <p className="u-label" style={{ color: 'var(--ink-faint)' }}>
               {new Date(post.date).toLocaleDateString('en-GB', {
                 day: 'numeric',
@@ -74,7 +72,7 @@ function PostList() {
  */
 function EmptyState() {
   return (
-    <GlassPanel flowBody radius="xl" className="mt-14 p-8 sm:p-12">
+    <GlassPanel interactive radius="xl" className="mt-14 p-8 sm:p-12">
       <p className="u-measure" style={{ fontSize: 'var(--text-lg)' }}>
         Nothing here yet — deliberately. Anything worth writing up properly has gone into the case
         studies, where it can carry figures, tables and the data behind the argument.

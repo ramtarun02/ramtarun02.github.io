@@ -1,6 +1,6 @@
 import { GlassPanel } from '@/components/glass/GlassPanel';
 import { Section } from './Section';
-import type { Experience as ExperienceItem } from '@/content/schema';
+import type { Experience as ExperienceItem, SectionCopy } from '@/content/schema';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -20,17 +20,14 @@ export function formatRange(start: string, end?: string): string {
 export function Experience({
   roles,
   education,
+  copy,
 }: {
   roles: ExperienceItem[];
   education: ExperienceItem[];
+  copy: SectionCopy;
 }) {
   return (
-    <Section
-      id="experience"
-      eyebrow="Experience"
-      title="Solvers, simulations and the aircraft they describe"
-      lede="Four years across research groups, a UAV manufacturer and a computational consultancy — consistently on the numerical side."
-    >
+    <Section id="experience" copy={copy}>
       <div className="flex flex-col gap-4">
         {roles.map((item) => (
           <ExperienceCard key={item.id} item={item} />
@@ -40,7 +37,7 @@ export function Experience({
       <h3 className="u-label mt-16 mb-6" style={{ color: 'var(--ink-faint)' }}>
         Education
       </h3>
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
         {education.map((item) => (
           <ExperienceCard key={item.id} item={item} compact />
         ))}
@@ -52,7 +49,7 @@ export function Experience({
 function ExperienceCard({ item, compact = false }: { item: ExperienceItem; compact?: boolean }) {
   const current = item.end === undefined;
   return (
-    <GlassPanel as="article" flowBody className="p-6 sm:p-8">
+    <GlassPanel as="article" interactive className="p-6 sm:p-8">
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 600 }}>{item.role}</h3>
         <span

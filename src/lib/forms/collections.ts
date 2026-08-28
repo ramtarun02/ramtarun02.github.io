@@ -1,6 +1,7 @@
 import type { z } from 'zod';
 import {
   caseStudySchema,
+  sectionsSchema,
   postSchema,
   experienceSchema,
   profileSchema,
@@ -37,6 +38,15 @@ export const COLLECTIONS: CollectionDef[] = [
     shape: 'single',
     schema: profileSchema,
     titleField: 'name',
+    publishable: false,
+  },
+  {
+    key: 'sections',
+    label: 'Section copy',
+    path: 'content/sections.json',
+    shape: 'single',
+    schema: sectionsSchema,
+    titleField: 'title',
     publishable: false,
   },
   {

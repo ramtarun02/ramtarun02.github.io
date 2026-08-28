@@ -1,11 +1,9 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FlowLayer } from '@/components/flow/FlowLayer';
 import { SiteHeader } from '@/components/nav/SiteHeader';
 import { SiteFooter } from '@/components/nav/SiteFooter';
 import { Markdown } from '@/components/markdown/Markdown';
-import { DocumentMeta } from '@/components/markdown/DocumentMeta';
+import { DocumentRail } from '@/components/markdown/DocumentRail';
 import { caseStudies, caseStudyBySlug, profile } from '@/content';
 
 export function generateStaticParams() {
@@ -34,22 +32,14 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
 
   return (
     <>
-      <FlowLayer />
       <SiteHeader name={profile.name} />
-      <main className="reading-surface mx-auto max-w-3xl px-6 pt-32 pb-24 sm:pt-40">
-        <Link href="/work" className="u-label" style={{ color: 'var(--accent)' }}>
-          ← All case studies
-        </Link>
 
-        <header className="mt-8 flex flex-col gap-5">
-          <h1
-            className="tracking-tight text-balance"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'var(--text-5xl)',
-              lineHeight: 1.02,
-            }}
-          >
+      <main className="reading-surface shell pt-32 pb-24 sm:pt-40">
+        <header className="mb-16 flex max-w-5xl flex-col gap-6">
+          <p className="u-label" style={{ color: 'var(--accent)' }}>
+            {study.domain}
+          </p>
+          <h1 className="u-display" style={{ fontSize: 'var(--text-5xl)' }}>
             {study.title}
           </h1>
           <p
@@ -58,44 +48,35 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           >
             {study.subtitle}
           </p>
-          <p
-            className="u-measure"
-            style={{ fontSize: 'var(--text-xl)', color: 'var(--ink-muted)' }}
-          >
-            {study.thesis}
-          </p>
-          <ul className="mt-2 flex flex-wrap gap-2">
-            {study.tools.map((tool) => (
-              <li
-                key={tool}
-                className="u-label px-2.5 py-1"
-                style={{
-                  borderRadius: 'var(--radius-pill)',
-                  border: '1px solid var(--edge)',
-                  color: 'var(--ink-muted)',
-                }}
-              >
-                {tool}
-              </li>
-            ))}
-          </ul>
+          <p style={{ fontSize: 'var(--text-xl)', color: 'var(--ink-muted)' }}>{study.thesis}</p>
         </header>
 
-        <hr className="my-14" style={{ border: 0, borderTop: '1px solid var(--edge)' }} />
+        <hr className="u-rule mb-14" />
 
-        <DocumentMeta source={study.body} />
+        <div className="doc-grid">
+          <DocumentRail
+            source={study.body}
+            backHref="/work"
+            backLabel="All case studies"
+            meta={[{ label: 'Year', value: String(study.year) }]}
+            tags={study.tools}
+          />
 
-        <Markdown source={study.body} />
+          <article className="min-w-0">
+            <Markdown source={study.body} />
 
-        {study.credit ? (
-          <p
-            className="u-measure mt-20 pt-6 text-xs"
-            style={{ borderTop: '1px solid var(--edge)', color: 'var(--ink-faint)' }}
-          >
-            {study.credit}
-          </p>
-        ) : null}
+            {study.credit ? (
+              <p
+                className="u-measure mt-20 pt-6 text-xs"
+                style={{ borderTop: '1px solid var(--edge)', color: 'var(--ink-faint)' }}
+              >
+                {study.credit}
+              </p>
+            ) : null}
+          </article>
+        </div>
       </main>
+
       <SiteFooter />
     </>
   );

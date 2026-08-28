@@ -45,7 +45,7 @@ function SegmentView({ segment }: { segment: Segment }) {
     return (
       <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {segment.items.map((item) => (
-          <GlassPanel key={item.label} radius="md" flowBody className="p-5">
+          <GlassPanel key={item.label} radius="md" interactive className="p-5">
             <dt
               className="font-[family-name:var(--font-mono)] tracking-tight"
               style={{ fontSize: 'var(--text-2xl)', color: 'var(--accent)' }}
@@ -102,7 +102,7 @@ function SegmentView({ segment }: { segment: Segment }) {
 
   return (
     <figure className="flex flex-col gap-3">
-      <GlassPanel flowBody className="p-5 sm:p-7">
+      <GlassPanel interactive className="p-5 sm:p-7">
         {chart}
       </GlassPanel>
       {segment.caption ? (

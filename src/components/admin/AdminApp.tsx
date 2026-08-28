@@ -6,7 +6,6 @@ import { getViewer } from '@/lib/github/client';
 import { COLLECTIONS } from '@/lib/forms/collections';
 import { profileSchema } from '@/content/schema';
 import { GlassPanel } from '@/components/glass/GlassPanel';
-import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { CollectionEditor } from './CollectionEditor';
 import { RepoPicker } from './RepoPicker';
 import { Preview } from './Preview';
@@ -112,7 +111,6 @@ export function AdminApp() {
           >
             Sign out
           </button>
-          <ThemeToggle />
         </div>
       </header>
 

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { GlassPanel } from '@/components/glass/GlassPanel';
 import { Section } from './Section';
-import type { ResolvedProject } from '@/content/schema';
+import type { ResolvedProject, SectionCopy } from '@/content/schema';
 
 /** "2026-03-02T…" → "Mar 2026". Bad input returns empty rather than throwing. */
 export function formatPushed(iso: string): string {
@@ -10,17 +10,25 @@ export function formatPushed(iso: string): string {
   return date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
 }
 
-export function Projects({ items, user }: { items: ResolvedProject[]; user: string }) {
+export function Projects({
+  items,
+  user,
+  copy,
+}: {
+  items: ResolvedProject[];
+  user: string;
+  copy: SectionCopy;
+}) {
   return (
-    <Section
-      id="projects"
-      eyebrow="Code"
-      title="Published repositories"
-      lede="Curated rather than dumped — these are the ones worth reading. Everything else stays on GitHub."
-    >
-      <div className="grid gap-5 md:grid-cols-2">
+    <Section id="projects" copy={copy}>
+      <div className="grid gap-5 sm:grid-cols-2 2xl:grid-cols-3">
         {items.map((project) => (
-          <GlassPanel key={project.id} as="article" flowBody className="flex flex-col p-6 sm:p-8">
+          <GlassPanel
+            key={project.id}
+            as="article"
+            interactive
+            className="flex flex-col p-6 sm:p-8"
+          >
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
               <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 600 }}>
                 {project.displayTitle}

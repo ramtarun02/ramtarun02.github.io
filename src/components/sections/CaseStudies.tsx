@@ -1,20 +1,15 @@
 import Link from 'next/link';
 import { GlassPanel } from '@/components/glass/GlassPanel';
 import { Section } from './Section';
-import type { CaseStudy } from '@/content/schema';
+import type { CaseStudy, SectionCopy } from '@/content/schema';
 
-export function CaseStudies({ studies }: { studies: CaseStudy[] }) {
+export function CaseStudies({ studies, copy }: { studies: CaseStudy[]; copy: SectionCopy }) {
   return (
-    <Section
-      id="work"
-      eyebrow="Case studies"
-      title="Three studies, one question"
-      lede="Each asks where a method stops being trustworthy — in a transonic solver, in a mesh refinement study, and in a rotor code's empirical closures."
-    >
-      <div className="grid gap-5 lg:grid-cols-3">
+    <Section id="work" copy={copy}>
+      <div className="grid gap-5 sm:grid-cols-2 2xl:grid-cols-3">
         {studies.map((study) => (
           <Link key={study.id} href={`/work/${study.slug}`} className="block">
-            <GlassPanel as="article" flowBody className="flex h-full flex-col p-7">
+            <GlassPanel as="article" interactive className="flex h-full flex-col p-7">
               <p className="u-label" style={{ color: 'var(--accent)' }}>
                 {study.domain}
               </p>

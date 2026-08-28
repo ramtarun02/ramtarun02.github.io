@@ -1,8 +1,10 @@
 @import 'tailwindcss';
 
 /* ============================================================
-   Design tokens — dark-first (build spec §3).
-   The velocity-magnitude ramp doubles as identity and legend.
+   Design tokens — deep space, dark only.
+   There is no light theme: this design commits to one visual
+   world, and a light inversion of a starfield is not a design,
+   it is an apology.
    ============================================================ */
 
 @theme static {
@@ -10,7 +12,7 @@
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
-  /* velocity-magnitude ramp: low -> high */
+  /* Kept for charts: measured quantities still read on a velocity ramp. */
   --color-vel-0: #0b1b3a;
   --color-vel-1: #14407e;
   --color-vel-2: #1e6fc4;
@@ -20,79 +22,81 @@
   --color-vel-6: #f2b24c;
 }
 
-/* dark is the signature theme, so it owns the bare :root */
 :root {
-  --ground: #060a12;
-  --ground-raised: #0a111d;
-  --glass: rgb(148 178 224 / 0.055);
-  --glass-strong: rgb(148 178 224 / 0.09);
-  --edge: rgb(150 183 232 / 0.16);
-  --edge-highlight: rgb(190 220 255 / 0.3);
-  --ink: #e8effa;
-  --ink-muted: #a9b7cd;
-  --ink-faint: #6e7e97;
-  --accent: #3fd2ee;
-  --accent-alt: #5b8cff;
-  --accent-contrast: #061019;
-  --warn: #f2b24c;
-  --good: #4ade9b;
-  --shadow-panel: 0 24px 60px -20px rgb(0 0 0 / 0.75);
-  /* Legibility floor: composited under the glass tint so text keeps its
-     contrast when a panel sits over vivid content (the flow field). */
-  --glass-scrim: rgb(6 10 18 / 0.44);
   color-scheme: dark;
+
+  --ground: #05070f;
+  --ground-raised: #0a0e1c;
+  --ground-deep: #02030a;
+
+  --glass: rgb(122 152 220 / 0.05);
+  --glass-strong: rgb(126 158 228 / 0.1);
+  --glass-scrim: rgb(5 7 15 / 0.5);
+  --edge: rgb(140 170 235 / 0.15);
+  --edge-highlight: rgb(190 215 255 / 0.36);
+
+  --ink: #e9eefb;
+  --ink-muted: #a7b2cc;
+  --ink-faint: #6c7896;
+
+  --accent: #62b4ff;
+  --accent-alt: #a78bfa;
+  --accent-contrast: #04070f;
+  --warn: #f0b24c;
+  --good: #56d9a3;
+
+  --shadow-panel: 0 28px 70px -28px rgb(0 0 0 / 0.85);
+  --glow-accent: 0 0 40px -8px rgb(98 180 255 / 0.35);
+
+  /* ---- layout ----
+     The page uses the screen. Gutters stay small and fluid; the
+     container is wide enough for a two-column document layout. */
+  --gutter: clamp(1.25rem, 3.2vw, 3.5rem);
+  --container: 1720px;
+  --container-narrow: 1180px;
+  --measure: 78ch;
+
+  /* ---- type ---- */
+  --text-2xs: 0.75rem;
+  --text-xs: 0.8125rem;
+  --text-sm: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+  --text-base: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-lg: clamp(1.1875rem, 1.1rem + 0.35vw, 1.3125rem);
+  --text-xl: clamp(1.375rem, 1.25rem + 0.6vw, 1.625rem);
+  --text-2xl: clamp(1.625rem, 1.4rem + 1vw, 2rem);
+  --text-3xl: clamp(1.875rem, 1.5rem + 1.8vw, 2.75rem);
+  --text-4xl: clamp(2.25rem, 1.7rem + 2.8vw, 3.5rem);
+  --text-5xl: clamp(2.5rem, 1.6rem + 4.6vw, 4.75rem);
+  --text-6xl: clamp(2.75rem, 1.4rem + 6.6vw, 6.5rem);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  --glass-tint: var(--glass);
+  --glass-blur: 22px;
+  --glass-saturate: 140%;
 }
 
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme='dark']) {
-    --ground: #f4f7fc;
-    --ground-raised: #e9eff8;
-    --glass: rgb(255 255 255 / 0.62);
-    --glass-strong: rgb(255 255 255 / 0.8);
-    --edge: rgb(30 64 110 / 0.13);
-    --edge-highlight: rgb(255 255 255 / 0.9);
-    --ink: #0c1524;
-    --ink-muted: #41506a;
-    --ink-faint: #76859c;
-    --accent: #0a8fb0;
-    --accent-alt: #2f5fe0;
-    --accent-contrast: #ffffff;
-    --warn: #a9700b;
-    --good: #0f7a4d;
-    --shadow-panel: 0 20px 50px -24px rgb(20 40 80 / 0.28);
-    --glass-scrim: rgb(244 247 252 / 0.5);
-    color-scheme: light;
-  }
-}
-
-:root[data-theme='light'] {
-  --ground: #f4f7fc;
-  --ground-raised: #e9eff8;
-  --glass: rgb(255 255 255 / 0.62);
-  --glass-strong: rgb(255 255 255 / 0.8);
-  --edge: rgb(30 64 110 / 0.13);
-  --edge-highlight: rgb(255 255 255 / 0.9);
-  --ink: #0c1524;
-  --ink-muted: #41506a;
-  --ink-faint: #76859c;
-  --accent: #0a8fb0;
-  --accent-alt: #2f5fe0;
-  --accent-contrast: #ffffff;
-  --warn: #a9700b;
-  --good: #0f7a4d;
-  --shadow-panel: 0 20px 50px -24px rgb(20 40 80 / 0.28);
-  --glass-scrim: rgb(244 247 252 / 0.5);
-  color-scheme: light;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 html {
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--ground);
+  background: var(--ground-deep);
   color: var(--ink);
   font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -102,61 +106,99 @@ body {
   border-radius: 4px;
 }
 
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }
 
 /* ============================================================
-   Typographic scale
-   Ratio 1.25 at the small end, opening to 1.333 for display
-   sizes so headings gain presence without the body drifting.
+   Background
    ============================================================ */
 
-:root {
-  /* Sizes are fluid: each interpolates with the viewport between a comfortable
-     small-screen minimum and a desktop maximum, so nothing is set in fixed
-     pixels and nothing needs a breakpoint to stay readable. */
-  --text-2xs: 0.75rem;
-  --text-xs: 0.8125rem;
-  --text-sm: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
-  --text-base: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-  --text-lg: clamp(1.1875rem, 1.1rem + 0.35vw, 1.3125rem);
-  --text-xl: clamp(1.375rem, 1.25rem + 0.6vw, 1.625rem);
-  --text-2xl: clamp(1.625rem, 1.4rem + 1vw, 2rem);
-  --text-3xl: clamp(1.875rem, 1.5rem + 1.8vw, 2.625rem);
-  --text-4xl: clamp(2.25rem, 1.7rem + 2.6vw, 3.25rem);
-  --text-5xl: clamp(2.5rem, 1.6rem + 4.4vw, 4.5rem);
-  --text-6xl: clamp(2.75rem, 1.5rem + 6.2vw, 6rem);
+.space-field,
+.space-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 
-  --measure: 68ch;
+.space-fallback {
+  background:
+    radial-gradient(60% 45% at 20% 15%, rgb(30 60 130 / 0.5) 0%, transparent 70%),
+    radial-gradient(50% 40% at 82% 62%, rgb(70 40 110 / 0.45) 0%, transparent 72%),
+    linear-gradient(180deg, #060a18, #02030a);
+}
 
-  /* Continuous-curvature radii. Apple's corners are superellipses; where the
-     browser supports corner-shape these become true squircles (see below). */
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 22px;
-  --radius-xl: 28px;
-  --radius-pill: 999px;
+/* ============================================================
+   Layout
+   ============================================================ */
 
-  /* Glass. --glass-tint is overridable per panel so a surface sitting over the
-     flow field can be darkened for contrast without touching the base token. */
-  --glass-tint: var(--glass);
-  --glass-blur: 26px;
-  --glass-saturate: 165%;
+.shell {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.shell-narrow {
+  width: 100%;
+  max-width: var(--container-narrow);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Document layout: a sticky rail beside a wide reading column, so a case
+   study uses the screen instead of hiding in a ribbon down the middle. */
+.doc-grid {
+  display: grid;
+  gap: clamp(2rem, 4vw, 4.5rem);
+  align-items: start;
+}
+
+@media (min-width: 60rem) {
+  .doc-grid {
+    grid-template-columns: minmax(15rem, 19rem) minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 100rem) {
+  .doc-grid {
+    grid-template-columns: minmax(16rem, 21rem) minmax(0, 1fr) minmax(0, 14rem);
+  }
+}
+
+.doc-rail {
+  position: sticky;
+  top: 6.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (max-width: 59.99rem) {
+  .doc-rail {
+    position: static;
+  }
 }
 
 /* ============================================================
    Squircle geometry
-   corner-shape gives real continuous curvature. Everything else
-   falls back to a plain radius, which is the honest degradation:
-   slightly rounder corners, identical layout.
    ============================================================ */
 
 .u-squircle {
@@ -170,7 +212,10 @@ body {
 }
 
 /* ============================================================
-   Glass surface
+   Glass panels
+   Panels are meant to look like they are floating in the scene,
+   not stuck on top of it: the background shows through, the edge
+   catches light, and the surface reacts.
    ============================================================ */
 
 .glass {
@@ -183,8 +228,6 @@ body {
   isolation: isolate;
 }
 
-/* Specular highlight along the top edge, angled to a single notional light
-   source kept consistent across every surface on the site. */
 .glass::before {
   content: '';
   position: absolute;
@@ -202,39 +245,82 @@ body {
 
 .glass--strong {
   --glass-tint: var(--glass-strong);
-  --glass-blur: 34px;
+  --glass-blur: 30px;
 }
 
 .glass--quiet {
-  --glass-blur: 16px;
+  --glass-blur: 14px;
   box-shadow: none;
 }
 
-/* Decorative panels that carry no text can drop the legibility floor and show
-   more of what is behind them. Never use this on a surface with body copy. */
 .glass--clear {
   --glass-scrim: transparent;
 }
 
-/* Progressive enhancement: where backdrop-filter accepts an SVG filter
-   reference, add a low-amplitude displacement so the panel edge bends what
-   sits behind it. Applied via a class set at runtime after feature detection,
-   because @supports cannot test url() filter support reliably. */
-.supports-refraction .glass {
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate))
-    url('#glass-refraction');
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) url('#glass-refraction');
+/* Interactive panels lift and warm slightly. Transform and box-shadow only —
+   nothing that forces layout. */
+.panel-interactive {
+  transition:
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
-/* Opt a single surface out of refraction — used where a panel sits over text
-   that must stay pin-sharp. */
-.supports-refraction .glass--flat {
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+.panel-interactive:hover,
+.panel-interactive:focus-within {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--edge));
+  box-shadow: var(--shadow-panel), var(--glow-accent);
+}
+
+/* A slow highlight travelling the top edge, so a panel is never quite still.
+   Long period and low contrast: this should register at the edge of
+   attention, not compete with the text. */
+@media (prefers-reduced-motion: no-preference) {
+  .panel-alive::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+    padding: 1px;
+    background: linear-gradient(
+      var(--sheen-angle, 120deg),
+      transparent 30%,
+      color-mix(in srgb, var(--accent) 55%, transparent) 50%,
+      transparent 70%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 500ms ease;
+  }
+
+  .panel-alive:hover::after,
+  .panel-alive:focus-within::after {
+    opacity: 1;
+    animation: sheen-drift 5s linear infinite;
+  }
+}
+
+@property --sheen-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 120deg;
+}
+
+@keyframes sheen-drift {
+  to {
+    --sheen-angle: 480deg;
+  }
 }
 
 /* ============================================================
-   Utility
+   Utilities
    ============================================================ */
 
 .u-measure {
@@ -246,7 +332,6 @@ body {
   overscroll-behavior-x: contain;
 }
 
-/* Uppercase micro-labels — used for eyebrows and data captions. */
 .u-label {
   font-family: var(--font-mono);
   font-size: var(--text-2xs);
@@ -254,75 +339,29 @@ body {
   text-transform: uppercase;
 }
 
-/* ============================================================
-   Theme transition
-   The cross-fade is done with the View Transitions API so both
-   themes are composited rather than repainted mid-flight.
-   ============================================================ */
-
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 420ms;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-    mix-blend-mode: normal;
-  }
+.u-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.03;
+  text-wrap: balance;
 }
 
-/* Browsers without View Transitions still get a soft change rather than a snap. */
-@media (prefers-reduced-motion: no-preference) {
-  body {
-    transition:
-      background-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
-      color 320ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-}
-
-/* Static stand-in when WebGL2 is unavailable. Same palette, no GPU. */
-.flow-fallback {
-  width: 100%;
-  height: 100%;
-  background:
-    radial-gradient(46% 62% at 26% 44%, var(--color-vel-2) 0%, transparent 68%),
-    radial-gradient(38% 52% at 58% 60%, var(--color-vel-3) 0%, transparent 70%),
-    radial-gradient(30% 44% at 84% 34%, var(--color-vel-6) 0%, transparent 72%),
-    linear-gradient(135deg, var(--color-vel-0), var(--color-vel-1));
-  opacity: 0.55;
-}
-
-/* Case-study body copy: set larger and looser than interface text, because it
-   is read continuously rather than scanned. */
-.cs-prose {
-  font-size: var(--text-lg);
-  line-height: 1.72;
-}
-
-body {
-  font-size: var(--text-base);
-  line-height: 1.6;
-}
-
-/* Page-wide flow layer: fixed, so its cost is bounded by the viewport rather
-   than the document. */
-.flow-layer {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  display: block;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+/* A hairline rule that fades at both ends — used to separate sections
+   without drawing a hard line across a starfield. */
+.u-rule {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, transparent, var(--edge), transparent);
 }
 
 /* ============================================================
    Markdown prose
-   Case studies and posts are authored as Markdown; this is the
-   whole typographic contract for rendered documents.
    ============================================================ */
 
 .md-prose {
   font-size: var(--text-lg);
-  line-height: 1.75;
+  line-height: 1.78;
   color: var(--ink);
 }
 
@@ -344,7 +383,7 @@ body {
   font-weight: 600;
   letter-spacing: -0.015em;
   text-wrap: balance;
-  scroll-margin-top: 6rem;
+  scroll-margin-top: 7rem;
 }
 
 .md-prose h2 {
@@ -384,14 +423,15 @@ body {
 
 .md-prose strong {
   font-weight: 650;
+  color: #fff;
 }
 
 .md-prose ul,
 .md-prose ol {
-  padding-left: 1.35em;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+  padding-left: 1.35em;
 }
 
 .md-prose ul {
@@ -413,7 +453,7 @@ body {
   height: 5px;
   border-radius: 50%;
   background: var(--accent);
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .md-prose ol {
@@ -437,7 +477,6 @@ body {
   font-size: var(--text-xl);
   line-height: 1.55;
   color: var(--ink-muted);
-  font-style: normal;
 }
 
 .md-prose blockquote p {
@@ -447,7 +486,7 @@ body {
 .md-prose code {
   font-family: var(--font-mono);
   font-size: 0.86em;
-  background: var(--glass-strong);
+  background: var(--ground-raised);
   border: 1px solid var(--edge);
   border-radius: 5px;
   padding: 0.12em 0.38em;
@@ -462,6 +501,7 @@ body {
   padding: 1.1rem 1.25rem;
   font-size: var(--text-sm);
   line-height: 1.6;
+  max-width: none;
 }
 
 .md-prose pre code {
@@ -509,8 +549,8 @@ body {
   max-width: 100%;
   height: auto;
   border-radius: var(--radius-md);
-  /* Scientific figures are authored on white; shown on white in both themes
-     rather than inverted, which would corrupt the colour encoding. */
+  /* Scientific figures are authored on white; shown on white rather than
+     inverted, which would corrupt the colour encoding of the plots. */
   background: #fff;
   padding: 0.75rem;
 }
@@ -521,21 +561,12 @@ body {
   margin: 2.5em 0;
 }
 
-.md-prose kbd {
-  font-family: var(--font-mono);
-  font-size: 0.82em;
-  border: 1px solid var(--edge);
-  border-bottom-width: 2px;
-  border-radius: 5px;
-  padding: 0.1em 0.4em;
-}
-
 /* ============================================================
    Reading surface
-   Long-form documents need calm behind the text. The flow field
-   is beautiful and completely wrong underneath a paragraph, so
-   document pages sit on a soft column of ground that fades out
-   at its edges rather than ending in a hard card.
+   Long-form needs calm behind the text. A solid column of ground
+   that fades at its edges — deliberately not a backdrop-filter:
+   a blurred surface the height of a whole document is expensive
+   to composite and, on some compositors, drops content entirely.
    ============================================================ */
 
 .reading-surface {
@@ -551,19 +582,33 @@ body {
 .reading-surface::before {
   content: '';
   position: absolute;
-  inset: -4rem -2.5rem;
+  /* Inline inset stays at 0: a negative one overflows the viewport on a
+     narrow screen, and the mask already softens the edges. */
+  inset: -4rem 0;
   z-index: 0;
   pointer-events: none;
-  background: var(--ground);
-  opacity: 0.88;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ground) 88%, transparent) 0%,
+    color-mix(in srgb, var(--ground) 94%, transparent) 12%,
+    color-mix(in srgb, var(--ground) 94%, transparent) 88%,
+    color-mix(in srgb, var(--ground) 88%, transparent) 100%
+  );
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
 }
 
-@supports (backdrop-filter: blur(4px)) {
-  .reading-surface::before {
-    opacity: 0.76;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-  }
+/* The rail hides its scrollbar but stays scrollable: the arrow buttons and the
+   overflow itself are the affordance. */
+.latest-rail {
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+.latest-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.latest-rail > div > * {
+  scroll-snap-align: start;
 }

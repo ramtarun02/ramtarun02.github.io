@@ -1,10 +1,10 @@
 import { Section } from './Section';
-import type { Profile } from '@/content/schema';
+import type { Profile, SectionCopy } from '@/content/schema';
 
-export function About({ profile }: { profile: Profile }) {
+export function About({ profile, copy }: { profile: Profile; copy: SectionCopy }) {
   return (
-    <Section id="about" eyebrow="About" title="Where methods stop being trustworthy">
-      <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:gap-16">
+    <Section id="about" copy={copy} wide>
+      <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_16rem] xl:gap-16">
         <div className="flex flex-col gap-5">
           {profile.summaryLong.map((paragraph) => (
             <p

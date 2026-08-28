@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 const LINKS = [
   { href: '/work', label: 'Case studies' },
@@ -32,7 +31,7 @@ export function SiteHeader({ name }: { name: string }) {
       }`}
       style={scrolled ? { borderRadius: 0, borderWidth: '0 0 1px 0' } : undefined}
     >
-      <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
+      <div className="shell flex items-center gap-6 px-6 py-3">
         <Link href="/" className="font-[family-name:var(--font-display)] text-lg tracking-tight">
           {name}
         </Link>
@@ -51,9 +50,7 @@ export function SiteHeader({ name }: { name: string }) {
             ))}
           </ul>
         </nav>
-        <div className="ml-auto md:ml-0">
-          <ThemeToggle />
-        </div>
+        <div className="ml-auto md:ml-0"></div>
       </div>
     </header>
   );
