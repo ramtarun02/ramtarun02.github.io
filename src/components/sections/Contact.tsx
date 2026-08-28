@@ -1,5 +1,6 @@
 import { GlassPanel } from '@/components/glass/GlassPanel';
 import { Section } from './Section';
+import { ContactForm } from './ContactForm';
 import type { Profile } from '@/content/schema';
 
 export function Contact({ profile }: { profile: Profile }) {
@@ -25,9 +26,9 @@ export function Contact({ profile }: { profile: Profile }) {
             </a>
           ))}
         </div>
-        <p className="mt-6 text-sm" style={{ color: 'var(--ink-faint)' }}>
-          A contact form lands with the content engine in the next phase.
-        </p>
+        <div className="mt-8 border-t pt-8" style={{ borderColor: 'var(--edge)' }}>
+          <ContactForm />
+        </div>
       </GlassPanel>
     </Section>
   );

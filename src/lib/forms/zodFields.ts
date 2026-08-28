@@ -13,7 +13,15 @@ import { z } from 'zod';
  */
 
 export type FieldKind =
-  'string' | 'text' | 'number' | 'boolean' | 'enum' | 'stringArray' | 'objectArray' | 'unsupported';
+  | 'string'
+  | 'text'
+  | 'markdown'
+  | 'number'
+  | 'boolean'
+  | 'enum'
+  | 'stringArray'
+  | 'objectArray'
+  | 'unsupported';
 
 export interface FieldSpec {
   name: string;
@@ -27,6 +35,7 @@ export interface FieldSpec {
 
 /** Field names whose content is prose and deserves a textarea. */
 const MULTILINE = new Set([
+  'body',
   'summary',
   'summaryShort',
   'body',
@@ -77,6 +86,7 @@ function kindOf(
   schema: z.ZodTypeAny,
 ): Pick<FieldSpec, 'kind' | 'options' | 'fields'> {
   if (schema instanceof z.ZodString) {
+    if (name === 'body') return { kind: 'markdown' };
     return { kind: MULTILINE.has(name) ? 'text' : 'string' };
   }
   if (schema instanceof z.ZodNumber) return { kind: 'number' };

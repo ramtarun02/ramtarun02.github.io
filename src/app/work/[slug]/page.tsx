@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation';
 import { FlowLayer } from '@/components/flow/FlowLayer';
 import { SiteHeader } from '@/components/nav/SiteHeader';
 import { SiteFooter } from '@/components/nav/SiteFooter';
-import { Blocks } from '@/components/case-study/Blocks';
+import { Markdown } from '@/components/markdown/Markdown';
+import { DocumentMeta } from '@/components/markdown/DocumentMeta';
 import { caseStudies, caseStudyBySlug, profile } from '@/content';
 
 export function generateStaticParams() {
@@ -35,7 +36,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
     <>
       <FlowLayer />
       <SiteHeader name={profile.name} />
-      <main className="mx-auto max-w-3xl px-6 pt-32 pb-24 sm:pt-40">
+      <main className="reading-surface mx-auto max-w-3xl px-6 pt-32 pb-24 sm:pt-40">
         <Link href="/work" className="u-label" style={{ color: 'var(--accent)' }}>
           ← All case studies
         </Link>
@@ -82,7 +83,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
 
         <hr className="my-14" style={{ border: 0, borderTop: '1px solid var(--edge)' }} />
 
-        <Blocks blocks={study.blocks} />
+        <DocumentMeta source={study.body} />
+
+        <Markdown source={study.body} />
 
         {study.credit ? (
           <p

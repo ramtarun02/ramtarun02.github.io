@@ -1,6 +1,6 @@
 'use client';
 
-import { Blocks } from '@/components/case-study/Blocks';
+import { Markdown } from '@/components/markdown/Markdown';
 import { Experience } from '@/components/sections/Experience';
 import { Projects } from '@/components/sections/Projects';
 import { Publications } from '@/components/sections/Publications';
@@ -60,7 +60,7 @@ export function Preview({
           {study.thesis}
         </p>
         <div className="mt-10">
-          <Blocks blocks={study.blocks} />
+          <Markdown source={study.body} />
         </div>
       </article>
     ));

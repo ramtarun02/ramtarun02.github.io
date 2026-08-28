@@ -116,3 +116,53 @@ export const githubFetchedAt = githubCache.fetchedAt;
 
 /** Every repo GitHub knows about, for the admin's curation list. */
 export const allRepos: GithubRepo[] = githubCache.repos;
+
+import postsJson from '../../content/posts.json';
+import { postCollection, type Post } from './schema';
+
+const allPosts: Post[] = visible(parseOrThrow(postCollection, postsJson, 'content/posts.json'));
+
+/** Newest first. Drafts never reach the public list. */
+export const posts: Post[] = allPosts
+  .filter((post) => post.status === 'published')
+  .sort((a, b) => b.date.localeCompare(a.date));
+
+export function postBySlug(slug: string): Post | undefined {
+  return posts.find((post) => post.slug === slug);
+}
+
+/**
+ * Latest publications across both kinds, newest first, for the landing strip.
+ * Case studies without an explicit date fall back to the first of their year,
+ * so a study added later in the same year still sorts sensibly against posts.
+ */
+export interface LatestItem {
+  id: string;
+  kind: 'Case study' | 'Writing';
+  title: string;
+  summary: string;
+  href: string;
+  date: string;
+  meta: string;
+}
+
+export const latest: LatestItem[] = [
+  ...caseStudies.map<LatestItem>((study) => ({
+    id: study.id,
+    kind: 'Case study',
+    title: study.title,
+    summary: study.thesis,
+    href: `/work/${study.slug}`,
+    date: study.date ?? `${study.year}-01-01`,
+    meta: study.domain,
+  })),
+  ...posts.map<LatestItem>((post) => ({
+    id: post.id,
+    kind: 'Writing',
+    title: post.title,
+    summary: post.summary,
+    href: `/writing/${post.slug}`,
+    date: post.date,
+    meta: post.tags.join(' · '),
+  })),
+].sort((a, b) => b.date.localeCompare(a.date));

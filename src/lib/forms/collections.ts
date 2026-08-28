@@ -1,6 +1,7 @@
 import type { z } from 'zod';
 import {
   caseStudySchema,
+  postSchema,
   experienceSchema,
   profileSchema,
   projectSchema,
@@ -71,6 +72,15 @@ export const COLLECTIONS: CollectionDef[] = [
     path: 'content/skills.json',
     shape: 'list',
     schema: skillGroupSchema,
+    titleField: 'title',
+    publishable: true,
+  },
+  {
+    key: 'writing',
+    label: 'Writing',
+    path: 'content/posts.json',
+    shape: 'list',
+    schema: postSchema,
     titleField: 'title',
     publishable: true,
   },

@@ -88,92 +88,12 @@ export type Publication = z.infer<typeof publicationSchema>;
 export type Link = z.infer<typeof linkSchema>;
 
 /* ============================================================
-   Case studies
-   Structured blocks rather than MDX: the admin generates its
-   editing forms from these schemas, and free-form MDX would be
-   a hole in that. Prose is still prose — it is just typed.
+   Case studies and posts
+   Authored as Markdown. Typed fenced blocks (chart, keynumbers,
+   finding, caution) cover the things Markdown has no syntax for,
+   so a technical write-up keeps its figures and callouts without
+   giving up a plain-text authoring format.
    ============================================================ */
-
-const proseBlock = z.object({
-  type: z.literal('prose'),
-  paragraphs: z.array(z.string().min(1)).min(1),
-});
-
-const headingBlock = z.object({
-  type: z.literal('heading'),
-  text: z.string().min(1),
-  eyebrow: z.string().optional(),
-});
-
-const figureBlock = z.object({
-  type: z.literal('figure'),
-  src: z.string().min(1),
-  alt: z.string().min(1),
-  caption: z.string().min(1),
-  /** Inverts the image in dark mode — for figures authored on white. */
-  invertInDark: z.boolean().default(false),
-});
-
-const keyNumbersBlock = z.object({
-  type: z.literal('keyNumbers'),
-  items: z
-    .array(
-      z.object({
-        value: z.string().min(1),
-        label: z.string().min(1),
-        note: z.string().optional(),
-      }),
-    )
-    .min(1),
-});
-
-const tableBlock = z.object({
-  type: z.literal('table'),
-  caption: z.string().optional(),
-  columns: z.array(z.string().min(1)).min(2),
-  rows: z.array(z.array(z.string())).min(1),
-  /** Row index to emphasise — the selected setting, the chosen case. */
-  highlightRow: z.number().int().min(0).optional(),
-});
-
-const calloutBlock = z.object({
-  type: z.literal('callout'),
-  tone: z.enum(['finding', 'caution']),
-  title: z.string().min(1),
-  body: z.string().min(1),
-});
-
-const equationBlock = z.object({
-  type: z.literal('equation'),
-  /** Source of truth for editing and for the accessible label. */
-  tex: z.string().min(1),
-  /**
-   * Presentation MathML. Rendered natively by the browser: no maths library,
-   * no webfont, and screen readers announce it as an equation rather than as
-   * a picture. If the blog later needs heavy typesetting this is where a
-   * build-time TeX-to-MathML step would slot in.
-   */
-  mathml: z.string().min(1),
-  caption: z.string().optional(),
-});
-
-const chartBlock = z.object({
-  type: z.literal('chart'),
-  /** Named chart component; the renderer maps this to an implementation. */
-  chart: z.enum(['failureBoundary', 'gridConvergence']),
-  caption: z.string().min(1),
-});
-
-export const caseStudyBlock = z.discriminatedUnion('type', [
-  proseBlock,
-  headingBlock,
-  figureBlock,
-  keyNumbersBlock,
-  tableBlock,
-  calloutBlock,
-  equationBlock,
-  chartBlock,
-]);
 
 export const caseStudySchema = publishable.extend({
   slug: z.string().regex(/^[a-z0-9-]+$/),
@@ -185,15 +105,19 @@ export const caseStudySchema = publishable.extend({
   domain: z.string().min(1),
   tools: z.array(z.string().min(1)).min(1),
   year: z.number().int().min(1900).max(2100),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
   cover: z.string().optional(),
-  blocks: z.array(caseStudyBlock).min(1),
+  /** The document itself, in Markdown. */
+  body: z.string().min(1),
   credit: z.string().optional(),
 });
 
 export const caseStudyCollection = z.array(caseStudySchema);
 
 export type CaseStudy = z.infer<typeof caseStudySchema>;
-export type CaseStudyBlock = z.infer<typeof caseStudyBlock>;
 
 /* ============================================================
    Projects
@@ -245,3 +169,21 @@ export interface ResolvedProject extends Project {
   displayTitle: string;
   displaySummary: string;
 }
+
+/* ============================================================
+   Writing
+   ============================================================ */
+
+export const postSchema = publishable.extend({
+  slug: z.string().regex(/^[a-z0-9-]+$/),
+  status: z.enum(['draft', 'published']).default('draft'),
+  title: z.string().min(1),
+  summary: z.string().min(1),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  tags: z.array(z.string().min(1)).default([]),
+  /** The post itself, in Markdown. */
+  body: z.string().min(1),
+});
+
+export const postCollection = z.array(postSchema);
+export type Post = z.infer<typeof postSchema>;

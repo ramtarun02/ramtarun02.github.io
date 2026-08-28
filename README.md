@@ -51,6 +51,46 @@ Dark is the signature theme and owns the bare `:root`. Light is defined under
 choice beats the OS preference in both directions. Every colour is a token — never
 declare one inside a media or `[data-theme]` block only.
 
+## Writing case studies and posts
+
+Both are Markdown, stored in `content/case-studies.json` and `content/posts.json`
+and edited at `/admin`. Standard Markdown throughout — headings, lists, tables,
+code, images, blockquotes — plus four fenced blocks for the things Markdown has
+no syntax for:
+
+````
+```chart failureBoundary
+Caption for the figure.
+```
+
+```keynumbers
+±0.03 | Spread in pre-shock Mach at failure | across four conditions
++71%  | Incidence range recovered           | 3.4° to 5.8°
+```
+
+```finding The title of the finding
+Body text, itself Markdown.
+```
+
+```caution Something the reader should not over-read
+Body text.
+```
+````
+
+`##` headings get stable ids and appear in the generated contents list; reading
+time is derived from the body. Ordinary code fences (```python and so on) are
+left alone.
+
+## Admin
+
+`/admin` edits every collection. Sign in with a fine-grained GitHub token that
+has Contents: read and write on this repository — it is held in the browser and
+sent nowhere except GitHub. Saving commits to `content/`, which triggers a
+rebuild, so changes appear live a minute or two later.
+
+Forms are generated from the Zod schemas in `src/content/schema.ts`. Adding a
+field there changes the type, the build-time validation and the editor at once.
+
 ## Decisions
 
 Architecture decision records live in `docs/adr/`.

@@ -4,13 +4,16 @@ import { SiteHeader } from '@/components/nav/SiteHeader';
 import { SiteFooter } from '@/components/nav/SiteFooter';
 import { About } from '@/components/sections/About';
 import { CaseStudies } from '@/components/sections/CaseStudies';
+import { LatestStrip } from '@/components/sections/LatestStrip';
 import { Experience } from '@/components/sections/Experience';
 import { Publications } from '@/components/sections/Publications';
 import { Skills } from '@/components/sections/Skills';
 import { Contact } from '@/components/sections/Contact';
 import { Projects } from '@/components/sections/Projects';
+import { StructuredData } from '@/components/StructuredData';
 import {
   caseStudies,
+  latest,
   education,
   githubUser,
   profile,
@@ -24,9 +27,11 @@ export default function HomePage() {
   return (
     <>
       <FlowLayer />
+      <StructuredData profile={profile} publications={publications} />
       <SiteHeader name={profile.name} />
       <main id="top">
         <Hero profile={profile} />
+        <LatestStrip items={latest} />
         <About profile={profile} />
         <CaseStudies studies={caseStudies} />
         <Projects items={projects} user={githubUser} />

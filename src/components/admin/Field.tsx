@@ -90,6 +90,32 @@ export function Field({ spec, value, onChange }: FieldProps) {
     );
   }
 
+  if (spec.kind === 'markdown') {
+    return (
+      <label className="flex flex-col gap-1.5">
+        {label}
+        <span className="text-xs" style={{ color: 'var(--ink-faint)' }}>
+          Markdown. Use <code>```chart name</code>, <code>```keynumbers</code>,{' '}
+          <code>```finding Title</code> or <code>```caution Title</code> for the blocks Markdown has
+          no syntax for.
+        </span>
+        <textarea
+          value={typeof value === 'string' ? value : ''}
+          onChange={(event) => onChange(event.target.value || undefined)}
+          rows={26}
+          spellCheck
+          style={{
+            ...inputStyle,
+            resize: 'vertical',
+            lineHeight: 1.65,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'var(--text-sm)',
+          }}
+        />
+      </label>
+    );
+  }
+
   if (spec.kind === 'text') {
     return (
       <label className="flex flex-col gap-1.5">

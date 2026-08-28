@@ -30,18 +30,21 @@ describe('case studies', () => {
     expect(study?.credit).toContain('Cranfield University');
   });
 
-  it('requires MathML alongside TeX so no maths library has to ship', () => {
+  it('carries a Markdown body rather than structured blocks', () => {
     for (const study of caseStudies) {
-      for (const block of study.blocks) {
-        if (block.type === 'equation') {
-          expect(block.mathml).toContain('<math');
-          expect(block.tex.length).toBeGreaterThan(0);
-        }
-      }
+      expect(study.body.length).toBeGreaterThan(500);
+      expect(study.body).toContain('## ');
     }
   });
 
-  it('rejects a study whose highlighted table row is negative', () => {
+  it('keeps the typed fenced blocks Markdown has no syntax for', () => {
+    const crm = caseStudyBySlug('transonic-incidence-limit');
+    expect(crm?.body).toContain('```keynumbers');
+    expect(crm?.body).toContain('```chart failureBoundary');
+    expect(crm?.body).toContain('```finding ');
+  });
+
+  it('rejects a study with an empty body', () => {
     const result = caseStudySchema.safeParse({
       id: 'x',
       slug: 'x',
@@ -51,7 +54,7 @@ describe('case studies', () => {
       domain: 'd',
       tools: ['a'],
       year: 2026,
-      blocks: [{ type: 'table', columns: ['a', 'b'], rows: [['1', '2']], highlightRow: -1 }],
+      body: '',
     });
     expect(result.success).toBe(false);
   });
