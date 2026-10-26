@@ -5,8 +5,8 @@ import type { Profile, SectionCopy } from '@/content/schema';
 
 const STATS = [
   { value: '3', label: 'Conference papers', note: 'AIAA SciTech · ICAS 2024 · ICAS 2026' },
-  { value: '19,024 ft', label: 'UAV payload record', note: '30 kg, 2024 — team lead' },
-  { value: 'Mach 6', label: 'Latest validation case', note: 'hypersonic aerospike — see below' },
+  { value: 'Mach 6', label: 'Latest case study', note: 'hypersonic aerospike — see below' },
+  { value: 'Next up', label: 'Latest project', note: 'Aircraft Design & Optimisation' },
 ];
 
 /**

@@ -11,7 +11,7 @@
   "summaryShort": "I build the solvers that make transonic aerodynamics computable — and study where they stop being trustworthy.",
   "summaryLong": [
     "I spend most of my working hours doing something that looks, from the outside, like staring at numbers until they behave: writing the solvers that predict how air moves over a wing, then hunting for the exact point where they stop telling the truth. My MSc at Cranfield was built around that second half — not getting a transonic solver to converge, but finding precisely where it couldn't, and why.",
-    "The same habit has followed me from wind tunnels to CFD clusters to a UAV that once carried 30 kg to 19,024 ft, which is a very good way to stop being careless about what a model actually claims. These days that mostly means asking which setting in a simulation is quietly deciding the answer.",
+    "The same habit has followed me from wind tunnels to CFD clusters to UAV airframes, and seeing a model next to the real thing is a very good way to stop being careless about what it actually claims. These days that mostly means asking which setting in a simulation is quietly deciding the answer.",
     "Off the clock I'm usually chasing a football or a shuttlecock around a court, badly, and I'm told by everyone who knows me that I disappear into work for stretches that don't count as healthy. I'm working on that. The solvers, less so."
   ],
   "availability": "Open to collaboration — academic or industrial",
