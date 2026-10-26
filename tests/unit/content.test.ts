@@ -7,7 +7,7 @@ describe('content loading', () => {
     expect(profile.name).toBe('Tarun Ramprakash');
     expect(experience.length).toBeGreaterThan(0);
     expect(skills.length).toBeGreaterThan(0);
-    expect(publications.length).toBe(2);
+    expect(publications.length).toBe(3);
   });
 
   it('splits work history from education so each renders in its own section', () => {

@@ -428,7 +428,7 @@ export function SensitivityChart() {
             <div
               style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 7 }}
             >
-              <span style={{ fontSize: 15, fontWeight: 600 }}>
+              <span style={{ fontSize: 15, fontWeight: 700 }}>
                 {r.label}
                 <span
                   style={{
@@ -443,7 +443,7 @@ export function SensitivityChart() {
               </span>
               <span
                 className="u-gradient-text"
-                style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.03em' }}
+                style={{ fontSize: 22, fontWeight: 900, letterSpacing: '-0.03em' }}
               >
                 {r.text}
               </span>
@@ -595,7 +595,7 @@ function RowCells({
               background: t.bg,
               color: t.text,
               fontSize: 12,
-              fontWeight: 600,
+              fontWeight: 700,
               cursor: 'pointer',
               boxShadow: isSel ? '0 0 0 3px rgba(224,242,254,0.15)' : undefined,
               transition: 'box-shadow 0.2s, border-color 0.2s',
@@ -623,7 +623,7 @@ function RunDetail({ row }: { row: Row }) {
   ];
   return (
     <div>
-      <p style={{ margin: 0, fontWeight: 650 }}>
+      <p style={{ margin: 0, fontWeight: 800 }}>
         {row.model} · {row.config} · {row.mesh === 'No-AMR' ? 'Mesh 3' : 'AMR'}
       </p>
       <p style={{ margin: '4px 0 12px', fontSize: 13.5, color: TONE[tone].text }}>{row.status}</p>

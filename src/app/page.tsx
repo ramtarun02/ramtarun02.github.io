@@ -1,4 +1,5 @@
 import { Hero } from '@/components/hero/Hero';
+import { NightFade, SkyBackdrop } from '@/components/hero/SkyBackdrop';
 import { SiteHeader } from '@/components/nav/SiteHeader';
 import { SiteFooter } from '@/components/nav/SiteFooter';
 import { StructuredData } from '@/components/StructuredData';
@@ -16,16 +17,19 @@ export default function HomePage() {
     <>
       <StructuredData profile={profile} publications={publications} />
       <SiteHeader name={profile.name} />
+      <SkyBackdrop />
       <main id="main">
         <Hero profile={profile} />
-        <About profile={profile} copy={sections.about} />
-        <CaseStudyFeature copy={sections.caseStudies} study={featured} />
-        <Projects copy={sections.projects} items={projects} />
-        <Experience copy={sections.experience} items={experience} />
-        <Publications items={publications} copy={sections.research} />
-        <Contact profile={profile} copy={sections.contact} />
+        <NightFade>
+          <About profile={profile} copy={sections.about} />
+          <CaseStudyFeature copy={sections.caseStudies} study={featured} />
+          <Projects copy={sections.projects} items={projects} />
+          <Experience copy={sections.experience} items={experience} />
+          <Publications items={publications} copy={sections.research} />
+          <Contact profile={profile} copy={sections.contact} />
+          <SiteFooter name={profile.name} />
+        </NightFade>
       </main>
-      <SiteFooter name={profile.name} />
     </>
   );
 }

@@ -1,10 +1,29 @@
 [
   {
-    "id": "aiaa-2024-1488",
+    "id": "icas-2026",
     "order": 0,
     "published": true,
+    "title": "Implementation of Propeller-Wing Interference Model and Horizontal Tail Analysis into a Viscous Full Potential Flow Solver Framework for Aircraft Design",
+    "authors": [
+      "T. A. Ramprakash",
+      "D. Di Pasquale",
+      "S. Kumar"
+    ],
+    "selfIndex": 0,
+    "venue": "35th Congress of the International Council of the Aeronautical Sciences (ICAS 2026), Sydney",
+    "year": 2026,
+    "status": "Presented · not yet published"
+  },
+  {
+    "id": "aiaa-2024-1488",
+    "order": 1,
+    "published": true,
     "title": "Effect of Blade Shape on Aerodynamic and Aeroacoustic Characteristics of Vertical Axis Wind Turbines using Mid-fidelity and High-fidelity Methods",
-    "authors": ["Tarun Ramprakash Thambidurai Arasi", "Shubham Shubham", "Anton Ianakiev"],
+    "authors": [
+      "Tarun Ramprakash Thambidurai Arasi",
+      "Shubham Shubham",
+      "Anton Ianakiev"
+    ],
     "selfIndex": 0,
     "venue": "AIAA SciTech Forum",
     "year": 2024,
@@ -14,10 +33,16 @@
   },
   {
     "id": "icas-2024-0581",
-    "order": 1,
+    "order": 2,
     "published": true,
     "title": "Computational Analysis on the Effects of Leading Edge Tubercles on the Performance of Rotating Propeller",
-    "authors": ["D. Di Pasquale", "T. Tarun", "S. Shubham", "S. A. Prince", "A. Proenca"],
+    "authors": [
+      "D. Di Pasquale",
+      "T. Tarun",
+      "S. Shubham",
+      "S. A. Prince",
+      "A. Proenca"
+    ],
     "selfIndex": 1,
     "venue": "34th Congress of the International Council of the Aeronautical Sciences, Florence",
     "year": 2024,

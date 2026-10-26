@@ -11,7 +11,7 @@
     "summary": "Computational engineering consultancy specialising in CFD, FEA and simulation-driven product development.",
     "highlights": [
       "Compared solver stability and accuracy between Green-Gauss and least-squares gradient reconstruction schemes",
-      "Implemented finite difference and finite volume methods on structured Cartesian grids, and built a 2D incompressible Euler solver in C++/MPI for the shock tube benchmark",
+      "Implemented finite difference and finite volume methods on structured Cartesian grids, and built a 2D incompressible Euler solver in C++/MPI",
       "Investigated turbulence model sensitivity and numerical method behaviour across study cases in Fluent and OpenFOAM"
     ],
     "tags": [
@@ -21,7 +21,7 @@
       "ANSYS Fluent",
       "Numerical methods"
     ],
-    "story": "Compared gradient reconstruction schemes head to head — Green-Gauss against least squares — and built a 2D Euler solver in C++/MPI from scratch to watch the shock tube benchmark come together cell by cell.",
+    "story": "Compared gradient reconstruction schemes head to head — Green-Gauss against least squares — and wrote a 2D incompressible Euler solver in C++/MPI from scratch.",
     "end": "2026-09"
   },
   {
@@ -33,7 +33,7 @@
     "organisation": "Cranfield University",
     "location": "Cranfield, UK",
     "start": "2024-09",
-    "end": "2026-04",
+    "end": "2026-09",
     "summary": "Thesis: improving a viscous full-potential (VFP) transonic flow solver for rapid conceptual aircraft design.",
     "highlights": [
       "Redesigned the legacy VFP workflow as FlowVFP, an AI/ML-compatible in-house solver for rapid conceptual transonic design, presented at the AIRBUS OneHeart Design Sprint 2026",

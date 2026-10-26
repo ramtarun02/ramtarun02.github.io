@@ -45,8 +45,8 @@ export default function WorkIndexPage() {
                 style={{
                   margin: '16px 0 8px',
                   fontSize: 'var(--text-3xl)',
-                  fontWeight: 700,
-                  letterSpacing: '-0.04em',
+                  fontWeight: 900,
+                  letterSpacing: '-0.03em',
                   lineHeight: 1.1,
                 }}
               >
@@ -62,7 +62,7 @@ export default function WorkIndexPage() {
               >
                 {study.thesis}
               </p>
-              <p style={{ margin: '20px 0 0', color: 'var(--accent)', fontWeight: 600 }}>
+              <p style={{ margin: '20px 0 0', color: 'var(--accent)', fontWeight: 700 }}>
                 Read the study →
               </p>
             </Link>

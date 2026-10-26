@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   motion,
+  useMotionValue,
   useReducedMotion,
   useScroll,
   useSpring,
@@ -34,20 +35,31 @@ export function Experience({ copy, items }: { copy: SectionCopy; items: Experien
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 70%', 'end 60%'] });
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.4 });
-  const planeTop = useTransform(progress, (v) => `${Math.min(1, Math.max(0, v)) * 100}%`);
+  // The plane rides the route with a transform, not `top`: animating `top`
+  // forces a layout on every scroll frame, which is what made phones judder.
+  const routeRef = useRef<HTMLDivElement>(null);
+  const routeH = useMotionValue(0);
+  useEffect(() => {
+    const el = routeRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => routeH.set(el.offsetHeight));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [routeH]);
+  const planeY = useTransform(() => Math.min(1, Math.max(0, progress.get())) * routeH.get());
 
   return (
     <Section id="experience" copy={copy}>
       <div ref={ref} className="tl">
         {/* Route */}
-        <div className="tl-route" aria-hidden="true">
+        <div ref={routeRef} className="tl-route" aria-hidden="true">
           <div className="tl-route-track" />
           <motion.div
             className="tl-route-fill"
             style={{ scaleY: reduce ? 1 : progress, transformOrigin: 'top' }}
           />
           {!reduce ? (
-            <motion.div className="tl-plane" style={{ top: planeTop }}>
+            <motion.div className="tl-plane" style={{ x: '-50%', y: planeY }}>
               <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
                 <path
                   d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"
@@ -73,7 +85,7 @@ export function Experience({ copy, items }: { copy: SectionCopy; items: Experien
         .tl-route-fill { position: absolute; inset: 0; border-radius: 2px;
           background: linear-gradient(180deg, #7dd3fc, #818cf8 60%, #a78bfa);
           box-shadow: 0 0 14px rgba(125,211,252,0.6); }
-        .tl-plane { position: absolute; left: 50%; transform: translate(-50%, -50%); color: #e0f2fe;
+        .tl-plane { position: absolute; top: -13px; left: 50%; color: #e0f2fe; will-change: transform;
           filter: drop-shadow(0 0 10px rgba(125,211,252,0.9)); }
         .tl-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 28px; }
         .tl-stop { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
@@ -88,7 +100,7 @@ export function Experience({ copy, items }: { copy: SectionCopy; items: Experien
         .tl-card { width: 100%; text-align: left; cursor: pointer; border-radius: 24px; padding: 22px 24px; color: inherit; font: inherit; }
         @media (max-width: 860px) {
           .tl-route { left: 11px; transform: none; }
-          .tl-plane { left: 1px; }
+          .tl-plane { left: 12px; }
           .tl-stop { grid-template-columns: 1fr; gap: 0; padding-left: 40px; }
           .tl-stop[data-side='right'] .tl-card-wrap { grid-column: 1; }
           .tl-node { left: 12px; top: 26px; }
@@ -136,7 +148,7 @@ function Stop({ item, side }: { item: ExperienceItem; side: 'left' | 'right' }) 
             style={{
               margin: '14px 0 2px',
               fontSize: 'var(--text-xl)',
-              fontWeight: 700,
+              fontWeight: 900,
               letterSpacing: '-0.03em',
               lineHeight: 1.2,
             }}
@@ -217,7 +229,7 @@ function Stop({ item, side }: { item: ExperienceItem; side: 'left' | 'right' }) 
               gap: 6,
               marginTop: 14,
               fontSize: 13,
-              fontWeight: 600,
+              fontWeight: 700,
               color: 'var(--ice-200)',
             }}
           >

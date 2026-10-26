@@ -40,13 +40,14 @@ function PaperCard({ pub }: { pub: Publication }) {
             </span>
             <span className="chip chip--muted">Conference paper</span>
             {firstAuthor ? <span className="chip chip--good">First author</span> : null}
+            {pub.status ? <span className="chip chip--violet">{pub.status}</span> : null}
           </div>
           <h3
             style={{
               margin: '14px 0 8px',
               fontSize: 'var(--text-xl)',
-              fontWeight: 650,
-              letterSpacing: '-0.025em',
+              fontWeight: 800,
+              letterSpacing: '-0.02em',
               lineHeight: 1.3,
               textWrap: 'balance',
             }}
@@ -58,7 +59,7 @@ function PaperCard({ pub }: { pub: Publication }) {
               <span key={a}>
                 {i > 0 ? ', ' : ''}
                 <span
-                  style={i === pub.selfIndex ? { color: 'var(--ink)', fontWeight: 600 } : undefined}
+                  style={i === pub.selfIndex ? { color: 'var(--ink)', fontWeight: 700 } : undefined}
                 >
                   {a}
                 </span>
@@ -101,15 +102,17 @@ function PaperCard({ pub }: { pub: Publication }) {
                 {open ? 'Hide summary' : 'Read summary'}
               </button>
             ) : null}
-            <a
-              href={pub.href}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="btn btn-glass"
-              style={{ minHeight: 38 }}
-            >
-              {pub.doi ? `DOI ${pub.doi}` : 'View paper'} <span aria-hidden="true">↗</span>
-            </a>
+            {pub.href ? (
+              <a
+                href={pub.href}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="btn btn-glass"
+                style={{ minHeight: 38 }}
+              >
+                {pub.doi ? `DOI ${pub.doi}` : 'View paper'} <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
           </div>
         </div>
       </div>

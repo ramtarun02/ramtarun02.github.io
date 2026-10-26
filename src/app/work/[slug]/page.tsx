@@ -121,8 +121,8 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                       className="u-gradient-text"
                       style={{
                         fontSize: 'var(--text-2xl)',
-                        fontWeight: 700,
-                        letterSpacing: '-0.04em',
+                        fontWeight: 900,
+                        letterSpacing: '-0.03em',
                         lineHeight: 1.1,
                       }}
                     >
@@ -164,7 +164,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                   style={{
                     margin: 0,
                     fontSize: 'var(--text-xl)',
-                    fontWeight: 700,
+                    fontWeight: 900,
                     letterSpacing: '-0.03em',
                   }}
                 >

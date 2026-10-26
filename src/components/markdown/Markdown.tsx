@@ -69,7 +69,7 @@ function SegmentView({ segment }: { segment: Segment }) {
         <summary>
           <span className="chip chip--violet">Deep dive</span>
           <span
-            style={{ fontWeight: 650, fontSize: 'var(--text-base)', letterSpacing: '-0.015em' }}
+            style={{ fontWeight: 800, fontSize: 'var(--text-base)', letterSpacing: '-0.015em' }}
           >
             {segment.title}
           </span>
@@ -99,8 +99,8 @@ function SegmentView({ segment }: { segment: Segment }) {
               className="u-gradient-text"
               style={{
                 fontSize: 'var(--text-2xl)',
-                fontWeight: 700,
-                letterSpacing: '-0.04em',
+                fontWeight: 900,
+                letterSpacing: '-0.03em',
                 lineHeight: 1.1,
               }}
             >
@@ -141,7 +141,7 @@ function SegmentView({ segment }: { segment: Segment }) {
         <h3
           style={{
             fontSize: 'var(--text-lg)',
-            fontWeight: 650,
+            fontWeight: 800,
             letterSpacing: '-0.02em',
             margin: '8px 0 6px',
           }}

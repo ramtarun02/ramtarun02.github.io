@@ -33,13 +33,16 @@ export function SiteHeader({ name, onHome = true }: { name: string; onHome?: boo
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        const y = window.scrollY;
+        // Clamp out iOS rubber-band overscroll, and only react to deliberate
+        // movement, so momentum scrolling never makes the pill flicker.
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const y = Math.min(Math.max(window.scrollY, 0), Math.max(max, 0));
         const delta = y - lastY.current;
         setScrolled(y > 40);
         if (y < 120) setHidden(false);
-        else if (delta > 6) setHidden(true);
-        else if (delta < -6) setHidden(false);
-        lastY.current = y;
+        else if (delta > 12) setHidden(true);
+        else if (delta < -12) setHidden(false);
+        if (Math.abs(delta) > 12 || y < 120) lastY.current = y;
         ticking = false;
       });
     };
@@ -135,7 +138,7 @@ export function SiteHeader({ name, onHome = true }: { name: string; onHome?: boo
                 border: '1.5px solid rgba(255,255,255,0.35)',
               }}
             />
-            <span style={{ fontWeight: 650, fontSize: 15, letterSpacing: '-0.02em' }}>
+            <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: '-0.02em' }}>
               {name.split(' ')[0]}
             </span>
           </Link>
@@ -278,7 +281,7 @@ export function SiteHeader({ name, onHome = true }: { name: string; onHome?: boo
                         padding: '15px 16px',
                         borderRadius: 16,
                         fontSize: 18,
-                        fontWeight: 600,
+                        fontWeight: 700,
                         letterSpacing: '-0.02em',
                         textDecoration: 'none',
                         color: active === link.id ? 'var(--accent)' : 'var(--ink)',

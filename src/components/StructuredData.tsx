@@ -40,7 +40,7 @@ export function StructuredData({
       '@type': 'ScholarlyArticle',
       name: paper.title,
       datePublished: String(paper.year),
-      url: paper.href,
+      ...(paper.href ? { url: paper.href } : {}),
       ...(paper.doi ? { identifier: `https://doi.org/${paper.doi}` } : {}),
       author: paper.authors.map((author) => ({ '@type': 'Person', name: author })),
     })),

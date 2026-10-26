@@ -75,7 +75,10 @@ export const publicationSchema = publishable.extend({
   venue: z.string().min(1),
   year: z.number().int().min(1900).max(2100),
   doi: z.string().optional(),
-  href: z.string().url(),
+  /** Omitted while a paper is presented but not yet published. */
+  href: z.string().url().optional(),
+  /** Short status shown on the card, e.g. "Presented · not yet published". */
+  status: z.string().optional(),
   abstract: z.string().optional(),
 });
 

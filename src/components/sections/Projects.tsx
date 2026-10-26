@@ -58,8 +58,8 @@ function ProjectCard({ project }: { project: ResolvedProject }) {
           style={{
             margin: 0,
             fontSize: 'var(--text-2xl)',
-            fontWeight: 700,
-            letterSpacing: '-0.035em',
+            fontWeight: 900,
+            letterSpacing: '-0.03em',
           }}
         >
           {project.displayTitle}
@@ -168,8 +168,8 @@ function ComingSoonCard({ project }: { project: ResolvedProject }) {
             style={{
               margin: '16px 0 10px',
               fontSize: 'var(--text-2xl)',
-              fontWeight: 700,
-              letterSpacing: '-0.035em',
+              fontWeight: 900,
+              letterSpacing: '-0.03em',
             }}
           >
             {project.displayTitle}

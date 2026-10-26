@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from 'next';
 import { site, siteUrl } from '@/lib/site';
 
 // Self-hosted, so a build never depends on reaching Google Fonts.
-// Inter is the closest freely licensed match to Apple's SF Pro, which is what
-// makes the glass read as "native" rather than "web".
-import '@fontsource-variable/inter/index.css';
+// Nunito's rounded terminals are the closest free match to Apple's SF Pro
+// Rounded — friendly and casual without losing legibility.
+import '@fontsource-variable/nunito/index.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 

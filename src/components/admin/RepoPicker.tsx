@@ -87,7 +87,7 @@ export function RepoPicker({
         const isPublished = published.has(repo.name.toLowerCase());
         return (
           <GlassPanel key={repo.name} radius="sm" className="flex flex-wrap items-center gap-3 p-3">
-            <span style={{ fontWeight: 600 }}>{repo.name}</span>
+            <span style={{ fontWeight: 700 }}>{repo.name}</span>
             {repo.language ? (
               <span className="u-label" style={{ color: 'var(--ink-faint)' }}>
                 {repo.language}

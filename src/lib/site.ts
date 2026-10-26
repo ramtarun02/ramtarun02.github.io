@@ -9,7 +9,12 @@ export const site = {
   canonicalName: 'Tarun Ramprakash Thambidurai Arasi',
   /** Indexed differently by AIAA, ICAS and his CV — emitted as structured data
    *  so citation trackers resolve all three to one person. */
-  nameVariants: ['Tarun Ramprakash Thambidurai Arasi', 'Tarun Ramprakash TA', 'T. Tarun'],
+  nameVariants: [
+    'Tarun Ramprakash Thambidurai Arasi',
+    'Tarun Ramprakash TA',
+    'T. Tarun',
+    'T. A. Ramprakash',
+  ],
   role: 'Aerospace Researcher — CFD & Solver Development',
   description:
     'Aerospace researcher working in computational fluid dynamics and solver development. Open to academic and industrial collaboration.',

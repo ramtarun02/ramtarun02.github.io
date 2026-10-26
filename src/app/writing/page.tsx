@@ -51,7 +51,7 @@ function PostList() {
             </p>
             <h2
               className="mt-3 text-balance"
-              style={{ fontSize: 'var(--text-2xl)', fontWeight: 600, lineHeight: 1.2 }}
+              style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, lineHeight: 1.2 }}
             >
               {post.title}
             </h2>

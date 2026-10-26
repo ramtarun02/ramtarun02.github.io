@@ -91,10 +91,10 @@ export function CaseStudyFeature({
           padding: 0 clamp(1.5rem, 4vw, 3rem) clamp(1.75rem, 4vw, 3rem); margin-top: -40px; position: relative; z-index: 1; }
         .cs-intro { display: flex; flex-direction: column; gap: 18px; }
         .cs-side { display: flex; flex-direction: column; gap: 22px; justify-content: flex-end; }
-        .cs-title { margin: 0; font-size: var(--text-3xl); font-weight: 700; letter-spacing: -0.04em; line-height: 1.08; text-wrap: balance; }
+        .cs-title { margin: 0; font-size: var(--text-3xl); font-weight: 900; letter-spacing: -0.03em; line-height: 1.08; text-wrap: balance; }
         .cs-stats { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px 20px; margin: 0; padding: 18px 0;
           border-top: 1px solid var(--edge); border-bottom: 1px solid var(--edge); }
-        .cs-stats dt { font-size: var(--text-2xl); font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }
+        .cs-stats dt { font-size: var(--text-2xl); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; }
         .cs-stats dd { margin: 4px 0 0; font-size: 13.5px; color: var(--ink-faint); line-height: 1.4; }
         @media (max-width: 900px) {
           .cs-body { grid-template-columns: 1fr; margin-top: -10px; }

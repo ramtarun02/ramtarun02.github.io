@@ -91,7 +91,7 @@ function ListEditor({ definition, data, onChange }: Props) {
                 type="button"
                 onClick={() => setOpenIndex(open ? null : index)}
                 className="flex-1 text-left"
-                style={{ fontWeight: 600 }}
+                style={{ fontWeight: 700 }}
                 aria-expanded={open}
               >
                 {title}
