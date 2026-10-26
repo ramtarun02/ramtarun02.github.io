@@ -23,11 +23,8 @@ export function StructuredData({
     url: absoluteUrl('/'),
     jobTitle: profile.headline,
     description: profile.summaryShort,
-    identifier: `https://orcid.org/${site.orcid}`,
     sameAs: [
-      `https://orcid.org/${site.orcid}`,
-      `https://github.com/${site.github}`,
-      ...profile.links.map((link) => link.href),
+      ...new Set([`https://github.com/${site.github}`, ...profile.links.map((l) => l.href)]),
     ],
     address: { '@type': 'PostalAddress', addressLocality: profile.location },
     knowsAbout: [

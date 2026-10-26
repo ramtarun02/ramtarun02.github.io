@@ -19,8 +19,8 @@ export const site = {
   description:
     'Aerospace researcher working in computational fluid dynamics and solver development. Open to academic and industrial collaboration.',
   locale: 'en_GB',
-  orcid: '0009-0009-1879-9117',
   github: 'ramtarun02',
+  linkedin: 'https://www.linkedin.com/in/ramtarun237/',
   email: 'tarun.uk24@gmail.com',
 } as const;
 
