@@ -1,58 +1,72 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { motion } from 'motion/react';
-import { revealVariants, revealViewport, staggerVariants } from '@/lib/motion';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { SectionCopy } from '@/content/schema';
 
 interface SectionProps {
   id: string;
   copy: SectionCopy;
   children: ReactNode;
-  /** Header spans the full width instead of sitting beside the content. */
-  wide?: boolean;
+  /** Right-aligned header row (icon buttons etc.) instead of a stacked one. */
+  headerExtra?: ReactNode;
 }
 
-/**
- * Shared section shell.
- *
- * The header sits in a left column on wide screens and the content takes the
- * rest, which uses the screen instead of stacking everything down a narrow
- * ribbon. Copy comes from content so headings can be edited — and so no
- * heading has to be rewritten when an entry is added.
- */
-export function Section({ id, copy, children, wide = false }: SectionProps) {
+/** Shared section shell: eyebrow + title + lede, fading up into view on scroll. */
+export function Section({ id, copy, children, headerExtra }: SectionProps) {
+  const ref = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(
+    () => typeof window !== 'undefined' && !('IntersectionObserver' in window),
+  );
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: '0px 0px -5% 0px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.section
+    <section
       id={id}
-      className="shell scroll-mt-28 py-20 sm:py-28"
-      variants={staggerVariants()}
-      initial="hidden"
-      whileInView="visible"
-      viewport={revealViewport}
+      ref={ref}
+      className={`reveal${visible ? ' in' : ''}`}
+      style={{ maxWidth: 1160, margin: '0 auto', padding: '20px 24px 90px' }}
     >
       <div
-        className={
-          wide ? 'flex flex-col gap-12' : 'grid gap-10 lg:grid-cols-[22rem_minmax(0,1fr)] lg:gap-16'
-        }
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+          gap: 20,
+          flexWrap: 'wrap',
+          marginBottom: 34,
+        }}
       >
-        <motion.header
-          variants={revealVariants}
-          className="flex flex-col gap-4 lg:sticky lg:top-28 lg:self-start"
-        >
-          <p className="u-label" style={{ color: 'var(--accent)' }}>
-            {copy.eyebrow}
-          </p>
-          <h2 className="u-display" style={{ fontSize: 'var(--text-4xl)' }}>
+        <div>
+          <span className="tag tag-accent">{copy.eyebrow}</span>
+          <h2 className="u-display" style={{ margin: '18px 0 10px', fontSize: 36 }}>
             {copy.title}
           </h2>
           {copy.lede ? (
-            <p style={{ fontSize: 'var(--text-base)', color: 'var(--ink-muted)' }}>{copy.lede}</p>
+            <p style={{ color: 'var(--ink-muted)', fontSize: 15, margin: 0, maxWidth: '60ch' }}>
+              {copy.lede}
+            </p>
           ) : null}
-        </motion.header>
-
-        <motion.div variants={revealVariants}>{children}</motion.div>
+        </div>
+        {headerExtra}
       </div>
-    </motion.section>
+      {children}
+    </section>
   );
 }

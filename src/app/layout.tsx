@@ -1,19 +1,33 @@
 import type { Metadata, Viewport } from 'next';
+import { Caprasimo, Figtree, Inter } from 'next/font/google';
 import { site, siteUrl } from '@/lib/site';
-import { SpaceField } from '@/components/space/SpaceField';
 
-// Self-hosted fonts. Latin subsets only, weights imported explicitly: nothing
-// unused ships, and the build needs no network.
-import '@fontsource/ibm-plex-sans/latin-400.css';
-import '@fontsource/ibm-plex-sans/latin-500.css';
-import '@fontsource/ibm-plex-sans/latin-600.css';
-import '@fontsource/ibm-plex-sans/latin-700.css';
+// Self-hosted mono for numeric/label bits shared by both themes.
 import '@fontsource/ibm-plex-mono/latin-400.css';
 import '@fontsource/ibm-plex-mono/latin-500.css';
-import '@fontsource/instrument-serif/latin-400.css';
-import '@fontsource/instrument-serif/latin-400-italic.css';
 
 import './globals.css';
+
+const caprasimo = Caprasimo({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-caprasimo',
+  display: 'swap',
+});
+
+const figtree = Figtree({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-figtree',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
@@ -31,19 +45,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#05070f',
-  colorScheme: 'dark',
+  themeColor: '#f5ead8',
+  colorScheme: 'light',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB">
-      <body className="antialiased">
-        {/* One background for the whole site: the scene persists across
-            navigation instead of being torn down and rebuilt per page. */}
-        <SpaceField />
-        {children}
-      </body>
+    <html lang="en-GB" className={`${caprasimo.variable} ${figtree.variable} ${inter.variable}`}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

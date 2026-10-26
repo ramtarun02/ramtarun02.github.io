@@ -1,113 +1,112 @@
-'use client';
-
-import { motion } from 'motion/react';
-import { GlassPanel } from '@/components/glass/GlassPanel';
-import { revealVariants, spring, staggerVariants } from '@/lib/motion';
+import Image from 'next/image';
 import type { Profile } from '@/content/schema';
 
-/**
- * The hero no longer owns a flow field — the field spans the page and lives in
- * the layout, so the wing rises out of frame as the reader descends rather than
- * being clipped at the end of a section.
- */
+/** Full-bleed sunset hero with a warm gradient scrim, matching the approved design. */
 export function Hero({ profile }: { profile: Profile }) {
   return (
-    <section className="relative flex min-h-[100svh] w-full items-center">
-      <div className="shell w-full py-28 sm:py-24">
-        <motion.div
-          className="w-full max-w-3xl"
-          variants={staggerVariants(0.08, 0.1)}
-          initial="hidden"
-          animate="visible"
-        >
-          <GlassPanel variant="strong" radius="xl" interactive className="p-7 sm:p-10 md:p-12">
-            <motion.p
-              variants={revealVariants}
-              className="u-label inline-flex items-center gap-2.5"
-              style={{ color: 'var(--accent)' }}
-            >
-              <span
-                className="inline-block h-1.5 w-1.5 rounded-full"
-                style={{ background: 'var(--accent)' }}
-              />
-              {profile.availability}
-            </motion.p>
-
-            <motion.h1
-              variants={revealVariants}
-              className="mt-5 tracking-tight text-balance"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'var(--text-6xl)',
-                lineHeight: 0.98,
-              }}
-            >
-              {profile.name}
-            </motion.h1>
-
-            <motion.p
-              variants={revealVariants}
-              className="mt-4"
-              style={{ fontSize: 'var(--text-xl)', color: 'var(--ink-muted)' }}
-            >
-              {profile.headline}
-            </motion.p>
-
-            <motion.p
-              variants={revealVariants}
-              className="u-measure mt-6"
-              style={{ fontSize: 'var(--text-lg)' }}
-            >
-              {profile.summaryShort}
-            </motion.p>
-
-            <motion.div variants={revealVariants} className="mt-8 flex flex-wrap gap-3">
-              <PrimaryLink href="#work">See the work</PrimaryLink>
-              {profile.links.map((link) => (
-                <SecondaryLink key={link.href} href={link.href}>
-                  {link.label}
-                </SecondaryLink>
-              ))}
-            </motion.div>
-          </GlassPanel>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function PrimaryLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <motion.a
-      href={href}
-      whileHover={{ y: -2 }}
-      whileTap={{ scale: 0.97 }}
-      transition={spring.snappy}
-      className="inline-flex min-h-11 items-center px-6 py-3 text-sm font-semibold"
+    <section
+      id="top"
       style={{
-        borderRadius: 'var(--radius-pill)',
-        background: 'var(--accent)',
-        color: 'var(--accent-contrast)',
+        position: 'relative',
+        minHeight: '94vh',
+        display: 'flex',
+        alignItems: 'flex-end',
+        padding: 0,
+        overflow: 'hidden',
       }}
     >
-      {children}
-    </motion.a>
-  );
-}
-
-function SecondaryLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <motion.a
-      href={href}
-      target="_blank"
-      rel="noreferrer noopener"
-      whileHover={{ y: -2 }}
-      whileTap={{ scale: 0.97 }}
-      transition={spring.snappy}
-      className="glass inline-flex min-h-11 items-center px-6 py-3 text-sm font-medium"
-      style={{ borderRadius: 'var(--radius-pill)' }}
-    >
-      {children}
-    </motion.a>
+      <div style={{ position: 'absolute', inset: 0 }}>
+        <Image
+          src="/assets/hero-a380-sunset.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center 58%',
+            filter: 'saturate(0.6) contrast(0.92) brightness(1.06) sepia(0.15)',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background:
+              'linear-gradient(100deg, color-mix(in srgb, var(--color-accent-900) 85%, black) 0%, color-mix(in srgb, var(--color-accent-900) 55%, transparent) 36%, color-mix(in srgb, var(--color-bg) 15%, transparent) 66%, transparent 88%)',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 260,
+            background: 'linear-gradient(0deg, var(--color-bg) 0%, transparent 100%)',
+          }}
+        />
+      </div>
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: 640,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          padding: '0 24px 60px clamp(24px, 6vw, 64px)',
+        }}
+      >
+        <span
+          className="tag"
+          style={{
+            fontSize: 12,
+            background: 'transparent',
+            color: '#fff',
+            border: '1px solid rgba(255,255,255,0.6)',
+          }}
+        >
+          Aerospace engineering · CFD &amp; solver development
+        </span>
+        <h1
+          className="u-display"
+          style={{
+            fontSize: 'clamp(2.8rem, 3vw + 2.2rem, 5rem)',
+            margin: '22px 0 16px',
+            color: '#fff',
+            textShadow: '0 2px 28px rgba(0,0,0,0.4)',
+          }}
+        >
+          {profile.name}
+        </h1>
+        <p
+          style={{
+            fontSize: 18,
+            lineHeight: 1.6,
+            color: 'rgba(255,255,255,0.94)',
+            maxWidth: '46ch',
+            margin: '0 0 30px',
+            textShadow: '0 1px 14px rgba(0,0,0,0.45)',
+          }}
+        >
+          I can&rsquo;t watch an A380 take off without running the lift numbers in my head — old
+          habit, still haven&rsquo;t found the off switch.
+        </p>
+        <a
+          href="#projects"
+          className="btn"
+          style={{
+            padding: '14px 30px',
+            fontSize: 15,
+            borderRadius: 'var(--radius-pill)',
+            background: 'var(--accent-fill)',
+            color: 'var(--accent-contrast)',
+          }}
+        >
+          View work
+        </a>
+      </div>
+    </section>
   );
 }

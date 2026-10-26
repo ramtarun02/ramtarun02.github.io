@@ -76,7 +76,7 @@ export default function WorkIndexPage() {
           ))}
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter name={profile.name} />
     </>
   );
 }

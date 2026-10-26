@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { SiteHeader } from '@/components/nav/SiteHeader';
-import { SiteFooter } from '@/components/nav/SiteFooter';
+import { CaseStudyHeader } from '@/components/nav/CaseStudyHeader';
 import { Markdown } from '@/components/markdown/Markdown';
 import { DocumentRail } from '@/components/markdown/DocumentRail';
-import { caseStudies, caseStudyBySlug, profile } from '@/content';
+import { caseStudies, caseStudyBySlug } from '@/content';
 
 export function generateStaticParams() {
   return caseStudies.map((study) => ({ slug: study.slug }));
@@ -31,11 +30,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   if (!study) notFound();
 
   return (
-    <>
-      <SiteHeader name={profile.name} />
+    <div className="cs-theme">
+      <CaseStudyHeader />
 
-      <main className="reading-surface shell pt-32 pb-24 sm:pt-40">
-        <header className="mb-16 flex max-w-5xl flex-col gap-6">
+      <main className="reading-surface shell pt-16 pb-24 sm:pt-20">
+        <header className="mb-16 flex max-w-5xl flex-col gap-6" style={{ paddingTop: '3.5rem' }}>
           <p className="u-label" style={{ color: 'var(--accent)' }}>
             {study.domain}
           </p>
@@ -76,8 +75,6 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           </article>
         </div>
       </main>
-
-      <SiteFooter />
-    </>
+    </div>
   );
 }

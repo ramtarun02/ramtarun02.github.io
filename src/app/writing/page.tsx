@@ -31,7 +31,7 @@ export default function WritingPage() {
 
         {posts.length === 0 ? <EmptyState /> : <PostList />}
       </main>
-      <SiteFooter />
+      <SiteFooter name={profile.name} />
     </>
   );
 }

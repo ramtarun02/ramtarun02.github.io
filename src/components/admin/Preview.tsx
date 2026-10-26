@@ -1,7 +1,6 @@
 'use client';
 
 import { Markdown } from '@/components/markdown/Markdown';
-import { Experience } from '@/components/sections/Experience';
 import { Projects } from '@/components/sections/Projects';
 import { Publications } from '@/components/sections/Publications';
 import { Skills } from '@/components/sections/Skills';
@@ -13,7 +12,6 @@ import {
   projectSchema,
   publicationSchema,
   skillGroupSchema,
-  type ResolvedProject,
 } from '@/content/schema';
 import type { z } from 'zod';
 import { sections } from '@/content';
@@ -70,12 +68,8 @@ export function Preview({
   }
 
   if (collectionKey === 'experience') {
-    return renderMany(experienceSchema, list, (items) => (
-      <Experience
-        roles={items.filter((item) => item.kind !== 'education')}
-        education={items.filter((item) => item.kind === 'education')}
-        copy={sections.experience}
-      />
+    return renderMany(experienceSchema, list, () => (
+      <Message text="Experience now renders from a fixed timeline component; edit src/components/sections/Experience.tsx directly." />
     ));
   }
 
@@ -86,24 +80,11 @@ export function Preview({
   }
 
   if (collectionKey === 'skills') {
-    return renderMany(skillGroupSchema, list, (items) => (
-      <Skills groups={items} copy={sections.skills} />
-    ));
+    return renderMany(skillGroupSchema, list, () => <Skills copy={sections.skills} />);
   }
 
   if (collectionKey === 'projects') {
-    return renderMany(projectSchema, list, (items) => (
-      <Projects
-        copy={sections.projects}
-        user="ramtarun02"
-        items={items.map<ResolvedProject>((project) => ({
-          ...project,
-          repoData: undefined,
-          displayTitle: project.title ?? project.repo,
-          displaySummary: project.summary ?? '',
-        }))}
-      />
-    ));
+    return renderMany(projectSchema, list, () => <Projects copy={sections.projects} />);
   }
 
   return <Message text="No preview for this collection yet." />;
