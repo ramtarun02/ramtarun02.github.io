@@ -1,0 +1,74 @@
+{
+ "/case-studies/aerospike/amr_zoom.webp": [
+  1800,
+  383
+ ],
+ "/case-studies/aerospike/domain_bc.webp": [
+  1800,
+  680
+ ],
+ "/case-studies/aerospike/geometry.webp": [
+  1800,
+  632
+ ],
+ "/case-studies/aerospike/mach_annotated.webp": [
+  1800,
+  871
+ ],
+ "/case-studies/aerospike/mesh_zoom.webp": [
+  1800,
+  450
+ ],
+ "/case-studies/aerospike/models_pratio.webp": [
+  1800,
+  546
+ ],
+ "/case-studies/aerospike/models_tratio.webp": [
+  1800,
+  825
+ ],
+ "/case-studies/aerospike/monitors.webp": [
+  1800,
+  843
+ ],
+ "/case-studies/aerospike/mut_ratio.webp": [
+  1740,
+  1185
+ ],
+ "/case-studies/aerospike/quality_hist.webp": [
+  1800,
+  469
+ ],
+ "/case-studies/aerospike/residuals.webp": [
+  1800,
+  709
+ ],
+ "/case-studies/aerospike/schlieren_amr.webp": [
+  1279,
+  521
+ ],
+ "/case-studies/aerospike/schlieren_fixed.webp": [
+  1279,
+  521
+ ],
+ "/case-studies/aerospike/sting_cf.webp": [
+  1800,
+  1485
+ ],
+ "/case-studies/aerospike/streamlines.webp": [
+  1800,
+  1335
+ ],
+ "/case-studies/aerospike/turb_decay.webp": [
+  1800,
+  316
+ ],
+ "/case-studies/aerospike/wake_anomaly.webp": [
+  1800,
+  670
+ ],
+ "/case-studies/aerospike/yplus.webp": [
+  1800,
+  737
+ ]
+}

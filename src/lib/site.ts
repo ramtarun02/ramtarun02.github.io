@@ -16,9 +16,10 @@ export const site = {
   locale: 'en_GB',
   orcid: '0009-0009-1879-9117',
   github: 'ramtarun02',
+  email: 'tarun.uk24@gmail.com',
 } as const;
 
-const FALLBACK_URL = 'http://localhost:3000';
+const FALLBACK_URL = 'https://ramtarun02.github.io';
 
 /** Canonical origin, without a trailing slash. */
 export function siteUrl(): string {

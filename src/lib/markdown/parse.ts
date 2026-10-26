@@ -20,15 +20,25 @@
  *     ```finding Title of the finding
  *     Body text.
  *     ```
+ *
+ *     ```figure /case-studies/x/plot.webp
+ *     Caption, also used as the image's alt text.
+ *     ```
+ *
+ *     ```deepdive Title of the collapsible section
+ *     Markdown that stays folded until the reader asks for it.
+ *     ```
  */
 
 export type Segment =
   | { type: 'markdown'; text: string }
   | { type: 'chart'; chart: string; caption: string }
   | { type: 'keyNumbers'; items: { value: string; label: string; note?: string }[] }
-  | { type: 'callout'; tone: 'finding' | 'caution'; title: string; body: string };
+  | { type: 'callout'; tone: 'finding' | 'caution'; title: string; body: string }
+  | { type: 'figure'; src: string; caption: string }
+  | { type: 'deepdive'; title: string; body: string };
 
-const FENCE = /^```(chart|keynumbers|finding|caution)([^\n]*)\n([\s\S]*?)\n?```$/gm;
+const FENCE = /^```(chart|keynumbers|finding|caution|figure|deepdive)([^\n]*)\n([\s\S]*?)\n?```$/gm;
 
 export function parseMarkdown(source: string): Segment[] {
   const segments: Segment[] = [];
@@ -50,6 +60,10 @@ export function parseMarkdown(source: string): Segment[] {
       segments.push({ type: 'chart', chart: argument, caption: body.trim() });
     } else if (tag === 'keynumbers') {
       segments.push({ type: 'keyNumbers', items: parseKeyNumbers(body) });
+    } else if (tag === 'figure') {
+      segments.push({ type: 'figure', src: argument, caption: body.trim() });
+    } else if (tag === 'deepdive') {
+      segments.push({ type: 'deepdive', title: argument, body: body.trim() });
     } else if (tag === 'finding' || tag === 'caution') {
       segments.push({ type: 'callout', tone: tag, title: argument, body: body.trim() });
     }

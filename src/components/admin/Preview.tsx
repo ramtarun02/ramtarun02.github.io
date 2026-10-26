@@ -3,7 +3,6 @@
 import { Markdown } from '@/components/markdown/Markdown';
 import { Projects } from '@/components/sections/Projects';
 import { Publications } from '@/components/sections/Publications';
-import { Skills } from '@/components/sections/Skills';
 import { About } from '@/components/sections/About';
 import {
   caseStudySchema,
@@ -80,11 +79,23 @@ export function Preview({
   }
 
   if (collectionKey === 'skills') {
-    return renderMany(skillGroupSchema, list, () => <Skills copy={sections.skills} />);
+    return renderMany(skillGroupSchema, list, () => (
+      <Message text="Skills are no longer shown on the site — they appear on project cards instead." />
+    ));
   }
 
   if (collectionKey === 'projects') {
-    return renderMany(projectSchema, list, () => <Projects copy={sections.projects} />);
+    return renderMany(projectSchema, list, (items) => (
+      <Projects
+        copy={sections.projects}
+        items={items.map((p) => ({
+          ...p,
+          repoData: undefined,
+          displayTitle: p.title ?? (p.repo || 'Untitled project'),
+          displaySummary: p.summary ?? '',
+        }))}
+      />
+    ));
   }
 
   return <Message text="No preview for this collection yet." />;

@@ -1,17 +1,29 @@
 {
   "name": "Tarun Ramprakash",
-  "nameVariants": ["Tarun Ramprakash Thambidurai Arasi", "Tarun Ramprakash TA", "T. Tarun"],
+  "nameVariants": [
+    "Tarun Ramprakash Thambidurai Arasi",
+    "Tarun Ramprakash TA",
+    "T. Tarun"
+  ],
   "headline": "Aerospace researcher — CFD and solver development",
   "location": "Derby, United Kingdom",
   "summaryShort": "I build the solvers that make transonic aerodynamics computable — and study where they stop being trustworthy.",
   "summaryLong": [
-    "I work on computational fluid dynamics from the inside: writing the solvers rather than only running them. My MSc research at Cranfield rebuilt a viscous full-potential method for transonic aircraft design, and the more interesting half of that work was not making it converge — it was finding the precise physical conditions under which it cannot.",
-    "That question runs through most of what I do. A low-fidelity method is useful exactly as far as its assumptions hold, and knowing where the edge is matters more than another decimal place inside it. I spend my time on gradient reconstruction schemes, shock-induced boundary-layer separation, parallel finite-volume solvers in C++/MPI, and increasingly on where machine learning genuinely helps rather than merely fits.",
-    "Before the solvers I designed the aircraft. I led the aerodynamic and structural work on a UAV concept that carried a 30 kg payload to 19,024 ft, which is a useful grounding: it is harder to be careless about a model when you have watched the thing it describes fly."
+    "I spend most of my working hours doing something that looks, from the outside, like staring at numbers until they behave: writing the solvers that predict how air moves over a wing, then hunting for the exact point where they stop telling the truth. My MSc at Cranfield was built around that second half — not getting a transonic solver to converge, but finding precisely where it couldn't, and why.",
+    "The same habit has followed me from wind tunnels to CFD clusters to a UAV that once carried 30 kg to 19,024 ft, which is a very good way to stop being careless about what a model actually claims. These days that mostly means asking which setting in a simulation is quietly deciding the answer.",
+    "Off the clock I'm usually chasing a football or a shuttlecock around a court, badly, and I'm told by everyone who knows me that I disappear into work for stretches that don't count as healthy. I'm working on that. The solvers, less so."
   ],
   "availability": "Open to collaboration — academic or industrial",
   "links": [
-    { "label": "GitHub", "href": "https://github.com/ramtarun02", "icon": "github" },
-    { "label": "ORCID", "href": "https://orcid.org/0009-0009-1879-9117", "icon": "orcid" }
+    {
+      "label": "GitHub",
+      "href": "https://github.com/ramtarun02",
+      "icon": "github"
+    },
+    {
+      "label": "ORCID",
+      "href": "https://orcid.org/0009-0009-1879-9117",
+      "icon": "orcid"
+    }
   ]
 }

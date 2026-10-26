@@ -1,74 +1,127 @@
-import { GlassPanel } from '@/components/glass/GlassPanel';
-import { Section } from './Section';
+'use client';
+
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { Reveal, Section } from './Section';
 import type { Publication, SectionCopy } from '@/content/schema';
 
 export function Publications({ items, copy }: { items: Publication[]; copy: SectionCopy }) {
   return (
-    <Section id="research" copy={copy}>
-      <div className="flex flex-col gap-4">
-        {items.map((paper) => (
-          <GlassPanel key={paper.id} as="article" interactive className="p-6 sm:p-8">
-            <div className="flex flex-wrap items-center gap-3">
-              {paper.selfIndex === 0 ? (
-                <span
-                  className="u-label px-2.5 py-1"
-                  style={{
-                    borderRadius: 'var(--radius-pill)',
-                    background: 'var(--accent)',
-                    color: 'var(--accent-contrast)',
-                  }}
-                >
-                  First author
-                </span>
-              ) : null}
-              <span className="u-label" style={{ color: 'var(--ink-faint)' }}>
-                {paper.venue} · {paper.year}
-              </span>
-            </div>
-
-            <h3
-              className="mt-4 text-balance"
-              style={{ fontSize: 'var(--text-xl)', fontWeight: 600 }}
-            >
-              <a href={paper.href} target="_blank" rel="noreferrer noopener">
-                {paper.title}
-              </a>
-            </h3>
-
-            <p className="mt-3 text-sm" style={{ color: 'var(--ink-muted)' }}>
-              {paper.authors.map((author, index) => (
-                <span key={author}>
-                  {index > 0 ? ', ' : ''}
-                  <span
-                    style={
-                      index === paper.selfIndex
-                        ? { color: 'var(--ink)', fontWeight: 600 }
-                        : undefined
-                    }
-                  >
-                    {author}
-                  </span>
-                </span>
-              ))}
-            </p>
-
-            {paper.abstract ? (
-              <p className="u-measure mt-4 text-sm" style={{ color: 'var(--ink-muted)' }}>
-                {paper.abstract}
-              </p>
-            ) : null}
-
-            {paper.doi ? (
-              <p
-                className="mt-4 font-[family-name:var(--font-mono)] text-xs"
-                style={{ color: 'var(--ink-faint)' }}
-              >
-                doi:{paper.doi}
-              </p>
-            ) : null}
-          </GlassPanel>
+    <Section id="papers" copy={copy}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {items.map((pub, i) => (
+          <Reveal key={pub.id} delay={i * 0.06}>
+            <PaperCard pub={pub} />
+          </Reveal>
         ))}
       </div>
     </Section>
+  );
+}
+
+function PaperCard({ pub }: { pub: Publication }) {
+  const [open, setOpen] = useState(false);
+  const firstAuthor = pub.selfIndex === 0;
+  const id = `abs-${pub.id}`;
+
+  return (
+    <article
+      className="glass panel-interactive paper"
+      style={{ borderRadius: 26, padding: 'clamp(20px, 3vw, 28px)' }}
+    >
+      <div className="paper-grid">
+        <div className="paper-year" aria-hidden="true">
+          <span className="u-gradient-text">{pub.year}</span>
+        </div>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' }}>
+            <span className="chip" style={{ whiteSpace: 'normal' }}>
+              {pub.venue}
+            </span>
+            <span className="chip chip--muted">Conference paper</span>
+            {firstAuthor ? <span className="chip chip--good">First author</span> : null}
+          </div>
+          <h3
+            style={{
+              margin: '14px 0 8px',
+              fontSize: 'var(--text-xl)',
+              fontWeight: 650,
+              letterSpacing: '-0.025em',
+              lineHeight: 1.3,
+              textWrap: 'balance',
+            }}
+          >
+            {pub.title}
+          </h3>
+          <p style={{ margin: 0, fontSize: 14.5, color: 'var(--ink-faint)' }}>
+            {pub.authors.map((a, i) => (
+              <span key={a}>
+                {i > 0 ? ', ' : ''}
+                <span
+                  style={i === pub.selfIndex ? { color: 'var(--ink)', fontWeight: 600 } : undefined}
+                >
+                  {a}
+                </span>
+              </span>
+            ))}
+            <span className="sr-only"> ({pub.year})</span>
+          </p>
+
+          <AnimatePresence initial={false}>
+            {open && pub.abstract ? (
+              <motion.p
+                id={id}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
+                style={{
+                  overflow: 'hidden',
+                  margin: 0,
+                  color: 'var(--ink-muted)',
+                  lineHeight: 1.7,
+                  maxWidth: '75ch',
+                }}
+              >
+                <span style={{ display: 'block', paddingTop: 14 }}>{pub.abstract}</span>
+              </motion.p>
+            ) : null}
+          </AnimatePresence>
+
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 16 }}>
+            {pub.abstract ? (
+              <button
+                type="button"
+                className="btn btn-ghost"
+                aria-expanded={open}
+                aria-controls={id}
+                onClick={() => setOpen((v) => !v)}
+                style={{ minHeight: 38, paddingInline: 14 }}
+              >
+                {open ? 'Hide summary' : 'Read summary'}
+              </button>
+            ) : null}
+            <a
+              href={pub.href}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="btn btn-glass"
+              style={{ minHeight: 38 }}
+            >
+              {pub.doi ? `DOI ${pub.doi}` : 'View paper'} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <style>{`
+        .paper-grid { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 20px; }
+        .paper-year { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.06em; line-height: 1; padding-top: 2px; }
+        .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        @media (max-width: 640px) {
+          .paper-grid { grid-template-columns: 1fr; gap: 6px; }
+          .paper-year { font-size: 1.6rem; }
+        }
+      `}</style>
+    </article>
   );
 }

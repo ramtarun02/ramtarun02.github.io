@@ -1,33 +1,14 @@
 import type { Metadata, Viewport } from 'next';
-import { Caprasimo, Figtree, Inter } from 'next/font/google';
 import { site, siteUrl } from '@/lib/site';
 
-// Self-hosted mono for numeric/label bits shared by both themes.
-import '@fontsource/ibm-plex-mono/latin-400.css';
-import '@fontsource/ibm-plex-mono/latin-500.css';
+// Self-hosted, so a build never depends on reaching Google Fonts.
+// Inter is the closest freely licensed match to Apple's SF Pro, which is what
+// makes the glass read as "native" rather than "web".
+import '@fontsource-variable/inter/index.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
 
 import './globals.css';
-
-const caprasimo = Caprasimo({
-  subsets: ['latin'],
-  weight: '400',
-  variable: '--font-caprasimo',
-  display: 'swap',
-});
-
-const figtree = Figtree({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-figtree',
-  display: 'swap',
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-inter',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
@@ -40,19 +21,25 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: `${site.name} — ${site.role}`,
     description: site.description,
+    images: ['/assets/hero-a380-sunset.jpg'],
   },
   robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#f5ead8',
-  colorScheme: 'light',
+  themeColor: '#070c1a',
+  colorScheme: 'dark',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className={`${caprasimo.variable} ${figtree.variable} ${inter.variable}`}>
-      <body className="antialiased">{children}</body>
+    <html lang="en-GB">
+      <body>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,84 +1,162 @@
 import Image from 'next/image';
-import { Section } from './Section';
+import { Reveal, Section } from './Section';
+import { TiltCard } from '@/components/glass/TiltCard';
 import type { Profile, SectionCopy } from '@/content/schema';
 
-const ABOUT_PARAGRAPHS = [
-  "I spend most of my working hours doing something that looks, from the outside, like staring at numbers until they behave: writing the solvers that predict how air moves over a wing, then hunting for the exact point where they stop telling the truth. My MSc at Cranfield was built around that second half — not getting a transonic solver to converge, but finding precisely where it couldn't, and why.",
-  'The honest version of "why aerodynamics" is that I\'ve never been able to watch an A380 take off without doing the lift numbers in my head — a habit that\'s followed me from wind tunnels to CFD clusters to a UAV that once carried 30kg to 19,024 ft, which is a very good way to stop being careless about what a model actually claims.',
-  "Off the clock I'm usually chasing a football or a shuttlecock around a court, badly, and I'm told by everyone who knows me that I disappear into work for stretches that don't count as healthy. I'm working on that. The solvers, less so.",
+const STATS = [
+  { value: '3', label: 'Conference papers', note: 'AIAA SciTech · ICAS 2024 · ICAS 2026' },
+  { value: '19,024 ft', label: 'UAV payload record', note: '30 kg, 2024 — team lead' },
+  { value: 'Mach 6', label: 'Latest validation case', note: 'hypersonic aerospike — see below' },
 ];
 
 export function About({ profile, copy }: { profile: Profile; copy: SectionCopy }) {
   return (
-    <Section id="about" copy={{ ...copy, lede: '' }}>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0,1.4fr) minmax(260px,1fr)',
-          gap: 60,
-          alignItems: 'center',
-        }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          {ABOUT_PARAGRAPHS.map((para) => (
-            <p
-              key={para.slice(0, 24)}
-              style={{
-                fontSize: 16.5,
-                lineHeight: 1.85,
-                color: 'var(--ink-muted)',
-                maxWidth: '64ch',
-              }}
-            >
-              {para}
-            </p>
-          ))}
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
-          <Image
-            src="/assets/profile-pic.png"
-            alt={profile.name}
-            width={300}
-            height={300}
-            style={{
-              width: '100%',
-              maxWidth: 300,
-              aspectRatio: '1',
-              objectFit: 'cover',
-              borderRadius: '50%',
-              boxShadow: 'var(--shadow-lg)',
-              filter: 'saturate(0.85) contrast(0.96)',
-            }}
-          />
-          <div style={{ textAlign: 'center' }}>
+    <Section id="about" copy={copy}>
+      <div className="about-grid">
+        <Reveal>
+          <TiltCard
+            className="about-photo"
+            style={{ borderRadius: 'var(--radius-xl)', padding: 10 }}
+            max={4}
+          >
             <div
               style={{
-                fontSize: 11,
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                color: 'var(--color-accent-700)',
-                marginBottom: 6,
+                position: 'relative',
+                aspectRatio: '4 / 5',
+                borderRadius: 24,
+                overflow: 'hidden',
               }}
             >
-              Availability
+              <Image
+                src="/assets/profile-pic.png"
+                alt={`Portrait of ${profile.name}`}
+                fill
+                sizes="(max-width: 900px) 90vw, 380px"
+                style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
+              />
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(180deg, transparent 55%, rgba(7,12,26,0.85) 100%)',
+                }}
+              />
+              <div style={{ position: 'absolute', left: 16, right: 16, bottom: 16 }}>
+                <div
+                  className="glass"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    padding: '10px 14px',
+                    borderRadius: 16,
+                    background: 'rgba(255,255,255,0.1)',
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      width: 9,
+                      height: 9,
+                      borderRadius: '50%',
+                      background: 'var(--mint-300)',
+                      animation: 'pulse-ring 1.8s ease-out infinite',
+                      flex: 'none',
+                    }}
+                  />
+                  <span style={{ fontSize: 13.5, lineHeight: 1.3 }}>{profile.availability}</span>
+                </div>
+              </div>
             </div>
-            <div style={{ fontSize: 14, color: 'var(--ink-muted)' }}>{profile.availability}</div>
-          </div>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
-            {profile.links.map((link) => (
+          </TiltCard>
+        </Reveal>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+          <Reveal delay={0.08}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+              {profile.summaryLong.map((para, i) => (
+                <p
+                  key={para.slice(0, 24)}
+                  style={{
+                    margin: 0,
+                    fontSize: i === 0 ? 'var(--text-xl)' : 'var(--text-base)',
+                    lineHeight: i === 0 ? 1.5 : 1.75,
+                    letterSpacing: i === 0 ? '-0.015em' : undefined,
+                    color: i === 0 ? 'var(--ink)' : 'var(--ink-muted)',
+                    maxWidth: '62ch',
+                  }}
+                >
+                  {para}
+                </p>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.16}>
+            <ul className="stat-grid" aria-label="Highlights">
+              {STATS.map((s) => (
+                <li
+                  key={s.label}
+                  className="glass"
+                  style={{ borderRadius: 20, padding: '18px 18px 16px' }}
+                >
+                  <div
+                    className="u-gradient-text"
+                    style={{
+                      fontSize: 'var(--text-2xl)',
+                      fontWeight: 700,
+                      letterSpacing: '-0.04em',
+                    }}
+                  >
+                    {s.value}
+                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 600, marginTop: 6 }}>{s.label}</div>
+                  <div style={{ fontSize: 12.5, color: 'var(--ink-faint)', marginTop: 3 }}>
+                    {s.note}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+
+          <Reveal delay={0.22}>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              {profile.links.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="btn btn-glass"
+                >
+                  {link.label}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              ))}
               <a
-                key={link.href}
-                href={link.href}
+                href="/documents/resume.pdf"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="btn btn-secondary"
+                className="btn btn-glass"
               >
-                {link.label}
+                Résumé (PDF)
+                <span aria-hidden="true">↗</span>
               </a>
-            ))}
-          </div>
+            </div>
+          </Reveal>
         </div>
       </div>
+
+      <style>{`
+        .about-grid { display: grid; gap: clamp(2rem, 5vw, 4.5rem); grid-template-columns: minmax(0, 380px) minmax(0, 1fr); align-items: center; }
+        .stat-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        @media (max-width: 900px) {
+          .about-grid { grid-template-columns: 1fr; }
+          .about-photo { max-width: 420px; }
+        }
+        @media (max-width: 560px) { .stat-grid { grid-template-columns: 1fr; } }
+      `}</style>
     </Section>
   );
 }

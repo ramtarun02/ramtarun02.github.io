@@ -3,19 +3,22 @@ import { caseStudies, caseStudyBySlug } from '@/content';
 import { caseStudySchema } from '@/content/schema';
 
 describe('case studies', () => {
-  it('publishes all three studies', () => {
-    expect(caseStudies).toHaveLength(3);
-    expect(caseStudies.every((study) => study.status === 'published')).toBe(true);
+  it('publishes the aerospike study, featured on the homepage', () => {
+    expect(caseStudies).toHaveLength(1);
+    const study = caseStudyBySlug('aerospike-hypersonic-rans');
+    expect(study?.status).toBe('published');
+    expect(study?.featured).toBe(true);
   });
 
-  it('resolves by slug, and returns undefined for an unknown one', () => {
-    expect(caseStudyBySlug('transonic-incidence-limit')?.year).toBe(2026);
+  it('returns undefined for an unknown slug', () => {
     expect(caseStudyBySlug('does-not-exist')).toBeUndefined();
   });
 
-  it('gives every study a thesis, since that is what carries it if nothing else is read', () => {
+  it('gives every study a thesis, a short version and headline numbers', () => {
     for (const study of caseStudies) {
       expect(study.thesis.length).toBeGreaterThan(40);
+      expect(study.tldr.length).toBeGreaterThan(2);
+      expect(study.stats.length).toBe(4);
     }
   });
 
@@ -25,23 +28,26 @@ describe('case studies', () => {
     for (const slug of slugs) expect(slug).toMatch(/^[a-z0-9-]+$/);
   });
 
-  it('credits VFP licensing on the study that uses it', () => {
-    const study = caseStudyBySlug('transonic-incidence-limit');
-    expect(study?.credit).toContain('Cranfield University');
-  });
-
-  it('carries a Markdown body rather than structured blocks', () => {
+  it('uses only charts the renderer knows about', () => {
+    const known = [
+      'domePressure',
+      'domeTemperature',
+      'errorMetrics',
+      'sensitivity',
+      'runMatrix',
+      'schlierenCompare',
+    ];
     for (const study of caseStudies) {
-      expect(study.body.length).toBeGreaterThan(500);
-      expect(study.body).toContain('## ');
+      for (const match of study.body.matchAll(/^```chart (\w+)/gm)) {
+        expect(known).toContain(match[1]);
+      }
     }
   });
 
-  it('keeps the typed fenced blocks Markdown has no syntax for', () => {
-    const crm = caseStudyBySlug('transonic-incidence-limit');
-    expect(crm?.body).toContain('```keynumbers');
-    expect(crm?.body).toContain('```chart failureBoundary');
-    expect(crm?.body).toContain('```finding ');
+  it('does not name the lab the work was done with', () => {
+    for (const study of caseStudies) {
+      expect(study.body.toLowerCase()).not.toContain('flowthermo');
+    }
   });
 
   it('rejects a study with an empty body', () => {

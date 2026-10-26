@@ -1,77 +1,70 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { GlassPanel } from '@/components/glass/GlassPanel';
 import { SiteHeader } from '@/components/nav/SiteHeader';
 import { SiteFooter } from '@/components/nav/SiteFooter';
 import { caseStudies, profile, sections } from '@/content';
 
 export const metadata: Metadata = {
   title: 'Case studies',
-  description:
-    'Transonic solver limits, RANS verification and rotor solver architecture — written up in full.',
+  description: 'Long-form CFD write-ups: the setup, what broke, and what it taught me.',
 };
 
 export default function WorkIndexPage() {
   return (
     <>
-      <SiteHeader name={profile.name} />
-      <main className="shell pt-32 pb-24 sm:pt-40">
-        <p className="u-label" style={{ color: 'var(--accent)' }}>
-          {sections.caseStudies.eyebrow}
-        </p>
-        <h1
-          className="mt-4 tracking-tight text-balance"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'var(--text-5xl)',
-            lineHeight: 1.02,
-          }}
-        >
+      <SiteHeader name={profile.name} onHome={false} />
+      <main
+        id="main"
+        className="shell"
+        style={{ paddingTop: 'clamp(8rem, 15vw, 11rem)', paddingBottom: '6rem' }}
+      >
+        <p className="eyebrow">{sections.caseStudies.eyebrow}</p>
+        <h1 className="section-title" style={{ fontSize: 'var(--text-5xl)' }}>
           {sections.caseStudies.title}
         </h1>
-        <p
-          className="u-measure mt-6"
-          style={{ fontSize: 'var(--text-lg)', color: 'var(--ink-muted)' }}
-        >
-          Each of these follows the same spine — question, method, evidence, limit — because the
-          limit is the part most write-ups leave out, and it is usually the part worth reading.
-        </p>
+        <p className="section-lede">{sections.caseStudies.lede}</p>
 
-        <div className="mt-16 grid gap-5 lg:grid-cols-2 2xl:grid-cols-3">
+        <div style={{ display: 'grid', gap: 20, marginTop: 48 }}>
           {caseStudies.map((study) => (
-            <Link key={study.id} href={`/work/${study.slug}`} className="group block">
-              <GlassPanel as="article" radius="xl" interactive className="p-7 sm:p-10">
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="u-label" style={{ color: 'var(--accent)' }}>
-                    {study.domain}
-                  </span>
-                  <span className="u-label" style={{ color: 'var(--ink-faint)' }}>
-                    {study.year}
-                  </span>
-                </div>
-                <h2
-                  className="mt-4 tracking-tight text-balance"
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'var(--text-3xl)',
-                    lineHeight: 1.1,
-                  }}
-                >
-                  {study.title}
-                </h2>
-                <p
-                  className="mt-3 font-[family-name:var(--font-mono)] text-sm"
-                  style={{ color: 'var(--ink-faint)' }}
-                >
-                  {study.subtitle}
-                </p>
-                <p className="u-measure mt-5" style={{ fontSize: 'var(--text-lg)' }}>
-                  {study.thesis}
-                </p>
-                <p className="mt-6 text-sm font-semibold" style={{ color: 'var(--accent)' }}>
-                  Read the study →
-                </p>
-              </GlassPanel>
+            <Link
+              key={study.id}
+              href={`/work/${study.slug}`}
+              className="glass panel-interactive"
+              style={{
+                display: 'block',
+                borderRadius: 'var(--radius-xl)',
+                padding: 'clamp(1.5rem, 4vw, 2.5rem)',
+                textDecoration: 'none',
+              }}
+            >
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                <span className="chip">{study.domain}</span>
+                <span className="chip chip--muted">{study.year}</span>
+              </div>
+              <h2
+                style={{
+                  margin: '16px 0 8px',
+                  fontSize: 'var(--text-3xl)',
+                  fontWeight: 700,
+                  letterSpacing: '-0.04em',
+                  lineHeight: 1.1,
+                }}
+              >
+                {study.title}
+              </h2>
+              <p
+                style={{
+                  margin: 0,
+                  color: 'var(--ink-muted)',
+                  fontSize: 'var(--text-lg)',
+                  maxWidth: '65ch',
+                }}
+              >
+                {study.thesis}
+              </p>
+              <p style={{ margin: '20px 0 0', color: 'var(--accent)', fontWeight: 600 }}>
+                Read the study →
+              </p>
             </Link>
           ))}
         </div>

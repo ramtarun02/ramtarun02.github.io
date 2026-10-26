@@ -5,24 +5,24 @@
     "lede": "The most recent write-ups, newest first."
   },
   "caseStudies": {
-    "eyebrow": "Case studies",
-    "title": "The long form",
-    "lede": "Full write-ups — the question, the method, the evidence, and the limit. The limit is the part most write-ups leave out, and usually the part worth reading."
+    "eyebrow": "Case study",
+    "title": "The settings that decide the answer",
+    "lede": "One problem, written up properly: what I set, what broke, and what it taught me about running RANS at Mach 6."
   },
   "projects": {
-    "eyebrow": "Code",
+    "eyebrow": "Projects",
     "title": "Built in the open",
-    "lede": "Curated rather than dumped. These are the repositories worth reading; everything else stays on GitHub."
+    "lede": "Code worth reading. More is on the way."
   },
   "research": {
-    "eyebrow": "Research",
-    "title": "Peer-reviewed work",
-    "lede": "Conference papers in rotor and turbine aerodynamics, across mid-fidelity and high-fidelity methods."
+    "eyebrow": "Papers",
+    "title": "Conferences & Publications",
+    "lede": "Conference papers I've written or co-written, and presented — rotor aerodynamics, aeroacoustics and conceptual aircraft design."
   },
   "experience": {
     "eyebrow": "Experience",
-    "title": "The route so far",
-    "lede": "Research groups, a UAV manufacturer and a computational consultancy — consistently on the numerical side."
+    "title": "The flight path so far",
+    "lede": "Research groups, a UAV company and a CFD consultancy — always on the numerical side of the problem."
   },
   "skills": {
     "eyebrow": "Capabilities",
@@ -36,8 +36,8 @@
   },
   "contact": {
     "eyebrow": "Contact",
-    "title": "Start a conversation",
-    "lede": "Open to collaboration on academic or industrial work in CFD and solver development — particularly conceptual design tooling, and the limits of low-fidelity methods."
+    "title": "Let's work on something hard",
+    "lede": "Open to collaboration on academic or industrial work in CFD and solver development — and always happy to talk about a simulation that's misbehaving."
   },
   "writing": {
     "eyebrow": "Writing",

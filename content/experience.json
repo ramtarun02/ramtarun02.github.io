@@ -10,15 +10,47 @@
     "start": "2026-01",
     "summary": "Computational engineering consultancy specialising in CFD, FEA and simulation-driven product development.",
     "highlights": [
-      "Compared solver stability and accuracy across three gradient reconstruction schemes — MUSCL with TVD limiter, Green-Gauss, and least squares",
+      "Compared solver stability and accuracy between Green-Gauss and least-squares gradient reconstruction schemes",
       "Implemented finite difference and finite volume methods on structured Cartesian grids, and built a 2D incompressible Euler solver in C++/MPI for the shock tube benchmark",
       "Investigated turbulence model sensitivity and numerical method behaviour across study cases in Fluent and OpenFOAM"
     ],
-    "tags": ["C++", "MPI", "OpenFOAM", "ANSYS Fluent", "Numerical methods"]
+    "tags": [
+      "C++",
+      "MPI",
+      "OpenFOAM",
+      "ANSYS Fluent",
+      "Numerical methods"
+    ],
+    "story": "Compared gradient reconstruction schemes head to head — Green-Gauss against least squares — and built a 2D Euler solver in C++/MPI from scratch to watch the shock tube benchmark come together cell by cell.",
+    "end": "2026-09"
+  },
+  {
+    "id": "msc-cranfield",
+    "order": 1,
+    "published": true,
+    "kind": "education",
+    "role": "MSc by Research, Aerospace Engineering",
+    "organisation": "Cranfield University",
+    "location": "Cranfield, UK",
+    "start": "2024-09",
+    "end": "2026-04",
+    "summary": "Thesis: improving a viscous full-potential (VFP) transonic flow solver for rapid conceptual aircraft design.",
+    "highlights": [
+      "Redesigned the legacy VFP workflow as FlowVFP, an AI/ML-compatible in-house solver for rapid conceptual transonic design, presented at the AIRBUS OneHeart Design Sprint 2026",
+      "Established the failure boundary of a coupled full-potential / integral boundary-layer method, showing it is governed by pre-shock Mach number rather than incidence"
+    ],
+    "tags": [
+      "Full potential",
+      "Transonic",
+      "Python",
+      "Flask",
+      "React"
+    ],
+    "story": "Rebuilt a legacy transonic solver into FlowVFP, then spent most of the thesis hunting the exact Mach number where it stops telling the truth — presented at the Airbus OneHEART Design Sprint 2026."
   },
   {
     "id": "bonv-2023",
-    "order": 1,
+    "order": 2,
     "published": true,
     "kind": "role",
     "role": "Research and Development Engineer",
@@ -32,11 +64,17 @@
       "Produced manufacturing-ready CAD assemblies, weldments and GD&T-compliant drawings to ISO 2964 and ISO 6362-1",
       "Coordinated aerodynamic, propulsion and structural requirements across a multi-disciplinary team, translating operational targets into design specifications"
     ],
-    "tags": ["SolidWorks", "Fusion 360", "GD&T", "UAV design"]
+    "tags": [
+      "SolidWorks",
+      "Fusion 360",
+      "GD&T",
+      "UAV design"
+    ],
+    "story": "Designed 25+ airframe and chassis concepts for high-payload UAVs — one carried 30 kg to 19,024 ft, a record I still bring up more than I should."
   },
   {
     "id": "cambridge-2023",
-    "order": 2,
+    "order": 3,
     "published": true,
     "kind": "internship",
     "role": "Research Intern",
@@ -49,11 +87,17 @@
       "Built a physics-based neural network in PyTorch estimating the friction factor responsible for indirect noise in non-isentropic nozzles, to within 2–3%",
       "Developed a physics-informed neural operator (PINO) for non-linear PDEs, reaching 95% accuracy simulating Navier-Stokes for flow past a cylinder"
     ],
-    "tags": ["PyTorch", "PINO", "Navier-Stokes", "Aeroacoustics"]
+    "tags": [
+      "PyTorch",
+      "PINO",
+      "Navier-Stokes",
+      "Aeroacoustics"
+    ],
+    "story": "Taught a neural network to hear indirect combustion noise it had never been told the physics of, and built a physics-informed operator that got Navier-Stokes past a cylinder to 95% accuracy."
   },
   {
     "id": "cranfield-2023",
-    "order": 3,
+    "order": 4,
     "published": true,
     "kind": "internship",
     "role": "Research Intern",
@@ -68,24 +112,13 @@
       "Compared mid-fidelity vortex methods against RANS CFD and wind tunnel measurement to evaluate aerodynamic efficiency gains",
       "Co-authored an ICAS 2024 paper demonstrating 3–7% improvement from optimised tubercle configurations"
     ],
-    "tags": ["ANSYS Fluent", "FlightStream", "Wind tunnel", "RANS"]
-  },
-  {
-    "id": "msc-cranfield",
-    "order": 4,
-    "published": true,
-    "kind": "education",
-    "role": "MSc by Research, Aerospace Engineering",
-    "organisation": "Cranfield University",
-    "location": "Cranfield, UK",
-    "start": "2024-09",
-    "end": "2026-04",
-    "summary": "Thesis: improving a viscous full-potential (VFP) transonic flow solver for rapid conceptual aircraft design.",
-    "highlights": [
-      "Redesigned the legacy VFP workflow as FlowVFP, an AI/ML-compatible in-house solver for rapid conceptual transonic design, presented at the AIRBUS OneHeart Design Sprint 2026",
-      "Established the failure boundary of a coupled full-potential / integral boundary-layer method, showing it is governed by pre-shock Mach number rather than incidence"
+    "tags": [
+      "ANSYS Fluent",
+      "FlightStream",
+      "Wind tunnel",
+      "RANS"
     ],
-    "tags": ["Full potential", "Transonic", "Python", "Flask", "React"]
+    "story": "Ran wind tunnel campaigns on tubercled wings at the National Wind Tunnel Facility, then checked whether RANS agreed with what the tunnel had just shown me — co-authored an ICAS 2024 paper on the result."
   },
   {
     "id": "btech-iit",
@@ -102,6 +135,12 @@
       "Modules in C++17 and Python, engineering mathematics, numerical techniques, partial differential equations, deformation and fracture, and composite materials",
       "Elected Secretary of the Society of Aeromodelling and Aerial Robotics under the Science and Technology Council"
     ],
-    "tags": ["C++17", "Python", "PDEs", "Numerical techniques"]
+    "tags": [
+      "C++17",
+      "Python",
+      "PDEs",
+      "Numerical techniques"
+    ],
+    "story": "Where the numerical-methods habit started — PDEs, fracture mechanics, and a stint as Secretary of the Aeromodelling Society that probably explains everything since."
   }
 ]

@@ -48,6 +48,8 @@ export const experienceSchema = publishable.extend({
     .optional(),
   kind: z.enum(['role', 'internship', 'education']),
   summary: z.string().min(1),
+  /** One or two sentences in first person — what the timeline shows before expanding. */
+  story: z.string().optional(),
   highlights: z.array(z.string().min(1)).default([]),
   tags: z.array(z.string().min(1)).default([]),
 });
@@ -110,6 +112,12 @@ export const caseStudySchema = publishable.extend({
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .optional(),
   cover: z.string().optional(),
+  /** Short version for readers who will not read the long one. */
+  tldr: z.array(z.string().min(1)).default([]),
+  /** Headline numbers, shown on the homepage teaser and the study's header. */
+  stats: z.array(z.object({ value: z.string().min(1), label: z.string().min(1) })).default([]),
+  /** Marks the study featured on the homepage. */
+  featured: z.boolean().default(false),
   /** The document itself, in Markdown. */
   body: z.string().min(1),
   credit: z.string().optional(),
@@ -127,8 +135,8 @@ export type CaseStudy = z.infer<typeof caseStudySchema>;
    ============================================================ */
 
 export const projectSchema = publishable.extend({
-  /** Repository name under the configured GitHub user. */
-  repo: z.string().min(1),
+  /** Repository name under the configured GitHub user. Empty for an unreleased project. */
+  repo: z.string().default(''),
   /** Overrides the repo name. Repos are named for machines, not for readers. */
   title: z.string().min(1).optional(),
   /** Overrides the GitHub description, which is usually one line or empty. */
@@ -138,6 +146,10 @@ export const projectSchema = publishable.extend({
   /** Optional link to a case study slug that goes deeper than the repo. */
   caseStudySlug: z.string().optional(),
   featured: z.boolean().default(false),
+  /** What it is built with — shown on the card instead of a separate skills list. */
+  stack: z.array(z.string().min(1)).default([]),
+  /** Unreleased: rendered behind a frosted "coming soon" overlay with no links. */
+  comingSoon: z.boolean().default(false),
 });
 
 export const projectCollection = z.array(projectSchema);

@@ -9,9 +9,9 @@ afterEach(() => {
 });
 
 describe('siteUrl', () => {
-  it('falls back to localhost while no domain is configured', () => {
+  it('falls back to the GitHub Pages origin while no domain is configured', () => {
     delete process.env['NEXT_PUBLIC_SITE_URL'];
-    expect(siteUrl()).toBe('http://localhost:3000');
+    expect(siteUrl()).toBe('https://ramtarun02.github.io');
   });
 
   it('strips trailing slashes so canonical URLs never double up', () => {

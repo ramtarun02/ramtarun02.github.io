@@ -102,11 +102,11 @@ const curatedProjects: Project[] = visible(
 );
 
 export const projects: ResolvedProject[] = curatedProjects.map((project) => {
-  const repoData = repoIndex.get(project.repo.toLowerCase());
+  const repoData = project.repo ? repoIndex.get(project.repo.toLowerCase()) : undefined;
   return {
     ...project,
     repoData,
-    displayTitle: project.title ?? project.repo,
+    displayTitle: project.title ?? (project.repo || 'Untitled project'),
     displaySummary: project.summary ?? repoData?.description ?? '',
   };
 });
